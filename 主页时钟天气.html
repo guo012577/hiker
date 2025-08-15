@@ -13,7 +13,7 @@
 
 <body style="text-align: center"><!-- 要显示的元素都在Div里，ABC三个模板怎么改都行，每要增加一个显示页面，到【动画逻辑】和【div层级限定】增加对应设置。（div一个父级包含一个透明层与显示层，透明层999在最高层） -->
 
-<div class="a-nav item" id='clock' style="display: none;"> <!-- 时钟容器 style="display: none;"为先隐藏-->
+<div class="a-nav item" id='clock' style="display: none;"><!-- 时钟容器 style="display: none;"为先隐藏-->
     <div class="aclass"  style="width: 100%;height: 80%;"></div>
     <div ><!-- 这个层级div替换自己的时钟链接 -->
         <!--                <object style="border:0px" type="text/x-scriptlet" id='clock_obj' data="https://www.521x5.com/img/time.html" width="100%" height="100%">-->
@@ -41,9 +41,9 @@
 <div class="c-nav item" id='image' style="display: none;"><!-- 随机图容器 -->
     <div class="cclass"></div>
     <div class="img-cover" style="margin-top: 5px">
-        <!--   <object style="border:0px" type="text/x-scriptlet" data="https://img1.baidu.com/it/u=1938858049,296545317&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1067" width="100%"  height="100%">
+        <!--   <object style="border:0px" type="text/x-scriptlet" data="这里填你的链接" width="100%"  height="100%">
         </object> -->
-        <!--				<img src="hiker://files/Jm/png/meinv/1750665250469.png">-->
+        <!--				<img src="https://api.mz-moe.cn/img/img659.jpg">-->
         <img>
     </div>
 </div>
@@ -72,12 +72,12 @@
     host = fba.getVar('host');
     jsApi  = fba.getVar('jsApi');
     // let js_calendar =jsApi+'796';
-    let js_calendar ='http://dr.nokia.press/html/calendar.js';
+    let js_calendar ='https://dr.playdreamer.cn/html/calendar.js';
     // fba.log(js_calendar);
     let local_calendar = 'hiker://files/rules/js/calendar.js';
     // let html_clock =jsApi+'729';
-    let html_clock = 'http://dr.nokia.press/html/白色时钟.html';
-     let html_clock ='file:///storage/emulated/0/Android/data/com.example.hikerview/files/Documents/rules/dzHouse/html/白色时钟.html';
+    let html_clock = 'https://dr.playdreamer.cn/html/白色时钟.html';
+    // let html_clock ='file:///storage/emulated/0/Android/data/com.example.hikerview/files/Documents/rules/dzHouse/html/白色时钟.html';
     // let html_clock ='/storage/emulated/0/Android/data/com.example.hikerview/files/Documents/rules/dzHouse/html/白色时钟.html';
     // fy_bridge_app.log(html_clock);
     let api_uploadImg = host+'/hikerule/image/add';
