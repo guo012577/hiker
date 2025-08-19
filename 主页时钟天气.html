@@ -356,21 +356,7 @@
                 fba.writeFile(setting_path,JSON.stringify(settings));
             }catch (e) {layer.msg(e.message); }
         });
-        $('#showHistory').on('click', function(){
-            layer.msg('查看历史上的今天？', {
-                time: 2000,
-                btn: ['确定', '取消'] //按钮
-                , yes: function (index, layero) {
-                    try {
-                        let rule = "js:var res={};var d=[];var date = new Date(); html=getResCode();let back=JSON.parse(html);d.push({title:'下面是'+back.result.length+'条历史上的今天事件',desc:'',url:'https://www.xiaodoubi.com/',col_type:'text_center_1'});if(back.today){for(var i in back.result){d.push({title:'““””<small>'+back.result[i].title+'</small>',desc:back.result[i].year+'年'+('00' + (1 + date.getMonth())).slice(-2) + '月' + ('00' + date.getDate()).slice(-2) + '日',url:\"toast://\"+JSON.stringify(back.result[i]),col_type:'text_center_1'})}}d.push({col_type:'long_text'});res.data=d;setHomeResult(res);";
-                        fba.toDetailPage('历史上的今天', '#noHistory#https://www.ipip5.com/today/api.php?type=json', 'x5二级', 'icon_2_round', rule, '');
-                    }catch (e) {layer.msg(e.message);}
-                },
-
-            });
-        });
-
-        $(".cclass").mousedown(function() {
+               $(".cclass").mousedown(function() {
             // fba.writeFile(setting_path,fetch());
             timeout= setTimeout(function() {
                 layer.alert('你长按我做什么?再按，再按我也没法给你下载啊<br>本来就是随机图，你想干嘛呢');
