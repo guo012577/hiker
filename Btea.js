@@ -652,11 +652,7 @@ d.push(settings);
                title: '<br>',
                col_type: 'rich_text'
                });
-        for (var b = 0; b < 5; b++) {
-        btns.push({
-              col_type: 'big_blank_block'
-              })
-                                    }
+        
         btns.push({
               title: '‘‘’’<small><font color=#20b2aa>数据资源收集于网络，海阔不提供任何资源！</font></small>',
               desc: '‘‘’’<small><font color=#ff7f50>本规则仅限学习与交流，请导入后24小时内删除，请勿传播！</font></small>',
@@ -666,7 +662,11 @@ d.push(settings);
                    lineVisible: false
                      }
                });
-		
+		for (var b = 0; b < 5; b++) {
+        btns.push({
+              col_type: 'big_blank_block'
+              })
+                                    }
         return btns
     }
     let seps = [];
