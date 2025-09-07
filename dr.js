@@ -33,8 +33,9 @@ var version={
     info:updateLog,
     ua:';get;utf-8;{User-Agent@Mozilla/5.0&&Cookie@}',
     ok:'https://okjx.cc/?url=',
-    jsRoot:'https://dr.playdreamer.cn/js/',
+    jsRoot:'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/',
 };
+
 putVar('dr依赖',version.requireId);
 /*
 var lsg = (function() {
@@ -706,15 +707,16 @@ function 设置(d,end){
 }
 function 引入动态分类(){
     initConfig({
-        categoryLib: 'http://hiker.nokia.press/hikerule/rulelist.json?id=2705',
+        //categoryLib: 'http://hiker.nokia.press/hikerule/rulelist.json?id=2705',
         categoryLocalLib: 'hiker://files/rules/js/categories-header.js',
-        categoryGiteeLib: 'https://gitee.com/reborn0/HikerRules/raw/master/plugins/categories-header.js',
+        categoryGiteeLib: 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/categories-header.js',
         categoryCodeBergLib: version.jsRoot+'categories-header.js',
-        UrlProcessorLib: 'http://hiker.nokia.press/hikerule/rulelist.json?id=2849',
+		
+        //UrlProcessorLib: 'http://hiker.nokia.press/hikerule/rulelist.json?id=2849',
         UrlProcessorLocalLib: 'hiker://files/rules/js/UrlProcessor.js',
-        UrlProcessorGiteeLib: 'https://gitee.com/reborn0/HikerRules/raw/master/plugins/UrlProcessor.js',
+        UrlProcessorGiteeLib: 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/UrlProcessor.js',
         动态分类匹配:'hiker://files/rules/js/动态分类匹配.js',
-        // 自动匹配:'https://gitlab.com/hjdhnx/hiker/-/raw/main/js/自动模板匹配.js',
+        自动匹配:'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/自动模板匹配.js',
         自动匹配:version.jsRoot+'自动模板匹配.js',
         通免:version.jsRoot+'lazy.js',
         嗅探:version.jsRoot+'video.js',
@@ -881,10 +883,15 @@ function 加载链接处理(mode){
 }
 
 function 加载魔断(){
+	
+	
     // let tools = 加载魔断() tools.renrenmi
     return require('http://hiker.nokia.press/hikerule/rulelist.json?id=2971');
+	
+	
+	
+	
 }
-
 function 打造动态分类(定位列表,extra){
     let cates=[];
     if((Array.isArray(定位列表)&&定位列表.length<1)||!Array.isArray(定位列表)){
@@ -1633,7 +1640,7 @@ function 小说(定位,指定编码){
         function 小说净化(content){
             let path = 'hiker://files/rules/dzHouse/json/小说净化.json';
             if(!fileExist(path)){
-                requireDownload('https://dr.playdreamer.cn/libs/小说净化.json', path);
+                requireDownload('https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/小说净化.json', path);
             }
             content = pdfh(content,'body&&Text');
             let javaString = java.lang.String(content);
@@ -2115,7 +2122,11 @@ function 二级推送组件(d,obj){ // {}
             img: 'https://hikerfans.com/tubiao/messy/25.svg',
             url: $(['极速', '全部','手动输入','同步嗅探规则','编辑嗅探规则'], 2, '局域网TVBOX扫描模式').select(() => {
                 let sniffer_file = 'hiker://files/rules/dzHouse/tvbox/辅助嗅探.json';
+				
                 if(/极速|全部/.test(input)){ //https://gitcode.net/qq_32394351/dr_py/-/raw/master/txt/json/sniffer.json
+				
+				
+				
                     let single_back = /极速/.test(input);
                     let ip = getIP();
                     if(ip.startsWith('0')){
