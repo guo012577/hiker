@@ -1,4 +1,4 @@
-var dr_jsRoot = 'https://github.com/guo012577/hiker/blob/main/';
+var dr_jsRoot = 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/';
 try {
     const {getApi} = $.require("hiker://page/utiliy?rule=道长仓库Pro");
     var 模板 = getApi('importUrl')+"2505";
