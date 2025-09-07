@@ -42,8 +42,7 @@ var updateLog = {
 var version={
     author:"九石",
  ver:"5.4",
-requireId:"https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏoᴏ",
-// requireIdo:"https://oooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоoᴏοоᴏᴏοоοoοоοοoоᴏоοоᴏоοоοοοᴏοooоᴏᴏοоοoοоoοοоᴏоoᴏоοoᴏoοοоοoοоᴏᴏοᴏοοoᴏοοoоᴏᴏοооoοоoοοооοοооᴏοоοοοᴏoоoоᴏᴏoоᴏοoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοoᴏοοᴏоοοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏoᴏ",
+requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/Btea.js",
  requirelId:"hiker://files/rules/91/Btea.js",
  update:'2024/11/20 08:10',
  info:updateLog.newVersionlog,
@@ -648,8 +647,7 @@ d.push(settings);
                 cls: 'footPage',
             }
         });
-		
-        for (var b = 0; b < 5; b++) {
+		for (var b = 0; b < 5; b++) {
         btns.push({
               col_type: 'big_blank_block'
               })
@@ -667,6 +665,7 @@ d.push(settings);
                title: '<br>',
                col_type: 'rich_text'
                });
+		
         return btns
     }
     let seps = [];
@@ -1689,7 +1688,7 @@ if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/htm
         title: '❌错误提示',
         content: '未能远程导入,请手动导入!',
         confirm: () => {
-            return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@http://hiker.nokia.press/hikerule/rulelist.json?id=4082"
+            return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@https://www.123684.com/s/Hz7iVv-5RZWd"
         }
     })
 				
@@ -1871,7 +1870,7 @@ addListener('onClose', $.toString(()=>{
  var newVersion=updateLog.newVersion;
  var logs=JSON.stringify(updateLog.newVersionlog).replace(/\{/g,'').replace(/\}/g,'').replace(/\,/g,'<br>').replace(/\"/g,''); 
  var newlog=JSON.stringify(updateLog.newVersionlog).split(',')[0].replace(/\{/g,'').replace(/\}/g,'').replace(/\,/g,'<br>').replace(/\"/g,'').replace(/\n/g, "<br>");
- var BteaIcon = $.getImage('https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏooοоοᴏ')
+ var BteaIcon = $.getImage('https://gitee.com/bteahk/bteahiker/raw/master/Btea.jpg')
     d.push({
             title: "<b>当前模板版本♨️: " + version.ver + "</b>"+"<small><b>\t\t\t\t\t\t\t\t\t\t\t\t\tℹ️   关于</b><small>",
             img:BteaIcon,
@@ -1963,7 +1962,7 @@ addListener('onClose', $.toString(()=>{
         let d = [];    
         let formore = "#### 获取帮助失败,请检查网络";
         try {
-            formore = fetch('https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοоοоοоᴏᴏοᴏoоοоᴏοοоᴏᴏοᴏoоοоοοoоᴏоοᴏοoοᴏоoοᴏοo');
+            formore = fetch('https://gitee.com/bteahk/bteahiker/raw/master/formore.txt');
             }catch (e) {}
         d.push({
         title:formore,
@@ -2108,11 +2107,11 @@ addListener('onClose', $.toString(()=>{
     let mnIcons4 = getItem('menuIcons4',getItem('gxid')=="on"?"更新":"收藏");    
     let mnIcons5 = getItem('menuIcons5',"设置");         
     var SYIcon=$.getImage("http://123.56.105.145/tubiao/more/47.png");
-    var PKIcon=$.getImage("https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοᴏooοооᴏoоᴏоοᴏooοоᴏоοоοᴏ");
+    var PKIcon=$.getImage("https://gitee.com/bteahk/bteahiker/raw/master/pk.png");
     var RBIcon=$.getImage("http://123.56.105.145/tubiao/more/74.png");
     var GXIcon=$.getImage("http://123.56.105.145/tubiao/more/157.png");
     var SSIcon=$.getImage("http://123.56.105.145/tubiao/more/168.png");
-    var SCIcon=$.getImage("https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοᴏoᴏοоoᴏoоᴏоοоооοᴏooοоοᴏ");
+    var SCIcon=$.getImage("https://gitee.com/bteahk/bteahiker/raw/master/sc.jpg");
     var SZIcon=$.getImage("http://123.56.105.145/tubiao/more/292.png");
     var LSIcon=$.getImage("http://123.56.105.145/tubiao/more/200.png");
     var ZJIcon=$.getImage("http://123.56.105.145/tubiao/more/326.png");
@@ -3267,7 +3266,7 @@ try {
 //log(' bImg'+bImg)
 d.push({
     title: title,
-    pic_url: bImg || MY_PARAMS.img || 'https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоoᴏοоᴏᴏοоοoοоοοoоᴏоοоᴏоοоοοοᴏοooоᴏᴏοоᴏοoᴏooοοᴏᴏoᴏοᴏoᴏoᴏoᴏoooᴏоοoᴏоοoᴏoooᴏоooᴏоοoоᴏᴏοоoоοᴏοoοоοοοоoοoоᴏᴏoоᴏοoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏooοоοᴏoᴏᴏᴏοооοοоᴏоοоᴏoοооοοоᴏоοоοοoᴏᴏοοоοоοоoοοоᴏoοᴏoᴏοоοο',
+    pic_url: bImg || MY_PARAMS.img || 'https://gitee.com/bteahk/bteahiker/raw/master/Btea.jpg',
     url: dp?'hiker://page/Route?rule=MyFieldᴰⁿ&type=设置#noHistory##noRecordHistory#':bImg,
     col_type: "movie_1_vertical_pic_blur",
     extra: {
@@ -3596,7 +3595,7 @@ try {
 //log(' MY_PARAMS.img'+MY_PARAMS.img)
 d.push({
     title: white(title),
-    pic_url: bImg  || MY_PARAMS.img || 'https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоoᴏοоᴏᴏοоοoοоοοoоᴏоοоᴏоοоοοοᴏοooоᴏᴏοоᴏοoᴏooοοᴏᴏoᴏοᴏoᴏoᴏoᴏoooᴏоοoᴏоοoᴏoooᴏоooᴏоοoоᴏᴏοоoоοᴏοoοоοοοоoοoоᴏᴏoоᴏοoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏooοоοᴏoᴏᴏᴏοооοοоᴏоοоᴏoοооοοоᴏоοоοοoᴏᴏοοоοоοоoοοоᴏoοᴏoᴏοоοο',
+    pic_url: bImg  || MY_PARAMS.img || 'https://gitee.com/bteahk/bteahiker/raw/master/Btea.jpg',
     url: bImg,
     col_type: "movie_1_vertical_pic_blur",
     extra: {
@@ -5395,9 +5394,116 @@ function 通免1(){
   return lazy
 };
 
+
+function 通免4(){
+    var lazy = $('').lazyRule(() => {
+    try {
+        // 处理播放链接，根据不同平台添加对应的请求头信息
+        function toUrl(playUrl) {
+            if (/mgtv|sohu/.test(playUrl)) {
+                // 芒果TV、搜狐视频：添加User-Agent头
+                return playUrl + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
+            } else if (/bili/.test(playUrl)) {
+                // B站：添加User-Agent和Referer头
+                return playUrl + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
+            } else if (/ixigua/.test(playUrl)) {
+                // 西瓜视频：添加Referer和User-Agent头，并标记视频类型
+                return playUrl + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
+            } else {
+                // 其他链接直接返回
+                return playUrl;
+            }
+        }
+
+        // 请求输入的链接，获取页面内容
+        var html = request(input, {});
+        // 从页面中匹配并解析player数据（JSON格式）
+        var player_data = JSON.parse(html.match(/r player_.*?=(.*?)</)[1]);
+        var fro = player_data.from; // 视频来源
+        var playUrl = player_data.url; // 播放链接
+
+        // 处理加密的播放链接
+        if (player_data.encrypt == '1') {
+            playUrl = unescape(player_data.url); // 解密方式1：unescape解码
+        } else if (player_data.encrypt == '2') {
+            playUrl = unescape(base64Decode(player_data.url)); // 解密方式2：base64解码后再unescape
+        };
+
+        // 定义URL过滤规则：排除非视频链接，保留常见视频格式链接
+        var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/; // 排除规则
+        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/; // 包含规则
+        if (!exclude.test(playUrl) && contain.test(playUrl)) {
+            // 符合条件的链接，通过toUrl处理后返回
+            return toUrl(playUrl);
+        }
+
+        // 若上述规则未匹配，尝试通过解析接口获取播放链接
+        var jxUrl = ''; // 解析接口地址（此处为空，可能需要动态填充）
+        // 请求解析接口页面
+        var jxHtml = request(jxUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
+            },
+            method: "GET"
+        });
+        // 提取接口配置并执行（获取time、key等参数）
+        eval(jxHtml.match(/var config = {[\s\S]*?}/)[0] + "");
+        var apiUrl = ''; // 实际请求的API地址（此处为空，可能需要动态填充）
+        // 向API发送POST请求获取真实播放链接
+        var apiHtml = request(apiUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
+            },
+            body: "url=" + config.url + "&time=" + config.time + "&key=" + config.key,
+            method: "POST"
+        });
+        var json = JSON.parse(apiHtml);
+        if (json.code == 200) {
+            // API返回成功，处理播放链接并返回
+            playUrl = json.url;
+            return toUrl(playUrl);
+        } else {
+            // API返回失败，返回错误提示
+            return 'toast://' + json.msg;
+        }
+
+    } catch (e) {
+        // 捕获异常时，显示加载提示
+        showLoading("正在进行检索，请稍候...");
+        // 生成x5规则链接，用于从页面中提取符合条件的视频链接
+        var video = 'x5Rule://' + input + '@' + $.toString(() => {
+            var urls = _getUrls() // 获取页面中所有链接
+            // 应用过滤规则
+            var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/;
+            var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;
+            for (var i in urls) {
+                if (!exclude.test(urls[i]) && contain.test(urls[i])) {
+                    // 对符合条件的链接按平台处理后返回
+                    if (/mgtv|sohu/.test(urls[i])) {
+                        return urls[i] + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
+                    } else if (/bili/.test(urls[i])) {
+                        return urls[i] + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
+                    } else if (/ixigua/.test(urls[i])) {
+                        return urls[i] + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
+                    } else {
+                        return urls[i]
+                    }
+                }
+            }
+        });
+        return video;
+    }
+});
+  return lazy
+};
+
+
+
+
+
 function 通免2(){
 var MY_HOME=MY_HOME||getItem('MY_HOME');
-    var lazy3 = $('').lazyRule((MY_HOME) => {
+    var lazy = $('').lazyRule((MY_HOME) => {
     if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
             return clearM3u8Ad(input+'#isM3u8#',{headers:{}})       
     }else if (/quark/.test(input)){
@@ -5406,7 +5512,8 @@ confirm({
     title: '依赖检测',
     content: '检测到缺少Quark.简,请导入!',
     confirm: () => {
-        return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥http://hiker.nokia.press/hikerule/rulelist.json?id=6856"
+        return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥云5oooole/bwiw"
+
     }
 })
 }else{return "hiker://page/quarkList?rule=Quark.简&page=fypage&realurl="+input}
@@ -5469,7 +5576,7 @@ return play + "#isVideo=true#"
     }
     }, MY_HOME)
 
-    return lazy3
+    return lazy
 };
 function 通免3() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
@@ -5543,7 +5650,7 @@ function 通免3() {
                 title: '依赖检测',
                 content: '检测到缺少Quark.简,请导入!',
                 confirm: () => {
-                    return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥http://hiker.nokia.press/hikerule/rulelist.json?id=6856"
+                    return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥云5oooole/bwiw"
                 }
             })
         }
@@ -5552,7 +5659,8 @@ function 通免3() {
                 title: '依赖检测',
                 content: '检测到缺少云盘君.简,请导入!',
                 confirm: () => {
-                    return "海阔视界首页频道规则【云盘君.简】￥home_rule_url￥http://hiker.nokia.press/hikerule/rulelist.json?id=6591"
+                    return "海阔视界首页频道规则【云盘君.简】￥home_rule_url￥云5oooole/hc3h"
+
                 }
             })
         }        
@@ -5662,7 +5770,7 @@ function 通免7() {
                 title: '依赖检测',
                 content: '检测到缺少Quark.简,请导入!',
                 confirm: () => {
-                    return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥http://hiker.nokia.press/hikerule/rulelist.json?id=6856"
+                    return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥云5oooole/bwiw"
                 }
             })
         }
@@ -5671,7 +5779,7 @@ function 通免7() {
                 title: '依赖检测',
                 content: '检测到缺少云盘君.简,请导入!',
                 confirm: () => {
-                    return "海阔视界首页频道规则【云盘君.简】￥home_rule_url￥http://hiker.nokia.press/hikerule/rulelist.json?id=6591"
+                    return "海阔视界首页频道规则【云盘君.简】￥home_rule_url￥云5oooole/hc3h"
                 }
             })
         }        
