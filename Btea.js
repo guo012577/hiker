@@ -42,7 +42,7 @@ var updateLog = {
 var version={
     author:"九石",
  ver:"5.4",
-requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/Btea.js",
+ requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/Btea.js",
  requirelId:"hiker://files/rules/91/Btea.js",
  update:'2024/11/20 08:10',
  info:updateLog.newVersionlog,
@@ -5362,8 +5362,7 @@ evalPrivateJS("rdKrS1yjnzF1785QxVatUWTigfqy0lACcohRVY08gBDiTdVxzX4KOSRGi0VNKQjjZ
     });
   return lazy
 };
-
-
+///////////////
 function 通免1(){
     var lazy = $('').lazyRule(() => {
         if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
@@ -5394,116 +5393,10 @@ function 通免1(){
   return lazy
 };
 
-
-function 通免4(){
-    var lazy = $('').lazyRule(() => {
-    try {
-        // 处理播放链接，根据不同平台添加对应的请求头信息
-        function toUrl(playUrl) {
-            if (/mgtv|sohu/.test(playUrl)) {
-                // 芒果TV、搜狐视频：添加User-Agent头
-                return playUrl + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
-            } else if (/bili/.test(playUrl)) {
-                // B站：添加User-Agent和Referer头
-                return playUrl + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
-            } else if (/ixigua/.test(playUrl)) {
-                // 西瓜视频：添加Referer和User-Agent头，并标记视频类型
-                return playUrl + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
-            } else {
-                // 其他链接直接返回
-                return playUrl;
-            }
-        }
-
-        // 请求输入的链接，获取页面内容
-        var html = request(input, {});
-        // 从页面中匹配并解析player数据（JSON格式）
-        var player_data = JSON.parse(html.match(/r player_.*?=(.*?)</)[1]);
-        var fro = player_data.from; // 视频来源
-        var playUrl = player_data.url; // 播放链接
-
-        // 处理加密的播放链接
-        if (player_data.encrypt == '1') {
-            playUrl = unescape(player_data.url); // 解密方式1：unescape解码
-        } else if (player_data.encrypt == '2') {
-            playUrl = unescape(base64Decode(player_data.url)); // 解密方式2：base64解码后再unescape
-        };
-
-        // 定义URL过滤规则：排除非视频链接，保留常见视频格式链接
-        var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/; // 排除规则
-        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/; // 包含规则
-        if (!exclude.test(playUrl) && contain.test(playUrl)) {
-            // 符合条件的链接，通过toUrl处理后返回
-            return toUrl(playUrl);
-        }
-
-        // 若上述规则未匹配，尝试通过解析接口获取播放链接
-        var jxUrl = ''; // 解析接口地址（此处为空，可能需要动态填充）
-        // 请求解析接口页面
-        var jxHtml = request(jxUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
-            },
-            method: "GET"
-        });
-        // 提取接口配置并执行（获取time、key等参数）
-        eval(jxHtml.match(/var config = {[\s\S]*?}/)[0] + "");
-        var apiUrl = ''; // 实际请求的API地址（此处为空，可能需要动态填充）
-        // 向API发送POST请求获取真实播放链接
-        var apiHtml = request(apiUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
-            },
-            body: "url=" + config.url + "&time=" + config.time + "&key=" + config.key,
-            method: "POST"
-        });
-        var json = JSON.parse(apiHtml);
-        if (json.code == 200) {
-            // API返回成功，处理播放链接并返回
-            playUrl = json.url;
-            return toUrl(playUrl);
-        } else {
-            // API返回失败，返回错误提示
-            return 'toast://' + json.msg;
-        }
-
-    } catch (e) {
-        // 捕获异常时，显示加载提示
-        showLoading("正在进行检索，请稍候...");
-        // 生成x5规则链接，用于从页面中提取符合条件的视频链接
-        var video = 'x5Rule://' + input + '@' + $.toString(() => {
-            var urls = _getUrls() // 获取页面中所有链接
-            // 应用过滤规则
-            var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/;
-            var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;
-            for (var i in urls) {
-                if (!exclude.test(urls[i]) && contain.test(urls[i])) {
-                    // 对符合条件的链接按平台处理后返回
-                    if (/mgtv|sohu/.test(urls[i])) {
-                        return urls[i] + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
-                    } else if (/bili/.test(urls[i])) {
-                        return urls[i] + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
-                    } else if (/ixigua/.test(urls[i])) {
-                        return urls[i] + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
-                    } else {
-                        return urls[i]
-                    }
-                }
-            }
-        });
-        return video;
-    }
-});
-  return lazy
-};
-
-
-
-
-
+//////////////////////
 function 通免2(){
 var MY_HOME=MY_HOME||getItem('MY_HOME');
-    var lazy = $('').lazyRule((MY_HOME) => {
+    var lazy3 = $('').lazyRule((MY_HOME) => {
     if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
             return clearM3u8Ad(input+'#isM3u8#',{headers:{}})       
     }else if (/quark/.test(input)){
@@ -5576,8 +5469,9 @@ return play + "#isVideo=true#"
     }
     }, MY_HOME)
 
-    return lazy
+    return lazy3
 };
+///////////////////////////
 function 通免3() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
     const lazy = $('').lazyRule((MY_HOME) => {
@@ -5694,7 +5588,208 @@ function 通免3() {
         }        
     },MY_HOME);
     return lazy;
+};
+////////////////////////////
+function 通免4(){
+    var lazy = $('').lazyRule(() => {
+    try {
+        // 处理播放链接，根据不同平台添加对应的请求头信息
+        function toUrl(playUrl) {
+            if (/mgtv|sohu/.test(playUrl)) {
+                // 芒果TV、搜狐视频：添加User-Agent头
+                return playUrl + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
+            } else if (/bili/.test(playUrl)) {
+                // B站：添加User-Agent和Referer头
+                return playUrl + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
+            } else if (/ixigua/.test(playUrl)) {
+                // 西瓜视频：添加Referer和User-Agent头，并标记视频类型
+                return playUrl + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
+            } else {
+                // 其他链接直接返回
+                return playUrl;
+            }
+        }
+
+        // 请求输入的链接，获取页面内容
+        var html = request(input, {});
+        // 从页面中匹配并解析player数据（JSON格式）
+        var player_data = JSON.parse(html.match(/r player_.*?=(.*?)</)[1]);
+        var fro = player_data.from; // 视频来源
+        var playUrl = player_data.url; // 播放链接
+
+        // 处理加密的播放链接
+        if (player_data.encrypt == '1') {
+            playUrl = unescape(player_data.url); // 解密方式1：unescape解码
+        } else if (player_data.encrypt == '2') {
+            playUrl = unescape(base64Decode(player_data.url)); // 解密方式2：base64解码后再unescape
+        };
+
+        // 定义URL过滤规则：排除非视频链接，保留常见视频格式链接
+        var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/; // 排除规则
+        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/; // 包含规则
+        if (!exclude.test(playUrl) && contain.test(playUrl)) {
+            // 符合条件的链接，通过toUrl处理后返回
+            return toUrl(playUrl);
+        }
+
+        // 若上述规则未匹配，尝试通过解析接口获取播放链接
+        var jxUrl = ''; // 解析接口地址（此处为空，可能需要动态填充）
+        // 请求解析接口页面
+        var jxHtml = request(jxUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
+            },
+            method: "GET"
+        });
+        // 提取接口配置并执行（获取time、key等参数）
+        eval(jxHtml.match(/var config = {[\s\S]*?}/)[0] + "");
+        var apiUrl = ''; // 实际请求的API地址（此处为空，可能需要动态填充）
+        // 向API发送POST请求获取真实播放链接
+        var apiHtml = request(apiUrl, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
+            },
+            body: "url=" + config.url + "&time=" + config.time + "&key=" + config.key,
+            method: "POST"
+        });
+        var json = JSON.parse(apiHtml);
+        if (json.code == 200) {
+            // API返回成功，处理播放链接并返回
+            playUrl = json.url;
+            return toUrl(playUrl);
+        } else {
+            // API返回失败，返回错误提示
+            return 'toast://' + json.msg;
+        }
+
+    } catch (e) {
+        // 捕获异常时，显示加载提示
+        showLoading("正在进行检索，请稍候...");
+        // 生成x5规则链接，用于从页面中提取符合条件的视频链接
+        var video = 'x5Rule://' + input + '@' + $.toString(() => {
+            var urls = _getUrls() // 获取页面中所有链接
+            // 应用过滤规则
+            var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/;
+            var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;
+            for (var i in urls) {
+                if (!exclude.test(urls[i]) && contain.test(urls[i])) {
+                    // 对符合条件的链接按平台处理后返回
+                    if (/mgtv|sohu/.test(urls[i])) {
+                        return urls[i] + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
+                    } else if (/bili/.test(urls[i])) {
+                        return urls[i] + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
+                    } else if (/ixigua/.test(urls[i])) {
+                        return urls[i] + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
+                    } else {
+                        return urls[i]
+                    }
+                }
+            }
+        });
+        return video;
+    }
+});
+  return lazy
+};
+
+////////////
+function 通免5(){
+var MY_HOME=MY_HOME||getItem('MY_HOME');
+   var lazy = $('').lazyRule((MY_HOME) => {
+    
+        var html = JSON.parse(request(input).match(/r player_.*?=(.*?)</)[1]);
+    var url = html.url;
+  if (html.encrypt == '1') {
+    url = unescape(url);
+  } else if (html.encrypt == '2') {
+    url = unescape(base64Decode(url));
+  }
+    if (/m3u8/.test(url)) {
+         return url
+			}else{
+  eval(request(MY_HOME + '/static/js/playerconfig.js'));
+  var jx =MY_HOME+ MacPlayerConfig.player_list[html.from].parse;
+  if (jx == '') {
+    jx = MacPlayerConfig.parse;
+  }
+  
+ 
+function sign(encoded) {
+    var decoded = customDecode(encoded);
+    var parts = decoded.split("/");
+    var combined = "";
+
+    for (var i = 2; i < parts.length; i++) {
+        combined += parts[i] + (i + 1 === parts.length ? "" : "/");
+    }
+
+    var base64Decoded = base64Decode(combined);
+    var part1 = JSON.parse(base64Decode(parts[1]));
+    var part0 = JSON.parse(base64Decode(parts[0]));
+    return deString(part1, part0, base64Decoded);
 }
+
+function contains(arr, val) {
+    for (var i = 0; i < arr.length; i++) {
+        if (val === arr[i]) return true;
+    }
+    return false;
+}
+
+function customDecode(encoded) {
+    var key = md5("test");
+    var decoded = base64Decode(encoded);
+    var result = "";
+
+    for (var i = 0; i < decoded.length; i++) {
+        result += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+    }
+
+    return base64Decode(result);
+}
+
+function deString(arr1, arr2, str) {
+    var result = "";
+    var chars = str.split("");
+
+    for (var i = 0; i < chars.length; i++) {
+        var char = chars[i];
+        if (/^[a-zA-Z]+$/.test(char) && contains(arr2, char)) {
+            result += arr2[arr1.indexOf(char)];
+        } else {
+            result += char;
+        }
+    }
+
+    return result;
+}
+
+
+
+
+    let vid='vid='+url
+    
+    let u=JSON.parse(request(jx.replace('player.php?vid=','api.php'), {
+         body: vid,
+         method: 'POST'
+         
+        })).data.url
+       log(u)
+       
+       let play=sign(u)
+        log(play)
+        return play +"#isVideo=true#"
+        
+        }
+       
+    
+},MY_HOME)
+
+
+
+    return lazy
+};
+///////////////////////////////////////
 function 通免7() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
     const lazy = $('').lazyRule((MY_HOME) => {
