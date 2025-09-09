@@ -55,7 +55,7 @@ d.push({
         showLoading('升级检测中,请稍等...');
         require('https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/dr.js');
         config={
-            模板:'http://hiker.nokia.press/hikerule/rulelist.json?id=2505'
+            模板:'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/dr.js'
         }
         require(config['模板']);
         let requireId = version.requireId;
