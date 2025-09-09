@@ -3,11 +3,11 @@ var 二级定位模板 = [];
 var 搜索定位模板 = [];
 var root = 'hiker://files/rules/dzHouse/json/'; //模板根目录
 function mubans_init(){//初始化模板
-    let api = 'http://hiker.nokia.press/hikerule/rulelist.json?id=';
+    let api = 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main';
     let mubans = {
-        一级模板:api+'4551',
-        二级模板:api+'4552',
-        搜索模板:api+'4553',
+        一级模板:api+'一级模板.json',
+        二级模板:api+'二级模板.json',
+        搜索模板:api+'搜索模板.json',
     };
     requireDownload(mubans.一级模板, `${root}一级模板.json`);
     requireDownload(mubans.二级模板, `${root}二级模板.json`);
