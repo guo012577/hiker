@@ -267,11 +267,11 @@ d.push({
             col_type:'text_4',
             url:$('#noLoading#').lazyRule((filePath,fileName)=>{
                 return $(`确认初始化本地模板文件:${fileName}?将自动拉仓库道长的公开模板覆盖本地模板文件`).confirm((filePath,fileName)=>{
-                    let api = 'http://hiker.nokia.press/hikerule/rulelist.json?id=';
+                    let api = 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main';
                     let mubans = {
-                        一级模板:api+'4551',
-                        二级模板:api+'4552',
-                        搜索模板:api+'4553',
+                        一级模板:api+'一级模板.json',
+                        二级模板:api+'二级模板.json',
+                        搜索模板:api+'搜索模板.json',
                     };
                     let muban = mubans[fileName];
                     let code = request(muban);
