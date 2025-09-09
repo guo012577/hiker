@@ -1,7 +1,7 @@
 js:
 var d=[];
 require(config.模板);//超级牛逼，只要使用自动匹配模板初始化就自动依赖dr模板
-putVar('cmsapp.jsRoot','https://dr.playdreamer.cn/js/');
+putVar('cmsapp.jsRoot','https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/');
 设置(d);
 function demo(p){
     let d_url;
