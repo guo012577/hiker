@@ -28,7 +28,7 @@ var version={
     ver:"5.2.19",
     // appv:2316,
     appv:583,
-    requireId:"http://hiker.nokia.press/hikerule/rulelist.json?id=2505",
+    requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/dr.js",
     update:'2024/10/7 17:42',
     info:updateLog,
     ua:';get;utf-8;{User-Agent@Mozilla/5.0&&Cookie@}',
