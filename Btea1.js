@@ -3454,6 +3454,7 @@ for (var i in conts) {
                 url:url,
                 col_type:colt,
                 extra: {
+					js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();}) ,
                         //id: pd(conts[i], _list_url),
                         cls: 'playList'
                     }                
@@ -5383,7 +5384,7 @@ function 通免1(){
                     return clearM3u8Ad(url+'#isM3u8#',{headers:{}})
             } }catch(e){
                 return 'video://'+input
-			    extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
+			   
             }
         
         }
@@ -5803,11 +5804,11 @@ var lazy = $('').lazyRule(() => {
                 return url
             } else {
                 return 'video://' + input
-		extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
+		
             }
     } catch (e) {
         return 'video://' + input 
-	      extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
+	     
     }
 },MY_HOME);
     return lazy;
