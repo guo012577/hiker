@@ -5466,7 +5466,7 @@ return play + "#isVideo=true#"
 ///////////////////////////
 function 通免3() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
-    const lazy = $('').lazyRule((MY_HOME) => {
+    const lazy3 = $('').lazyRule((MY_HOME) => {
         function parseHTML(input) {
             const response = request(input);
             const matchResult = response.match(/r player_.*?=(.*?)</);
@@ -5579,7 +5579,7 @@ function 通免3() {
             return handleException(input);
         }        
     },MY_HOME);
-    return lazy;
+    return lazy3;
 };
 ////////////////////////////
 function 通免4(){
@@ -5942,15 +5942,15 @@ function 通免7() {
     Icon样式:getItem('Icon样式','icon_5'),    
     设置v:getItem('设置v','设置'),   
     设置:getItem('设置','on'),   
-    //道长通免:道长通免(),
+    道长通免:道长通免(),
     香免:香免(),
     通免1:通免1(),
-    通免2:通免2(),
-	通免3:通免3(),
-	通免4:通免4(),
-	通免5:通免5(),
-	通免6:通免6(),
-	通免7:通免7(),
+    //通免2:通免2(),
+	//通免3:通免3(),
+	//通免4:通免4(),
+	//通免5:通免5(),
+	//通免6:通免6(),
+	//通免7:通免7(),
     ua:全局ua
     };
   if(ua){//指定ua加入config
