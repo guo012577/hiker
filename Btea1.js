@@ -2408,8 +2408,8 @@ var FhImage = $.getImage('http://123.56.105.145/tubiao/3d/314.png');
             col_type: "avatar",
             img: PzImage,
         });
-    // '通免3','通免4','通免5','通免6','通免7',
-    let sel_title = ['通免1', '通免2', '香免'].map((it) => {
+    // 通免1', '通免2', '香免'通免3','通免4','通免5','通免6','通免7',
+    let sel_title = ['通免', '道长通免', '香免'].map((it) => {
         let sel_mode = getItem('通免', '通免');
         return it === sel_mode ? '👉' + it : it;
     });                
@@ -3189,7 +3189,8 @@ try{
         }
             }
     //log('html='+html) 
-			if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else{def_lazy = config.通免};
+			    if(getItem("通免")=="道长通免"){def_lazy=config.道长通免}else if(getItem("通免")=="香免"){def_lazy=config.香免}else{def_lazy = config.通免};
+
     //if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else if(getItem("通免")=="通免3"){def_lazy=config.通免3}else if(getItem("通免")=="通免4"){def_lazy=config.通免4}else if(getItem("通免")=="通免5"){def_lazy=config.通免5}else if(getItem("通免")=="通免6"){def_lazy=config.通免6}else if(getItem("通免")=="通免7"){def_lazy=config.通免7};
     lazy=lazy||def_lazy;
     /*
@@ -3489,7 +3490,8 @@ B: function(d,p,lazy,html) {
     指定ua=(typeof(指定ua)==='undefined'||!指定ua)?false:指定ua;
     d=d;
     html=html;
-	if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else{def_lazy = config.通免};
+	    if(getItem("通免")=="道长通免"){def_lazy=config.道长通免}else if(getItem("通免")=="香免"){def_lazy=config.香免}else{def_lazy = config.通免};
+
     //if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else if(getItem("通免")=="通免3"){def_lazy=config.通免3}else if(getItem("通免")=="通免4"){def_lazy=config.通免4}else if(getItem("通免")=="通免5"){def_lazy=config.通免5}else if(getItem("通免")=="通免6"){def_lazy=config.通免6}else if(getItem("通免")=="通免7"){def_lazy=config.通免7};
     lazy=lazy||def_lazy;
     let ua = config.ua==='手机'?MOBILE_UA:PC_UA;
@@ -5947,7 +5949,7 @@ function 通免7() {
     Icon样式:getItem('Icon样式','icon_5'),    
     设置v:getItem('设置v','设置'),   
     设置:getItem('设置','on'),   
-    //道长通免:道长通免(),
+    道长通免:道长通免(),
     香免:香免(),
     通免:通免1(),
     //通免2:通免2(),
