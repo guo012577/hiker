@@ -5789,6 +5789,31 @@ function deString(arr1, arr2, str) {
 
     return lazy
 };
+///////////////////		
+function 通免7() {
+    var MY_HOME=MY_HOME||getItem('MY_HOME');
+var lazy = $('').lazyRule(() => {
+    try {
+        var html = JSON.parse(request(input).match(/r player_.*?=(.*?)</)[1])
+            var url = html.url
+            if (html.encrypt == '1') {
+                url = unescape(url);
+            } else if (html.encrypt == '2') {
+                url = unescape(base64Decode(url));
+            }
+            if (/m3u8|mp4/.test(url)) {
+                return url
+            } else {
+                return 'video://' + input
+			        //extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
+            }
+    } catch (e) {
+        return 'video://' + input 
+	      extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
+    }
+})
+}
+
 ///////////////////////////////////////
 function 通免7() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
