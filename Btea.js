@@ -5386,6 +5386,7 @@ function 通免1(){
                     return clearM3u8Ad(url+'#isM3u8#',{headers:{}})
             } }catch(e){
                 return 'video://'+input
+			    extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
             }
         
         }
