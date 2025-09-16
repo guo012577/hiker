@@ -5803,7 +5803,7 @@ var lazy = $('').lazyRule(() => {
                 return url
             } else {
                 return 'video://' + input
-			        //extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
+		extra: {  js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();})   }
             }
     } catch (e) {
         return 'video://' + input 
