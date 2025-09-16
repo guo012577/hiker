@@ -3189,7 +3189,7 @@ try{
         }
             }
     //log('html='+html)         
-    if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else if(getItem("通免")=="通免3"){def_lazy=config.通免3}else if(getItem("通免")=="通免4"){def_lazy=config.通免4}else if(getItem("通免")=="通免5"){def_lazy=config.通免5}else if(getItem("通免")=="通免6"){def_lazy=config.通免6}else if(getItem("通免")=="通免7")else {def_lazy=config.通免7};
+    if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else if(getItem("通免")=="通免3"){def_lazy=config.通免3}else if(getItem("通免")=="通免4"){def_lazy=config.通免4}else if(getItem("通免")=="通免5"){def_lazy=config.通免5}else if(getItem("通免")=="通免6"){def_lazy=config.通免6}else if(getItem("通免")=="通免7"){def_lazy=config.通免7};
     lazy=lazy||def_lazy;
     /*
     var html = request(MY_URL, {
@@ -3488,7 +3488,7 @@ B: function(d,p,lazy,html) {
     指定ua=(typeof(指定ua)==='undefined'||!指定ua)?false:指定ua;
     d=d;
     html=html;
-    if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else if(getItem("通免")=="通免3"){def_lazy=config.通免3}else if(getItem("通免")=="通免4"){def_lazy=config.通免4}else if(getItem("通免")=="通免5"){def_lazy=config.通免5}else if(getItem("通免")=="通免6"){def_lazy=config.通免6}else if(getItem("通免")=="通免7")else {def_lazy=config.通免7};
+    if(getItem("通免")=="通免1"){def_lazy=config.通免1}else if(getItem("通免")=="通免2"){def_lazy=config.通免2}else if(getItem("通免")=="通免3"){def_lazy=config.通免3}else if(getItem("通免")=="通免4"){def_lazy=config.通免4}else if(getItem("通免")=="通免5"){def_lazy=config.通免5}else if(getItem("通免")=="通免6"){def_lazy=config.通免6}else if(getItem("通免")=="通免7"){def_lazy=config.通免7};
     lazy=lazy||def_lazy;
     let ua = config.ua==='手机'?MOBILE_UA:PC_UA;
     if(config.指定ua){
