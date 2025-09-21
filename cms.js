@@ -38,7 +38,7 @@ function demos(p){
             d_url='hiker://files/rules/dzHouse/dzMovie/m点佬.txt';
             break;
         case 1:
-            d_url=getVar('cmsapp.jsRoot')+'/cmsDemo.txt';
+            d_url=getVar('cmsapp.jsRoot')+'cmsDemo.txt';
             break;
     }
     return $('#noLoading#').lazyRule((d_url)=>{
