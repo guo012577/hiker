@@ -206,9 +206,9 @@ function hikhmrule() {
                     if (rulejs.search(/lazyRule/) != -1) {
                         writeFile("hiker://files/rules/xyq/hikermovie.js", rulejs);
                     }
-                    var rulejson = fetch('http://fastgit.cc/https://raw.githubusercontent.com/xyq254245/HikerRule/main/hikermovie.json', {dns: "https://dns.alidns.com/dns-query"});
+                    var rulejson = fetch('http://fastgit.cc/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/hikermovie.json', {dns: "https://dns.alidns.com/dns-query"});
                     if (rulejson.search(/\"vodhref\"/) == -1) {
-                        rulejson = fetch('http://fastgit.cc/https://raw.githubusercontent.com/xyq254245/HikerRule/main/hikermovie.json', {});
+                        rulejson = fetch('http://fastgit.cc/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/hikermovie.json', {});
                     }
                     if (rulejson.search(/\"vodhref\"/) != -1) {
                         writeFile("hiker://files/rules/xyq/hikermovie.json", rulejson);
