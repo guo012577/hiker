@@ -180,7 +180,7 @@ function zywhm() {
             d.push({
                 title: '更新ZYWCJ.txt(接口文件)',
                 url: "confirm://确认更新此文件，会覆盖自添加接口哟？.js:" + $.toString(() => {
-                    var ruletxt = fetch('https://github.moeyy.xyz/https://raw.githubusercontent.com/xyq254245/HikerRule/main/ZYWCJ.txt', {});
+                    var ruletxt = fetch('http://fastgit.cc/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/ZYWCJ.txt', {});
                     if (ruletxt.search(/provide/) != -1) {
                         writeFile("hiker://files/rules/xyq/ZYWCJ.txt", ruletxt);
                         return 'toast://更新成功。'
@@ -194,12 +194,11 @@ function zywhm() {
             d.push({
                 title: '更新zywcj.js(规则核心文件)',
                 url: $().lazyRule(() => {
-                    var rulejs = request('https://github.moeyy.xyz/https://raw.githubusercontent.com/xyq254245/HikerRule/main/zywcj.js', {});
-                    //var parsejs = request('https://github.moeyy.xyz/https://raw.githubusercontent.com/xyq254245/HikerRule/main/parse.js', {});
+                    var rulejs = request('http://fastgit.cc/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/zywcj.js', {});
                     eval(rulejs);
                     if (filter(base64Decode('5peg56CB'))) {
                         writeFile("hiker://files/rules/xyq/zywcj.js", rulejs);
-                        //writeFile("hiker://files/libs/1e7db6906ccc9c8dd92ca42cba0fc3ff.js", parsejs);
+                       
                         back(true);
                         return 'toast://应该是最新了吧。';
                     } else {
