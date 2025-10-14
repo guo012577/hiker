@@ -1036,11 +1036,11 @@ var 一级 = {
     //var 设置 = settingIcon !== 'off' ? '设置' : '';
     //var 收藏 = settingIcon !== 'off' ? '收藏' : '';
     var SYIcon=$.getImage("http://123.56.105.145/tubiao/more/47.png");
-    var PKIcon=$.getImage("https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοᴏooοооᴏoоᴏоοᴏooοоᴏоοоοᴏ");
+    var PKIcon=$.getImage("https://gitee.com/bteahk/bteahiker/raw/master/pk.png");
     var RBIcon=$.getImage("http://123.56.105.145/tubiao/more/74.png");
     var GXIcon=$.getImage("http://123.56.105.145/tubiao/more/157.png");
     var SSIcon=$.getImage("http://123.56.105.145/tubiao/more/168.png");
-    var SCIcon=$.getImage("https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοᴏoᴏοоoᴏoоᴏоοоооοᴏooοоοᴏ");
+    var SCIcon=$.getImage("https://gitee.com/bteahk/bteahiker/raw/master/sc.jpg");
     var SZIcon=$.getImage("http://123.56.105.145/tubiao/more/292.png");
     var LSIcon=$.getImage("http://123.56.105.145/tubiao/more/200.png");
     var ZJIcon=$.getImage("http://123.56.105.145/tubiao/more/326.png");
@@ -1688,7 +1688,7 @@ if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/htm
         title: '❌错误提示',
         content: '未能远程导入,请手动导入!',
         confirm: () => {
-            return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@https://www.123684.com/s/Hz7iVv-5RZWd"
+            return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@http://123.56.105.145/weisyr/%E9%A1%BA%E6%90%9C.html"
         }
     })
 				
