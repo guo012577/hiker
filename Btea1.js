@@ -1680,7 +1680,7 @@ putVar('小程序名', MY_RULE.title);
   
 if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/html/顺搜.html';
   if(fileExist(本地) == false) {
-			var 远程x5 = request('http://hiker.nokia.press/hikerule/rulelist.json?id=4082');
+			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/%E9%A1%BA%E6%90%9C.html');
 			if (远程x5.indexOf("search_bg")>0) {
 				writeFile(本地, 远程x5);
 			} else {
