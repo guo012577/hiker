@@ -87,8 +87,9 @@ function zywhm() {
             });
             items.push({
                 title: list[j].split(',')[0],
+				img:'https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/movie/1.svg',
                 url: list[j].split(',')[1].replace(/\r/, '').replace(/\n/, '') + '?ac=list&pg=fypage',
-                col_type: 'text_2'
+                col_type: 'icon_round_4'
             });
         }
     } //for arr.length
