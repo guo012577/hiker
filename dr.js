@@ -2119,7 +2119,7 @@ function 二级推送组件(d,obj){ // {}
         }
         d.push({
             title: '扫描',
-            img: 'https://hikerfans.com/tubiao/messy/25.svg',
+            img: 'https://gh-proxy.com/https://raw.githubusercontent.com/ls125781003/tubiao/main/messy/25.svg',
             url: $(['极速', '全部','手动输入','同步嗅探规则','编辑嗅探规则'], 2, '局域网TVBOX扫描模式').select(() => {
                 let sniffer_file = 'hiker://files/rules/dzHouse/tvbox/辅助嗅探.json';
 				
@@ -2247,7 +2247,7 @@ function 二级推送组件(d,obj){ // {}
         });
         d.push({
             title: '连接',
-            img: 'https://hikerfans.com/tubiao/messy/37.svg',
+            img: 'https://gh-proxy.com/https://raw.githubusercontent.com/ls125781003/tubiao/main/messy/37.svg',
             url: $('#noLoading#').lazyRule((color) => {
                 let tvb_info;
                 try {
@@ -2274,7 +2274,7 @@ function 二级推送组件(d,obj){ // {}
         });
         d.push({
             title: '推送',
-            img: 'https://hikerfans.com/tubiao/more/337.png',
+            img: 'https://gh-proxy.com/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/337.png',
             url: $('#noLoading#').lazyRule(() => {
                 showLoading('推送准备中...');
                 let poster;
