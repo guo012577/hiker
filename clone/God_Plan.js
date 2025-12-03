@@ -1,4 +1,4 @@
-const BASE_URL = "https://raw.githubusercontent.com/TyrantG/hikerViewRules/refs/heads/master/"
+const BASE_URL = "https://gh-proxy.com/https://raw.githubusercontent.com/TyrantG/hikerViewRules/refs/heads/master/"
 /* Base Function */
 
 /**
