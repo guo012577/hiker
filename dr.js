@@ -2201,8 +2201,8 @@ function 二级推送组件(d,obj){ // {}
                     return `toast://${input}扫描完毕,发现附近${tvbs.length}个tvbox软件并自动连接第1个设备`
                 }else if(/同步/.test(input)){
                     return $('如果本地已存在,将被覆盖,确定同步道长辅助嗅探规则?').confirm((sniffer_file)=>{
-                        try {
-                            let sniffer_json = request('https://gitcode.net/qq_32394351/dr_py/-/raw/master/txt/json/sniffer.json',{
+                        try {//https://gitcode.net/qq_32394351/dr_py/-/raw/master/txt/json/sniffer.json
+                            let sniffer_json = request('https://gh-proxy.com/https://raw.githubusercontent.com/hubingkang/vocabulary-corpus/ac6a33b1d1514f01bb1a8a59f44e20be53ff7d63/data/sniffer.json',{
                                 timeout:1000
                             });
                             if(sniffer_json.length > 10){
