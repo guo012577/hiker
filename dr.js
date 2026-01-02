@@ -28,12 +28,12 @@ var version={
     ver:"5.2.19",
     // appv:2316,
     appv:583,
-    requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/dr.js",
+    requireId:"https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/dr.js",
     update:'2024/10/7 17:42',
     info:updateLog,
     ua:';get;utf-8;{User-Agent@Mozilla/5.0&&Cookie@}',
     ok:'https://okjx.cc/?url=',
-    jsRoot:'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/',
+    jsRoot:'https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/',
 };
 
 putVar('dr依赖',version.requireId);
@@ -207,7 +207,7 @@ function 预处理固定代码(){//使用: require(version.jsRoot+'预处理.js'
 function 检测依赖固定代码(){
     // codeberyRoot:'https://gitlab.com/hjdhnx/hiker/-/raw/main/js/',
     // gitlabRoot:'https://codeberg.org/hjdhnx/hiker/raw/branch/main/js/',
-    require('https://codeberg.org/hjdhnx/hiker/raw/branch/main/js/依赖检测.js');
+     require('https://codeberg.org/hjdhnx/hiker/raw/branch/main/js/依赖检测.js');
     require('https://gitlab.com/hjdhnx/hiker/-/raw/main/js/依赖检测.js');
     检测依赖();
     //加密后
@@ -708,15 +708,15 @@ function 设置(d,end){
 function 引入动态分类(){
     initConfig({
         //categoryLib: 'http://hiker.nokia.press/hikerule/rulelist.json?id=2705',
-        categoryLocalLib: 'hiker://files/rules/js/categories-header.js',
+        categoryLocalLib: 'hiker://fhttps://gh-proxy.com/iles/rules/js/categories-header.js',
         categoryGiteeLib: 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/categories-header.js',
         categoryCodeBergLib: version.jsRoot+'categories-header.js',
 		
         //UrlProcessorLib: 'http://hiker.nokia.press/hikerule/rulelist.json?id=2849',
         UrlProcessorLocalLib: 'hiker://files/rules/js/UrlProcessor.js',
-        UrlProcessorGiteeLib: 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/UrlProcessor.js',
+        UrlProcessorGiteeLib: 'https://rhttps://gh-proxy.com/aw.githubusercontent.com/guo012577/hiker/refs/heads/main/UrlProcessor.js',
         动态分类匹配:'hiker://files/rules/js/动态分类匹配.js',
-        自动匹配:'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/自动模板匹配.js',
+        自动匹配:'https://rhttps://gh-proxy.com/aw.githubusercontent.com/guo012577/hiker/refs/heads/main/自动模板匹配.js',
         自动匹配:version.jsRoot+'自动模板匹配.js',
         通免:version.jsRoot+'lazy.js',
         嗅探:version.jsRoot+'video.js',
@@ -1640,7 +1640,7 @@ function 小说(定位,指定编码){
         function 小说净化(content){
             let path = 'hiker://files/rules/dzHouse/json/小说净化.json';
             if(!fileExist(path)){
-                requireDownload('https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/小说净化.json', path);
+                requireDownload('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/小说净化.json', path);
             }
             content = pdfh(content,'body&&Text');
             let javaString = java.lang.String(content);
