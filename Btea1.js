@@ -3431,9 +3431,7 @@ function getLazy(url,lazy) {//动态获取动态解析可兼容磁力链接
     
 
 try {
-
     var arts = pdfa(html, _tabs);
-
     var tabs = [];
     for (var i in arts) {
         tabs.push(pdfh(arts[i], _tab_text).replace(' ',''))
@@ -3453,20 +3451,14 @@ for (var i in conts) {
                 title:titletext.replace(/第|集|话|期/g, ''),
                 url:url,
                 col_type:colt,
-                extra: {
-					js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();}) ,
+                extra: {js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();}) ,
                         //id: pd(conts[i], _list_url),
-                        cls: 'playList'
-                    }                
+                        cls: 'playList'}                
             })
         })
         lists.push(temp)
-
-
-       
-    }
-    //log('lists'+JSON.stringify(lists));
-  
+ }
+    //log('lists'+JSON.stringify(lists));  
     var ejobj = {
         "list": lists,
         "tab": tabs,
@@ -3478,7 +3470,6 @@ for (var i in conts) {
         title: '‘‘本片无选集’’',
         col_type: "text_center_1"
     })
-
 }    
     setHomeResult({data:d});
     
@@ -5953,12 +5944,12 @@ function 通免7() {
     道长通免:道长通免(),
     香免:香免(),
     通免:通免6(),
-    //通免2:通免2(),
-	//通免3:通免3(),
-	//通免4:通免4(),
-	//通免5:通免5(),
-	//通免6:通免6(),
-	//通免7:通免7(),
+    通免2:通免2(),
+	通免3:通免3(),
+	通免4:通免4(),
+	通免5:通免5(),
+	通免6:通免6(),
+	通免7:通免7(),
     ua:全局ua
     };
   if(ua){//指定ua加入config
