@@ -3451,9 +3451,11 @@ for (var i in conts) {
                 title:titletext.replace(/第|集|话|期/g, ''),
                 url:url,
                 col_type:colt,
-                extra: {js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();}) ,
-                        //id: pd(conts[i], _list_url),
-                        cls: 'playList'}                
+                extra: {
+					    //id: pd(conts[i], _list_url),
+                        cls: 'playList',
+                        js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();}) 
+				}                
             })
         })
         lists.push(temp)
