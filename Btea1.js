@@ -2408,7 +2408,7 @@ var FhImage = $.getImage('http://123.56.105.145/tubiao/3d/314.png');
             col_type: "avatar",
             img: PzImage,
         });
-    let sel_title = ['通免1', '通免2', '通免3','通免4','通免5','通免6','通免'].map((it) => {
+    let sel_title = ['通免','通免1', '通免2', '通免3','通免4','通免5','通免6'].map((it) => {
     let sel_mode = getItem('通免', '通免');
     return it === sel_mode ? '👉' + it : it;
     });                
@@ -5396,7 +5396,7 @@ var pre={
     验证码 = (typeof(验证码)!=='undefined'&&验证码)?验证码:ckUrl;	
 
 ///////////////
-function 通免1(){
+function 通免(){
     var lazy = $('').lazyRule(() => {
         if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
                     return clearM3u8Ad(input+'#isM3u8#',{headers:{}})       
@@ -5428,7 +5428,7 @@ function 通免1(){
 };
 
 //////////////////////
-function 通免2(){
+function 通免1(){
 var MY_HOME=MY_HOME||getItem('MY_HOME');
     var lazy3 = $('').lazyRule((MY_HOME) => {
     if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
@@ -5506,7 +5506,7 @@ return play + "#isVideo=true#"
     return lazy3
 };
 ///////////////////////////
-function 通免3() {
+function 通免2() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
     const lazy = $('').lazyRule((MY_HOME) => {
         function parseHTML(input) {
@@ -5624,7 +5624,7 @@ function 通免3() {
     return lazy;
 };
 ////////////////////////////
-function 通免4(){
+function 通免3(){
     var lazy = $('').lazyRule(() => {
     try {
         // 处理播放链接，根据不同平台添加对应的请求头信息
@@ -5727,7 +5727,7 @@ function 通免4(){
 };
 
 ////////////
-function 通免5(){
+function 通免4(){
 var MY_HOME=MY_HOME||getItem('MY_HOME');
    var lazy = $('').lazyRule((MY_HOME) => {
     
@@ -5824,7 +5824,7 @@ function deString(arr1, arr2, str) {
     return lazy
 };
 ///////////////////		
-function 通免6() {
+function 通免5() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
 var lazy = $('').lazyRule(() => {
     try {
@@ -5850,7 +5850,7 @@ var lazy = $('').lazyRule(() => {
 }
 
 ///////////////////////////////////////
-function 通免() {
+function 通免6() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
     const lazy = $('').lazyRule((MY_HOME) => {
         function parseHTML(input) {
