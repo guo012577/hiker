@@ -1,5 +1,5 @@
 var updateLog = {
-    "newVersion":parseFloat(5.4.toFixed(1)),
+    "newVersion":parseFloat(5.5.toFixed(1)),
     "newVersionlog":{
 "5.4":"2024年11月20日 快搜DIY直接跳转风影和云盘君.简，修复追剧周表的bug",         
 "5.3":"2024年11月17日 移库修改远程依赖",         
@@ -677,7 +677,7 @@ d.push(settings);
         }
     })
     //线路
-let showcol = config.tab样式?config.tab样式:(tabs.length > 10 ? "text_5" : "scroll_button");     
+let showcol = config.tab样式?config.tab样式:(tab.length > 10 ? "text_5" : "scroll_button");     
     Array.prototype.push.apply(d, funcTab(tab, showcol));
     let order_btns = funcOrder(tab);
     if (list_cnt > obj.size && getMyVar('选集显示', '分页') == '分页') {
