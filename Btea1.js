@@ -2408,7 +2408,7 @@ var FhImage = $.getImage('http://123.56.105.145/tubiao/3d/314.png');
             col_type: "avatar",
             img: PzImage,
         });
-    let sel_title = ['通免1', '通免2', '通免3','通免4','通免5','通免6','通免7'].map((it) => {
+    let sel_title = ['通免1', '通免2', '通免3','通免4','通免5','通免6','通免'].map((it) => {
     let sel_mode = getItem('通免', '通免');
     return it === sel_mode ? '👉' + it : it;
     });                
@@ -3191,7 +3191,7 @@ else if(getItem("通免")=="通免3"){def_lazy=config.通免3}
 else if(getItem("通免")=="通免4"){def_lazy=config.通免4}
 else if(getItem("通免")=="通免5"){def_lazy=config.通免5}
 else if(getItem("通免")=="通免6"){def_lazy=config.通免6}
-else{def_lazy = config.通免7};
+else{def_lazy = config.通免};
 lazy=lazy||def_lazy;
 /* var html = request(MY_URL, {headers: { "User-Agent": MOBILE_UA } })   */
         putMyVar('tab_text', _tab_text);
@@ -3485,7 +3485,7 @@ else if(getItem("通免")=="通免3"){def_lazy=config.通免3}
 else if(getItem("通免")=="通免4"){def_lazy=config.通免4}
 else if(getItem("通免")=="通免5"){def_lazy=config.通免5}
 else if(getItem("通免")=="通免6"){def_lazy=config.通免6}
-else{def_lazy = config.通免7};
+else{def_lazy = config.通免};
     lazy=lazy||def_lazy;
     let ua = config.ua==='手机'?MOBILE_UA:PC_UA;
     if(config.指定ua){
@@ -5800,7 +5800,7 @@ var lazy = $('').lazyRule(() => {
 }
 
 ///////////////////////////////////////
-function 通免7() {
+function 通免() {
     var MY_HOME=MY_HOME||getItem('MY_HOME');
     const lazy = $('').lazyRule((MY_HOME) => {
         function parseHTML(input) {
@@ -5936,7 +5936,7 @@ function 通免7() {
 	通免4:通免4(),
 	通免5:通免5(),
 	通免6:通免6(),
-	通免7:通免7(),
+	通免:通免(),
     ua:全局ua
     };
   if(ua){//指定ua加入config
