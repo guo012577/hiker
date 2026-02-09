@@ -3423,7 +3423,56 @@ function getLazy(url,lazy) {//动态获取动态解析可兼容磁力链接
         return Auto_colt;
     };
     
+try {
+    // 先统一声明所有变量（避免作用域/未定义问题）
+    var arts, tabs = [], conts, lists = [], play_Lists = [];
+    var plays, temp, titletext, url, Auto_colt, colt, ejobj;
+    arts = pdfa(html, _tabs);
+    // 提前初始化 tabs，即使 arts 为空也不会 undefined
+    tabs = [];
+    for (var i in arts) {
+        tabs.push(pdfh(arts[i], _tab_text).replace(' ',''));
+    }
+    conts = pdfa(html, _lists);
+    lists = [];
+    play_Lists = [];
+    for (var i in conts) {
+        plays = pdfa(conts[i], _list_id);
+        temp = [];
+        plays.forEach(x => {           
+            titletext = pdfh(x, _list_text);
+            url = pd(x, _list_url) + getLazy(pd(x, _list_url), lazy);    
+            Auto_colt = getStyle(titletext);
+            colt = getItem('选集样式', Auto_colt); 
 
+            temp.push({
+                title: titletext.replace(/第|集|话|期/g, ''),
+                url: url,
+                col_type: colt,
+                extra: {
+                    cls: 'playList',
+                    js: $.toString(() => { 
+                        document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();
+                    }) 
+                }                
+            });
+        });
+        lists.push(temp);
+    }
+    // 核心修复：确保 tabs 一定存在（空数组兜底）
+    ejobj = {
+        "list": lists || [],
+        "tab": tabs || []  // 兜底，永远不会 undefined
+    };
+    初始化(d, ejobj);
+} catch (e) {
+    log(e.toString());
+    d.push({
+        title: '本片无选集',
+        col_type: "text_center_1"
+    });
+}
+/*
 try {
     var arts = pdfa(html, _tabs);
     var tabs = [];
@@ -3466,7 +3515,8 @@ for (var i in conts) {
         title: '‘‘本片无选集’’',
         col_type: "text_center_1"
     })
-}    
+}  
+*/
     setHomeResult({data:d});
     
     },
