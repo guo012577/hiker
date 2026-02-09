@@ -2408,7 +2408,7 @@ var FhImage = $.getImage('http://123.56.105.145/tubiao/3d/314.png');
             col_type: "avatar",
             img: PzImage,
         });
-    let sel_title = [通免1', '通免2', '通免3','通免4','通免5','通免6','通免7'].map((it) => {
+    let sel_title = ['通免1', '通免2', '通免3','通免4','通免5','通免6','通免7'].map((it) => {
     let sel_mode = getItem('通免', '通免');
     return it === sel_mode ? '👉' + it : it;
     });                
