@@ -40,8 +40,8 @@ var updateLog = {
     }
 };    
 var version={
-    author:"九石",
- ver:"5.4",
+author:"九石",
+ ver:"5.5",
  requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/Btea1.js",
  requirelId:"hiker://files/rules/91/Btea1.js",
  update:'2024/11/20 08:10',
