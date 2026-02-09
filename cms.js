@@ -354,7 +354,8 @@ d.push({
             rule.searchFind+=endStr;
 //             rule.find_rule=`js:
 // require(config.模板);`;
-            rule.icon='http://1.117.152.239:39000/tupian.php?text='+input;
+            //rule.icon='http://1.117.152.239:39000/tupian.php?text='+input;
+            rule.icon='https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/unframed/173.png';
             //log(rule);
             let path='hiker://files/ruleCache/cms/'+input+'.json';
             writeFile(path,JSON.stringify(rule));
@@ -454,7 +455,7 @@ d.push({
                     title: t2,
                     url: t[1].trim(),
                     // pic:t.length > 2? t[2].trim() :'',
-                    pic:t.length > 2? t[2].trim() :'http://1.117.152.239:39000/tupian.php?text='+t2,
+                    pic:t.length > 2? t[2].trim() :'https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/unframed/173.png',
                     type: tabs
                 })
             })
