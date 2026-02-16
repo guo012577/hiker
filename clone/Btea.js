@@ -656,8 +656,8 @@ d.push(settings);
         btns.push({
               col_type: 'big_blank_block'
               })
-                                    }
-      /*  btns.push({
+                                    }*/
+       btns.push({
               title: '‘‘’’<small><font color=#20b2aa>数据资源收集于网络，海阔不提供任何资源！</font></small>',
               desc: '‘‘’’<small><font color=#ff7f50>本规则仅限学习与交流，请导入后24小时内删除，请勿传播！</font></small>',
               url: 'hiker://empty',
@@ -665,7 +665,7 @@ d.push(settings);
               extra: {
                    lineVisible: false
                      }
-               });*/
+               });
 		
         return btns
     }
