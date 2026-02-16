@@ -648,7 +648,7 @@ d.push(settings);
                 cls: 'footPage',
             }
         });
-		btns.push({
+		/*btns.push({
                title: '<br>',
                col_type: 'rich_text'
                });
