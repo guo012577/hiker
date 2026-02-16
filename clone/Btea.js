@@ -648,24 +648,37 @@ d.push(settings);
                 cls: 'footPage',
             }
         });
-		/*btns.push({
-               title: '<br>',
-               col_type: 'rich_text'
-               });
-        for (var b = 0; b < 5; b++) {
+		
+		 // 2. 关键修复：先清理可能已存在的底部固定内容，再添加（避免重复）
+    // 过滤掉已有的换行、空白块、版权提示元素
+    btns = btns.filter(item => {
+        // 排除重复的固定内容特征：rich_text（<br>）、big_blank_block、版权提示的text_center_1
+        if (item.col_type === 'rich_text' && item.title === '<br>') return false;
+        if (item.col_type === 'big_blank_block') return false;
+        if (item.col_type === 'text_center_1' && item.title && item.title.includes('数据资源收集于网络')) return false;
+        return true;
+    });
+
+    // 3. 只添加一次底部固定内容
+    btns.push({
+        title: '<br>',
+        col_type: 'rich_text'
+    });
+    // 简化循环写法，更易读
+    for (let b = 0; b < 5; b++) {
         btns.push({
-              col_type: 'big_blank_block'
-              })
-                                    }*/
-       btns.push({
-              title: '‘‘’’<small><font color=#20b2aa>数据资源收集于网络，海阔不提供任何资源！</font></small>',
-              desc: '‘‘’’<small><font color=#ff7f50>本规则仅限学习与交流，请导入后24小时内删除，请勿传播！</font></small>',
-              url: 'hiker://empty',
-              col_type: 'text_center_1',
-              extra: {
-                   lineVisible: false
-                     }
-               });
+            col_type: 'big_blank_block'
+        });
+    }
+    btns.push({
+        title: '‘‘’’<small><font color=#20b2aa>数据资源收集于网络，海阔不提供任何资源！</font></small>',
+        desc: '‘‘’’<small><font color=#ff7f50>本规则仅限学习与交流，请导入后24小时内删除，请勿传播！</font></small>',
+        url: 'hiker://empty',
+        col_type: 'text_center_1',
+        extra: {
+            lineVisible: false
+        }
+    });
 		
         return btns
     }
