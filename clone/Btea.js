@@ -42,7 +42,7 @@ var updateLog = {
 var version={
     author:"九石",
  ver:"5.4",
-requireId:"https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏoᴏ",
+requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/clone/Btea.js",
 // requireIdo:"https://oooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоoᴏοоᴏᴏοоοoοоοοoоᴏоοоᴏоοоοοοᴏοooоᴏᴏοоοoοоoοοоᴏоoᴏоοoᴏoοοоοoοоᴏᴏοᴏοοoᴏοοoоᴏᴏοооoοоoοοооοοооᴏοоοοοᴏoоoоᴏᴏoоᴏοoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοoᴏοοᴏоοοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏoᴏ",
  requirelId:"hiker://files/rules/91/Btea.js",
  update:'2024/11/20 08:10',
@@ -1037,11 +1037,11 @@ var 一级 = {
     //var 设置 = settingIcon !== 'off' ? '设置' : '';
     //var 收藏 = settingIcon !== 'off' ? '收藏' : '';
     var SYIcon=$.getImage("http://123.56.105.145/tubiao/more/47.png");
-    var PKIcon=$.getImage("https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοᴏooοооᴏoоᴏоοᴏooοоᴏоοоοᴏ");
+    var PKIcon=$.getImage("https://gitee.com/bteahk/bteahiker/raw/master/pk.png");
     var RBIcon=$.getImage("http://123.56.105.145/tubiao/more/74.png");
     var GXIcon=$.getImage("http://123.56.105.145/tubiao/more/157.png");
     var SSIcon=$.getImage("http://123.56.105.145/tubiao/more/168.png");
-    var SCIcon=$.getImage("https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοᴏoᴏοоoᴏoоᴏоοоооοᴏooοоοᴏ");
+    var SCIcon=$.getImage("https://gitee.com/bteahk/bteahiker/raw/master/sc.jpg");
     var SZIcon=$.getImage("http://123.56.105.145/tubiao/more/292.png");
     var LSIcon=$.getImage("http://123.56.105.145/tubiao/more/200.png");
     var ZJIcon=$.getImage("http://123.56.105.145/tubiao/more/326.png");
@@ -1871,7 +1871,7 @@ addListener('onClose', $.toString(()=>{
  var newVersion=updateLog.newVersion;
  var logs=JSON.stringify(updateLog.newVersionlog).replace(/\{/g,'').replace(/\}/g,'').replace(/\,/g,'<br>').replace(/\"/g,''); 
  var newlog=JSON.stringify(updateLog.newVersionlog).split(',')[0].replace(/\{/g,'').replace(/\}/g,'').replace(/\,/g,'<br>').replace(/\"/g,'').replace(/\n/g, "<br>");
- var BteaIcon = $.getImage('https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοooоοᴏοoοоοοοоoοoоᴏоοоооοᴏooοоοᴏ')
+ var BteaIcon = $.getImage('https://gitee.com/bteahk/bteahiker/raw/master/Btea.jpg')
     d.push({
             title: "<b>当前模板版本♨️: " + version.ver + "</b>"+"<small><b>\t\t\t\t\t\t\t\t\t\t\t\t\tℹ️   关于</b><small>",
             img:BteaIcon,
@@ -1963,7 +1963,7 @@ addListener('onClose', $.toString(()=>{
         let d = [];    
         let formore = "#### 获取帮助失败,请检查网络";
         try {
-            formore = fetch('https://ooooooooooooooooooooooo.ooo/ooooοооoοᴏοoοᴏοoοᴏooοᴏoᴏoᴏооoоᴏᴏoоᴏᴏοоοᴏοооοοᴏοoοоοοοоοοoоᴏоοоoᴏοоᴏᴏοоᴏοoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооᴏoоᴏᴏοоoоοᴏοoοоοοοоoοοооoοооοοооᴏοоοοοᴏoоoоᴏᴏοᴏoоοоoοοᴏοᴏoоᴏᴏοоᴏοοоoοοᴏoᴏοᴏοoοоοοοᴏoоoоᴏᴏοоοоοоᴏᴏοᴏoоοоᴏοοоᴏᴏοᴏoоοоοοoоᴏоοᴏοoοᴏоoοᴏοo');
+            formore = fetch('https://gitee.com/bteahk/bteahiker/raw/master/formore.txt');
             }catch (e) {}
         d.push({
         title:formore,
