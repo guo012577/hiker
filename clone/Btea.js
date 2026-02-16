@@ -649,33 +649,54 @@ d.push(settings);
             }
         });
 		
-		 // 2. 关键修复：先清理可能已存在的底部固定内容，再添加（避免重复）
-    // 过滤掉已有的换行、空白块、版权提示元素
+		 // ====================== 关键深度修复 ======================
+    // 1. 定义底部固定内容的唯一ID标识
+    const footerFixedIds = [
+        'footer_br',       // 换行元素ID
+        'footer_blank_',   // 空白块前缀ID
+        'footer_copyright' // 版权提示ID
+    ];
+
+    // 2. 超严格过滤：删除所有已存在的底部固定内容（无论是否在本次btns中）
     btns = btns.filter(item => {
-        // 排除重复的固定内容特征：rich_text（<br>）、big_blank_block、版权提示的text_center_1
+        // 过滤特征+过滤唯一ID
         if (item.col_type === 'rich_text' && item.title === '<br>') return false;
         if (item.col_type === 'big_blank_block') return false;
         if (item.col_type === 'text_center_1' && item.title && item.title.includes('数据资源收集于网络')) return false;
+        // 过滤带固定ID的元素
+        if (item.extra && item.extra.id) {
+            const hasFixedId = footerFixedIds.some(id => 
+                item.extra.id === id || item.extra.id.startsWith(id)
+            );
+            if (hasFixedId) return false;
+        }
         return true;
     });
 
-    // 3. 只添加一次底部固定内容
+    // 3. 添加带唯一ID的底部固定内容（确保可精准识别）
+    // 换行元素
     btns.push({
         title: '<br>',
-        col_type: 'rich_text'
+        col_type: 'rich_text',
+        extra: { id: 'footer_br' } // 唯一ID
     });
-    // 简化循环写法，更易读
+
+    // 空白块（带唯一前缀ID）
     for (let b = 0; b < 5; b++) {
         btns.push({
-            col_type: 'big_blank_block'
+            col_type: 'big_blank_block',
+            extra: { id: `footer_blank_${b}` } // 唯一ID
         });
     }
+
+    // 版权提示（带唯一ID）
     btns.push({
         title: '‘‘’’<small><font color=#20b2aa>数据资源收集于网络，海阔不提供任何资源！</font></small>',
         desc: '‘‘’’<small><font color=#ff7f50>本规则仅限学习与交流，请导入后24小时内删除，请勿传播！</font></small>',
         url: 'hiker://empty',
         col_type: 'text_center_1',
         extra: {
+            id: 'footer_copyright', // 唯一ID
             lineVisible: false
         }
     });
