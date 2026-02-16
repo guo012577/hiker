@@ -1,6 +1,7 @@
 var updateLog = {
     "newVersion":parseFloat(5.5.toFixed(1)),
     "newVersionlog":{
+"5.4":"2026年2月16日 修复跳页重复显示的bug", 	
 "5.4":"2024年11月20日 快搜DIY直接跳转风影和云盘君.简，修复追剧周表的bug",         
 "5.3":"2024年11月17日 移库修改远程依赖",         
 "5.2":"2024年7月12日 优化首页和片库动态刷新的bug",           
@@ -649,7 +650,10 @@ d.push(settings);
         });
 		for (var b = 0; b < 5; b++) {
         btns.push({
-              col_type: 'big_blank_block'
+              col_type: 'big_blank_block',
+			extra: {
+                cls: 'footPage',
+            }
               })
                                     }
         btns.push({
@@ -658,12 +662,18 @@ d.push(settings);
               url: 'hiker://empty',
               col_type: 'text_center_1',
               extra: {
-                   lineVisible: false
+                   lineVisible: false,
+				
+                  cls: 'footPage',
+   
                      }
                });
 		btns.push({
                title: '<br>',
-               col_type: 'rich_text'
+               col_type: 'rich_text',
+			extra: {
+                cls: 'footPage',
+            }
                });
 		
         return btns
