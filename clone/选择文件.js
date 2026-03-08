@@ -32,7 +32,7 @@
             }
         },
         loadIcon() {
-            let fileSelectRoot = 'https://gitcode.net/qq_32394351/dr/-/raw/master/';
+            let fileSelectRoot = 'https://raw.githubusercontent.com/hjdhnx/hiker/refs/heads/main/';
             let iconHttp = Object.entries({
                 "js": fileSelectRoot + "img/文件类型/js.svg",
                 "log": fileSelectRoot + "img/文件类型/log.svg",
