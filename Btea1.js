@@ -5406,7 +5406,7 @@ var pre={
     验证码 = (typeof(验证码)!=='undefined'&&验证码)?验证码:ckUrl;	
 
 ///////////////
-function 通免(){
+function 通免3(){
     var lazy = $('').lazyRule(() => {
         if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
                     return clearM3u8Ad(input+'#isM3u8#',{headers:{}})       
@@ -5634,7 +5634,7 @@ function 通免2() {
     return lazy;
 };
 ////////////////////////////
-function 通免3(){
+function 通免(){
     var lazy = $('').lazyRule(() => {
     try {
         // 处理播放链接，根据不同平台添加对应的请求头信息
