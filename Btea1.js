@@ -1716,11 +1716,11 @@ putVar('小程序名', MY_RULE.title);
         
 
     d.push({
-        title: "",
-        url: "'hiker://search?s='+input+'&rule='"+ MY_RULE.title,
+        title: "搜索",
+        url: "'hiker://search?rule=" + MY_RULE.title + "&s='+input",
         col_type: "input",
-        desc: "搜索",
-        });
+        desc: "ଘ(˵╹-╹)━✨•.,¸,.•*¯`•.,¸,.•*",
+     });
  }  
     
   const shost = 'https://top.baidu.com/board?platform=wise&tab=movie&sa=fyb_search_kingkong_movie_50669';
@@ -1767,9 +1767,9 @@ putVar('小程序名', MY_RULE.title);
                 img:OffImg,
             }) ;
             updateItem("shs", {
-                title: '',
-                url: "'hiker://search?s='+input+'&rule='+MY_RULE.title",
-                desc: '搜索',
+               title: '搜索',
+                url: "'hiker://search?rule=" + MY_RULE.title + "&s='+input",
+                desc: "ଘ(˵╹-╹)━✨•.,¸,.•*¯`•.,¸,.•*",
                 col_type: "input",
                 extra: {
                     id: "shs",
