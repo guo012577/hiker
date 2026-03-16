@@ -1789,7 +1789,7 @@ putVar('小程序名', MY_RULE.title);
     }
   });
 
-  const items = pdfa(html, 'body&&.c-img-info-list');
+  const items = pdfa(html, 'body&&.c-img-info-list&&a');
   items.forEach((item, index) => {
     const title = pdfh(item, '.c-text-base&&Text');
     d.push({
