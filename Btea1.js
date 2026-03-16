@@ -3113,14 +3113,8 @@ try{
         }
             }
 //log('html='+html) 
-var def_lazy='';
-try{
-    var _tm=getItem("通免","通免");
-    if(_tm=="通免"){def_lazy=通免()}else if(_tm=="道长通免"){def_lazy=道长通免()}else if(_tm=="香免"){def_lazy=香免()};
-}catch(e){def_lazy='';}
-lazy=lazy||def_lazy;
-
-
+    if(getItem("通免")=="道长通免"){def_lazy=config.道长通免}else if(getItem("通免")=="香免"){def_lazy=config.香免}else{def_lazy = config.通免};
+    lazy=lazy||def_lazy;
 /* var html = request(MY_URL, {headers: { "User-Agent": MOBILE_UA } })   */
         putMyVar('tab_text', _tab_text);
         putVar('_list_id', _list_id);
@@ -3411,13 +3405,8 @@ B: function(d,p,lazy,html) {
     指定ua=(typeof(指定ua)==='undefined'||!指定ua)?false:指定ua;
     d=d;
     html=html;
-    var def_lazy='';
-try{
-    var _tm=getItem("通免","通免");
-    if(_tm=="通免"){def_lazy=通免()}else if(_tm=="道长通免"){def_lazy=道长通免()}else if(_tm=="香免"){def_lazy=香免()};
-}catch(e){def_lazy='';}
-lazy=lazy||def_lazy;
-
+	if(getItem("通免")=="道长通免"){def_lazy=config.道长通免}else if(getItem("通免")=="香免"){def_lazy=config.香免}else{def_lazy = config.通免};
+    lazy=lazy||def_lazy;
     let ua = config.ua==='手机'?MOBILE_UA:PC_UA;
     if(config.指定ua){
         ua = config.指定ua
