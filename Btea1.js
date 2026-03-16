@@ -1688,22 +1688,23 @@ try {
 //顺搜来着天意大佬，大佬牛逼☀🐮☀
 putVar('小程序名', MY_RULE.title);
   
-if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/html/顺搜.html';
-  if(fileExist(本地) == false) {
+  if(getItem("shunsou","on")=="on"){ 
+	    var 本地 = 'hiker://files/rules/dzHouse/html/顺搜.html';
+       if(fileExist(本地) == false) {
 			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/顺搜.html');
 			if (远程x5.indexOf("search_bg")>0) {
-				writeFile(本地, 远程x5);
+				   writeFile(本地, 远程x5);
 			} else {
-			confirm({
-        title: '❌错误提示',
-        content: '未能远程导入,请手动导入!',
-        confirm: () => {
-            return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@http://123.56.105.145/weisyr/%E9%A1%BA%E6%90%9C.html"
-        }
-    })
+			      confirm({
+                  title: '❌错误提示',
+                  content: '未能远程导入,请手动导入!',
+                  confirm: () => {
+                           return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@http://123.56.105.145/weisyr/%E9%A1%BA%E6%90%9C.html"
+                }
+                })
 				
-			}
-        }
+		}
+   }
               
         d.push({
             desc: '290&&list',
@@ -1716,7 +1717,7 @@ if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/htm
 
     d.push({
         title: "",
-        url: "'hiker://search?s='+input+'&rule='+MY_RULE.title",
+        url: "'hiker://search?s='+input+'&rule='"+ MY_RULE.title,
         col_type: "input",
         desc: "搜索",
         });
@@ -1735,22 +1736,13 @@ if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/htm
   d.push({
     title: '<span style="color:#ff6601"><b>百度热搜</b></span>',
     url: $("#noLoading#").lazyRule((OnImg,OffImg) => {
-
         putVar('小程序名', MY_RULE.title);
         var 本地 = 'hiker://files/rules/dzHouse/html/顺搜.html';
-        if(fileExist(本地) == false) {
-                  var 远程x5 = request('http://hiker.nokia.press/hikerule/rulelist.json?id=4082');
-                  if (远程x5.indexOf("search_bg")>0) {
-                      writeFile(本地, 远程x5);
-                  } else {
-                      confirm({title:'❌错误提示', content:'顺搜导入出错'})
-                  }
-              }
         if (getItem("shunsou", "on") == "on") {
             updateItem("shunsouid", {
                 title: '<span style="color:#ff6601"><b>百度热搜</b></span>',
             })
-  updateItem("shunsousetid", {
+            updateItem("shunsousetid", {
                 img:OnImg,
             })          
             // deleteItem('shs');
@@ -1759,11 +1751,11 @@ if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/htm
                 desc: '290&&list',
                 url: getPath(本地),
                 col_type: 'x5_webview_single',
-            extra: {
+                extra: {
                     id: "shs",
                     ua: MOBILE_UA
                 }
-                        })
+           })
             setItem("shunsou", "off");
             refreshPage(false);
             return getItem("shunsou") == "on" ?"toast://已打开顺搜":"toast://已关闭顺搜";            
@@ -1771,7 +1763,7 @@ if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/htm
             updateItem("shunsouid", {
                 title: '<span style="color:#ff6601"><b>百度热搜</b></span>',
             })
-updateItem("shunsousetid", {
+            updateItem("shunsousetid", {
                 img:OffImg,
             }) ;
             updateItem("shs", {
@@ -1797,9 +1789,9 @@ updateItem("shunsousetid", {
     }
   });
 
-  const items = pdfa(html, 'body&&._1mMBrBrgfp_7W3K67nhURN');
+  const items = pdfa(html, 'body&&.c-img-info-list');
   items.forEach((item, index) => {
-    const title = pdfh(item, 'span&&Text');
+    const title = pdfh(item, '.c-text-base&&Text');
     d.push({
       title: '““””<span style="color:#ff3300">' + (parseInt(index) + 1) + '</span>\t   ' + title,
       url: 'hiker://search?s=' + title + '&rule=' + MY_RULE.title,
