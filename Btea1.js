@@ -1690,7 +1690,7 @@ putVar('小程序名', MY_RULE.title);
   
 if(getItem("shunsou","on")=="on"){ var 本地 = 'hiker://files/rules/dzHouse/html/顺搜.html';
   if(fileExist(本地) == false) {
-			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/%E9%A1%BA%E6%90%9C.html');
+			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/顺搜.html');
 			if (远程x5.indexOf("search_bg")>0) {
 				writeFile(本地, 远程x5);
 			} else {
@@ -3535,7 +3535,7 @@ B: function(d,p,lazy,html) {
     html=html;
     if(getItem("通免")=="道长通免"){def_lazy=config.道长通免}
 	else if(getItem("通免")=="香免"){def_lazy=config.香免}
-    else{def_lazy = config.通免};
+    elseif(getItem("通免")=="通免"){def_lazy = config.通免};
     lazy=lazy||def_lazy;
     let ua = config.ua==='手机'?MOBILE_UA:PC_UA;
     if(config.指定ua){
