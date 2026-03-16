@@ -1693,9 +1693,9 @@ putVar('小程序名', MY_RULE.title);
 	  
 	    var 本地 = 'hiker://files/rules/dzHouse/html/顺搜.html';
        if(fileExist(本地) == false) {
-			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/顺搜.html');
+			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/master/顺搜.html');
 			if (远程x5.indexOf("search_bg")>0) {
-				writeFile(本地, 远程x5);
+				writeFile(getPath(本地), 远程x5);
 				   
 			} else {
 			      confirm({
