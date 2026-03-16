@@ -43,7 +43,7 @@ var updateLog = {
 var version={
 author:"九石",
  ver:"5.5",
- requireId:"https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/Btea1.js",
+ requireId:"https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/Btea1.js",
  requirelId:"hiker://files/rules/91/Btea1.js",
  update:'2024/11/20 08:10',
  info:updateLog.newVersionlog,
@@ -1050,7 +1050,7 @@ var 一级 = {
     var RBIcon=$.getImage("http://123.56.105.145/tubiao/more/74.png");
     var GXIcon=$.getImage("http://123.56.105.145/tubiao/more/157.png");
     var SSIcon=$.getImage("http://123.56.105.145/tubiao/more/168.png");
-    var SCIcon=$.getImage("https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/129.png");
+    var SCIcon=$.getImage("https://gh-proxy.com/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/129.png");
     var SZIcon=$.getImage("http://123.56.105.145/tubiao/more/292.png");
     var LSIcon=$.getImage("http://123.56.105.145/tubiao/more/200.png");
     var ZJIcon=$.getImage("http://123.56.105.145/tubiao/more/326.png");
