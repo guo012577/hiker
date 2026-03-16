@@ -1693,16 +1693,16 @@ putVar('小程序名', MY_RULE.title);
 	  
 	    var 本地 = 'hiker://files/rules/dzHouse/html/顺搜.html';
        if(fileExist(本地) == false) {
-			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/%E9%A1%BA%E6%90%9C.html');
-			if(!request(本地)){
-				   writeFile(本地, 远程x5);
+			var 远程x5 = request('https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/顺搜.html');
+			if (远程x5.indexOf("search_bg")>0) {
+				writeFile(本地, 远程x5);
 				   
 			} else {
 			      confirm({
                   title: '❌错误提示',
                   content: '未能远程导入,请手动导入!',
                   confirm: () => {
-                           return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@http://123.56.105.145/weisyr/%E9%A1%BA%E6%90%9C.html"
+                           return "海阔视界本地文件分享￥file_url￥hiker://files/rules/dzHouse/html/顺搜.html@https://gh-proxy.com/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/顺搜.html"
                 }
                 })
 				
