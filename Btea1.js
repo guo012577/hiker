@@ -2495,83 +2495,7 @@ d.push({
         d.push({
             col_type: "line_blank"
         })
-///////////////更新模块
-		/*
-d.push({
-            title: "<b><small>更新</small></b>",
-            url: "hiker://empty",
-            col_type: "avatar",
-            img:GxImage,
-        });
-    d.push({
-        title: '<span style="color: #1aad19">♻检测升级</span>',
-        desc:'清除依赖,清除缓存',
-        col_type: 'text_icon',
-        img:JcImage,
-        url: $().lazyRule(()=>{
-            showLoading('升级检测中,请稍等...');
-            
-            require(getVar('Bt依赖'));
-            let requireId = version.requireId;
-            let ver = version.ver;
-            let update = version.update;
-            let localDate = new Date(update);
-            var nowtime = Date.now();
-            //let localnewver=updateLog.newVersion;
-            try {
-                var webLib = fetch(requireId);
-                var webVer = (function(webLib) {
-                    eval(webLib);
-                    return version;
-                })(webLib);
-                var webLog = (function(webLib) {
-                    eval(webLib);
-                    return updateLog;
-                })(webLib);    
-            }catch (e) {
-                hideLoading();
-                return 'toast://远程服务器通讯错误,本次检测升级失败\n'+e.message;
-            }        
-            let webDate = new Date(webVer.update);
-            if(webDate>localDate||webVer.ver!==ver){//网页更新时间大于本地库时间或者版本号不等
-                hideLoading();
-                let msg = '版本:'+ver+'=>'+webVer.ver+'\n'+webLog.newVersionlog[eval(parseFloat(webVer.ver)).toFixed(1)]+'\n'+'立即升级?';  
-        confirm({
-                        title:'发现新版本', 
-                        content:msg, 
-                        confirm:`deleteCache();refreshPage()`, 
-                        cancel:''
-                    })  
-      putMyVar('VersionCheck', '1');
-      setItem('VersionChecktime',nowtime+"time");                
-            }else{
-                hideLoading();
-                return 'toast://经检测已经是最新的['+ver+']了!'
-            }
-        })
-    });     
-d.push({
-        title: '<span style="color:#1aad19">'+'自动检测</span>',
-        url: $("#noLoading#").lazyRule(() => {
-            let s = {
-                "on": "off",
-                "off": "on"
-            }[getItem("auto_check", "on")]
-            setItem("auto_check", s);
-            updateItem("auto_check", {
-                title: s
-            });
-            refreshPage(false);
-            return getItem("auto_check") == "on" ?"toast://已打开自动检测":"toast://已关闭自动检测";
-        
-        }),
-        img: getItem("auto_check", "on") == "on" ? OnImg : OffImg,
-        col_type: 'text_icon',
-        extra: {
-            id: "auto_checkid"
-        }
-    });      */
-/////////////////////
+////====================////////////
 d.push({ col_type: "line_blank" })
 d.push({
             title: "<b><small>其它</small></b>",
@@ -3190,9 +3114,12 @@ try{
             }
 //log('html='+html) 
 var def_lazy='';
-var _tm=getItem("通免","通免");
-if(_tm=="通免"){def_lazy = config.通免}else if(_tm=="道长通免"){def_lazy=config.道长通免}else if(_tm=="香免"){def_lazy=config.香免} ;
-lazy = lazy || def_lazy;
+try{
+    var _tm=getItem("通免","通免");
+    if(_tm=="通免"){def_lazy=通免()}else if(_tm=="道长通免"){def_lazy=道长通免()}else if(_tm=="香免"){def_lazy=香免()};
+}catch(e){def_lazy='';}
+lazy=lazy||def_lazy;
+
 
 /* var html = request(MY_URL, {headers: { "User-Agent": MOBILE_UA } })   */
         putMyVar('tab_text', _tab_text);
@@ -3473,51 +3400,6 @@ try {
         col_type: "text_center_1"
     });
 }
-/*
-try {
-    var arts = pdfa(html, _tabs);
-    var tabs = [];
-    for (var i in arts) {
-        tabs.push(pdfh(arts[i], _tab_text).replace(' ',''))
-    }
-    var conts = pdfa(html, _lists);
-    var lists=[];
-    var play_Lists = [];
-for (var i in conts) {
-        var plays = pdfa(conts[i], _list_id);
-        var temp=[];
-        plays.forEach(x => {           
-            var titletext = pdfh(x, _list_text);
-            var url = pd(x, _list_url)+getLazy(pd(x, _list_url),lazy);    
-            var Auto_colt=getStyle(titletext);
-            let colt = getItem('选集样式',Auto_colt); 
-            temp.push({
-                title:titletext.replace(/第|集|话|期/g, ''),
-                url:url,
-                col_type:colt,
-                extra: {
-					    //id: pd(conts[i], _list_url),
-                        cls: 'playList',
-                        js: $.toString(() => { document.querySelector("#playleft iframe").contentWindow.document.querySelector("#start").click();}) 
-				}                
-            })
-        })
-        lists.push(temp)
- }
-    //log('lists'+JSON.stringify(lists));  
-    var ejobj = {
-        "list": lists,
-        "tab": tabs,
-    };
-    初始化(d, ejobj)
-} catch (e) {
-    log(e.toString())
-    d.push({
-        title: '‘‘本片无选集’’',
-        col_type: "text_center_1"
-    })
-}  
-*/
     setHomeResult({data:d});
     
     },
@@ -3530,9 +3412,12 @@ B: function(d,p,lazy,html) {
     d=d;
     html=html;
     var def_lazy='';
+try{
     var _tm=getItem("通免","通免");
-    if(_tm=="通免"){def_lazy = config.通免}else if(_tm=="道长通免"){def_lazy=config.道长通免}else if(_tm=="香免"){def_lazy=config.香免} ;
-    lazy = lazy || def_lazy;
+    if(_tm=="通免"){def_lazy=通免()}else if(_tm=="道长通免"){def_lazy=道长通免()}else if(_tm=="香免"){def_lazy=香免()};
+}catch(e){def_lazy='';}
+lazy=lazy||def_lazy;
+
     let ua = config.ua==='手机'?MOBILE_UA:PC_UA;
     if(config.指定ua){
         ua = config.指定ua
@@ -3722,31 +3607,7 @@ d.push({
     
     }
  ////////////////////
-/*
-function 加载魔断(){
-    // let tools = 加载魔断() tools.renrenmi
-    return require('http://hiker.nokia.press/hikerule/rulelist.json?id=2971');
-}    
-function 魔断(获取链接函数){
-    获取链接函数 = 获取链接函数||function (input){
-        return input
-    };
-    let lazy=$('').lazyRule((获取链接函数)=>{
-        try{
-            let realUrl = 获取链接函数(input);
-            eval("var configDp =" + fetch("hiker://files/cache/MyParseSet.json"));
-            eval(fetch(configDp.cj));
-            log(input+'->'+realUrl+'正在断插魔改版解析...');
-            // 加入超时设置，建议在首页设置
-            return aytmParse(realUrl)
-        }catch(e){
-            //return input
-            const {lazyParse} = $.require('hiker://page/globalParse?rule=道长仓库Pro');
-            return lazyParse(input);
-        }
-    },获取链接函数);
-    return lazy
-}*/
+
 ///////////////
 function 顺序切换(tab_cnt, list_cnt) {
     tab_cnt = tab_cnt || 1;
@@ -5381,7 +5242,7 @@ function 简体(cc){
 		}
 		return str;
 }
-
+/////===============//////////////
 var pre={
     处理:function (模板参数,ckUrl){
     模板参数 = 模板参数||false;     
@@ -5391,19 +5252,19 @@ var pre={
     let 全局ua=getItem('ua','电脑');//电脑 手机
     验证码 = (typeof(验证码)!=='undefined'&&验证码)?验证码:ckUrl;	
     function 道长通免(_reChange){
-    _reChange = _reChange||false;
-    let lazy=$("").lazyRule((_reChange)=>{
-        const {lazyParse} = $.require('hiker://page/globalParse?rule=道长仓库Pro');
-        return lazyParse(input,null,null,_reChange);
-    },_reChange);
-    return lazy}
-    function 香免(){
-    let lazy=$("").lazyRule(()=>{  
-evalPrivateJS("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")
-    return x5rule(input, input);
-    });
-  return lazy
-};
+         _reChange = _reChange||false;
+         let lazy=$("").lazyRule((_reChange)=>{
+             const {lazyParse} = $.require('hiker://page/globalParse?rule=道长仓库Pro');
+             return lazyParse(input,null,null,_reChange);
+         },_reChange);
+         return lazy}
+   function 香免(){
+      let lazy=$("").lazyRule(()=>{  
+         evalPrivateJS("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")
+         return x5rule(input, input);
+       });
+       return lazy
+   };
 ///////////////
 function 通免() {
     var MY_HOME = MY_HOME || getItem('MY_HOME');
@@ -5620,582 +5481,6 @@ function 通免() {
 }
 
 //////////
-/*
-function 通免3(){
-    var lazy = $('').lazyRule(() => {
-        if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
-                    return clearM3u8Ad(input+'#isM3u8#',{headers:{}})       
-            } else {
-        try{
-            var html = JSON.parse(request(input).match(/r player_.*?=(.*?)</)[1])
-            var url = html.url
-            if (html.encrypt == '1') {
-                url = unescape(url);
-            } else if (html.encrypt == '2') {
-                url = unescape(base64Decode(url));
-            }
-           if (/\.m3u8|\.mp4|\.flv/.test(url)) {
-                url=url.replace(/m3u8.*$/,'m3u8').replace(/mp4.*$/,'mp4').replace(/flv.*$/,'flv');
-        if (/lz|ffzy/.test(url)) {
-                        evalPrivateJS('TuSJdpnZaqXGRvvOFRR+3S7eZUjeC1CffFbHhoo0e5+aZ7Kav9KZVZsfkwKkUFf4wzkTrio4jARH6ZwTXpRlH3kI43rWCTU4PdYam15pPYiq5cW0H6gUXhJW7tmJtyLKdje1KapBIGvWaXI0WmoHoMEFBV/MAicmPgpyAJZjsc5Emvdh1n72WPPiyhYNCoMnZ9JpP6aEsWQEmQMcAjPxgs6UMvsO/POw5Ccr79sJzicst/Ll3IOj5M+PvqKrTd6147VGPEztjsUeEudASzTcn+95C9Vg1uwUvd9z0w5qsPboQh5oZhTys4RQEzBGIqulQMAAQY4IFkanWX95EINZDX50mAiOSGyId06HsprAel/fh7wyMXdmeu+S15XncO7UuujMOmGgSAEN/Ssc2ezkxlGvpdyhbl4p4DaQug/nrgswhZj75/M53sKYX2zRgOST7CMjV/+pPJd1KP934uu/VsBQUG69mWN+KaFWhKnwBPhV9qdqGz/LSJnFxIvQ8kBx')
-                        return u + "?url=" + base64Encode(url) + "#.m3u8";
-                    }
-                    //此代码来自墙佬
-                    return clearM3u8Ad(url+'#isM3u8#',{headers:{}})
-            } }catch(e){
-                return 'video://'+input
-			   
-            }
-        
-        }
-        });
-  return lazy
-};
-
-//////////////////////
-function 通免1(){
-var MY_HOME=MY_HOME||getItem('MY_HOME');
-    var lazy3 = $('').lazyRule((MY_HOME) => {
-    if (/\.m3u8|\.mp4|\.flv/.test(input)) {        
-            return clearM3u8Ad(input+'#isM3u8#',{headers:{}})       
-    }else if (/quark/.test(input)){
-        if (request('hiker://home@Quark.简') == 'null') {
-confirm({
-    title: '依赖检测',
-    content: '检测到缺少Quark.简,请导入!',
-    confirm: () => {
-        return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥云5oooole/bwiw"
-
-    }
-})
-}else{return "hiker://page/quarkList?rule=Quark.简&page=fypage&realurl="+input}
-        
-    }else {        
-        try {        
-        var player = JSON.parse(request(input).match(/r player_.*?=(.*?)</)[1]);
-        var jsurl = player.url;
-        var from = player.from;
-        if (player.encrypt == '1') {
-            var jsurl = unescape(jsurl);
-        } else if (player.encrypt == '2') {
-            var jsurl = unescape(base64Decode(jsurl));
-        } else{
-            let play = JSON.parse(post("https://play.speechless.pw/bf/haiwai/API.php", {
-     headers: {"Referer": MY_HOME},
-     body: {
-        url: jsurl,
-        }
-        })).url
-return play + "#isVideo=true#"
-        }
-        function GetPlayUrl(playUrl) {
-            playUrl=playUrl.replace(/m3u8.*$/,'m3u8').replace(/mp4.*$/,'mp4').replace(/flv.*$/,'flv');
-            if (/mgtv|sohu/.test(playUrl)) {
-                return playUrl + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
-            } else if (/bili/.test(playUrl)) {
-                return playUrl + ";{Referer@https://www.bilibili.com}";
-            } else if (/ixigua/.test(playUrl)) {
-                return playUrl + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)&&Referer@https://www.ixigua.com/}";
-            }else if(/lz|ffzy|vip|hd/.test(playUrl)){
-                evalPrivateJS('TuSJdpnZaqXGRvvOFRR+3S7eZUjeC1CffFbHhoo0e5+aZ7Kav9KZVZsfkwKkUFf4wzkTrio4jARH6ZwTXpRlH3kI43rWCTU4PdYam15pPYiq5cW0H6gUXhJW7tmJtyLKdje1KapBIGvWaXI0WmoHoMEFBV/MAicmPgpyAJZjsc5Emvdh1n72WPPiyhYNCoMnZ9JpP6aEsWQEmQMcAjPxgs6UMvsO/POw5Ccr79sJzicst/Ll3IOj5M+PvqKrTd6147VGPEztjsUeEudASzTcn+95C9Vg1uwUvd9z0w5qsPboQh5oZhTys4RQEzBGIqulQMAAQY4IFkanWX95EINZDX50mAiOSGyId06HsprAel/fh7wyMXdmeu+S15XncO7UuujMOmGgSAEN/Ssc2ezkxlGvpdyhbl4p4DaQug/nrgswhZj75/M53sKYX2zRgOST7CMjV/+pPJd1KP934uu/VsBQUG69mWN+KaFWhKnwBPhV9qdqGz/LSJnFxIvQ8kBx')
-                return u + "?url=" + base64Encode(playUrl) + "#.m3u8";
-            } else {
-                return playUrl + "#isVideo=true#";
-            }
-        }
-            if (/\.m3u8|\.mp4|\.flv/.test(jsurl)) {
-                return GetPlayUrl(jsurl)
-            } else {
-                try{  
-                var html = fetch(MY_HOME+"/player/analysis.php?v=" + jsurl, {
-                    headers: {
-                        "User-Agent": MOBILE_UA,
-                        "Referer": MY_HOME
-                    },
-                    method: "get"
-                });
-                eval(getCryptoJS())
-                var urls = html.match(/var urls = "(.*?)"/)[1];
-                //log(urls)         
-                return GetPlayUrl(urls)      
-            }catch(e){
-            return "video://"+input
-            }
-            }
-        } catch (e) {
-            return "video://"+input
-        }
-    }
-    }, MY_HOME)
-
-    return lazy3
-};
-///////////////////////////
-function 通免2() {
-    var MY_HOME=MY_HOME||getItem('MY_HOME');
-    const lazy = $('').lazyRule((MY_HOME) => {
-        function parseHTML(input) {
-            const response = request(input);
-            const matchResult = response.match(/r player_.*?=(.*?)</);
-            if (matchResult && matchResult[1]) {
-                const parsedJSON = JSON.parse(matchResult[1]);
-                return parsedJSON;
-            }
-            return null;
-        }
-        function decryptUrl(html) {
-            const { url, encrypt } = html;                     
-            if (encrypt === '1') {
-                url = unescape(url); 
-            } else if (encrypt === '2') {
-                url = unescape(base64Decode(url)); 
-            }
-            return url;
-        }
-        function isVideoFormat(url) {
-            return /m3u8|mp4/.test(url);
-        }
-        function handleVideoUrl(url) {
-            const testUrl = url.match(/http.*?com/);
-            if (/lz|ffzy|vip|hd|cdnlz/.test(testUrl)) {
-                evalPrivateJS('TuSJdpnZaqXGRvvOFRR+3S7eZUjeC1CffFbHhoo0e5+aZ7Kav9KZVZsfkwKkUFf4wzkTrio4jARH6ZwTXpRlH3kI43rWCTU4PdYam15pPYiq5cW0H6gUXhJW7tmJtyLKdje1KapBIGvWaXI0WmoHoMEFBV/MAicmPgpyAJZjsc5Emvdh1n72WPPiyhYNCoMnZ9JpP6aEsWQEmQMcAjPxgs6UMvsO/POw5Ccr79sJzicst/Ll3IOj5M+PvqKrTd6147VGPEztjsUeEudASzTcn+95C9Vg1uwUvd9z0w5qsPboQh5oZhTys4RQEzBGIqulQMAAQY4IFkanWX95EINZDX50mAiOSGyId06HsprAel/fh7wyMXdmeu+S15XncO7UuujMOmGgSAEN/Ssc2ezkxlGvpdyhbl4p4DaQug/nrgswhZj75/M53sKYX2zRgOST7CMjV/+pPJd1KP934uu/VsBQUG69mWN+KaFWhKnwBPhV9qdqGz/LSJnFxIvQ8kBx');
-                return u + "?url=" + base64Encode(url) + "#.m3u8";
-            }
-            return url;
-        }
-        function isQuarkUrl(url) {
-            return /quark/.test(url);
-        }
-        function isAliUrl(url) {
-            return /ali/.test(url);
-        }
-        function handleQuarkUrl(url) {
-            if (request('hiker://home@Quark.简') === 'null') {
-                Quark简依赖();
-            } else {
-                return `hiker://page/quarkList?rule=Quark.简&page=fypage&realurl=${url}`;
-            }
-        }
-        function handleAliUrl(url) {
-            if (request('hiker://home@云盘君.简') === 'null') {
-                云盘君简依赖();
-            } else {
-                return "hiker://page/aliyun?rule=云盘君.简&page=fypage&realurl=" + encodeURIComponent(url);
-            }
-        }
-        function handleOtherMedia(url, html) {
-            eval(request(`${MY_HOME}/static/js/playerconfig.js`));
-            let jx = MacPlayerConfig.player_list[html.from].parse || MacPlayerConfig.parse;
-            const configResponse = request(`${jx}${url}`, { headers: { 'Referer': MY_URL } });
-            eval(configResponse.match(/let ConFig.*}/)[0]);
-            eval(getCryptoJS());
-            return decryptMedia(ConFig.url, '2890' + ConFig.config.uid + 'tB959C', '2F131BE91247866E') + '#isVideo=true#';
-        }
-        function decryptMedia(encryptedUrl, key, iv) {
-            return CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(encryptedUrl, CryptoJS.enc.Utf8.parse(key), {
-                iv: CryptoJS.enc.Utf8.parse(iv),
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            }));
-        }
-        function Quark简依赖() {
-            confirm({
-                title: '依赖检测',
-                content: '检测到缺少Quark.简,请导入!',
-                confirm: () => {
-                    return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥云5oooole/bwiw"
-                }
-            })
-        }
-        function 云盘君简依赖() {
-            confirm({
-                title: '依赖检测',
-                content: '检测到缺少云盘君.简,请导入!',
-                confirm: () => {
-                    return "海阔视界首页频道规则【云盘君.简】￥home_rule_url￥云5oooole/hc3h"
-
-                }
-            })
-        }        
-        function handleException(input) {
-            const videoProtocol = 'video://';             
-            return `${videoProtocol}${input}`;
-        }
-        const processInput = (input) => {
-            const html = parseHTML(input);
-            const url = html !== null ? decryptUrl(html) || input : input;
-            const handlers = html !== null ? [
-                { check: () => isVideoFormat(url), action: () => handleVideoUrl(url) },
-                { check: () => isQuarkUrl(url), action: () => handleQuarkUrl(url) },
-                { check: () => isAliUrl(url), action: () => handleAliUrl(url) },
-            ] : [
-                { check: () => isQuarkUrl(input), action: () => handleQuarkUrl(input) },
-                { check: () => isAliUrl(input), action: () => handleAliUrl(input) },
-            ];
-        
-            const handler = handlers.find(h => h.check());
-            if (handler) {
-                return handler.action();
-            }
-        
-            return html !== null ? handleOtherMedia(url, html) : handleOtherMedia(input);
-        };
-        try {
-            return isVideoFormat(input) ? clearM3u8Ad(input+'#isM3u8#',{headers:{}}): processInput(input)
-        } catch (e) {
-            return handleException(input);
-        }        
-    },MY_HOME);
-    return lazy;
-};
-////////////////////////////
-function 通免(){
-    var lazy = $('').lazyRule(() => {
-    try {
-        // 处理播放链接，根据不同平台添加对应的请求头信息
-        function toUrl(playUrl) {
-            if (/mgtv|sohu/.test(playUrl)) {
-                // 芒果TV、搜狐视频：添加User-Agent头
-                return playUrl + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
-            } else if (/bili/.test(playUrl)) {
-                // B站：添加User-Agent和Referer头
-                return playUrl + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
-            } else if (/ixigua/.test(playUrl)) {
-                // 西瓜视频：添加Referer和User-Agent头，并标记视频类型
-                return playUrl + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
-            } else {
-                // 其他链接直接返回
-                return playUrl;
-            }
-        }
-
-        // 请求输入的链接，获取页面内容
-        var html = request(input, {});
-        // 从页面中匹配并解析player数据（JSON格式）
-        var player_data = JSON.parse(html.match(/r player_.*?=(.*?)</)[1]);
-        var fro = player_data.from; // 视频来源
-        var playUrl = player_data.url; // 播放链接
-
-        // 处理加密的播放链接
-        if (player_data.encrypt == '1') {
-            playUrl = unescape(player_data.url); // 解密方式1：unescape解码
-        } else if (player_data.encrypt == '2') {
-            playUrl = unescape(base64Decode(player_data.url)); // 解密方式2：base64解码后再unescape
-        };
-
-        // 定义URL过滤规则：排除非视频链接，保留常见视频格式链接
-        var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/; // 排除规则
-        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/; // 包含规则
-        if (!exclude.test(playUrl) && contain.test(playUrl)) {
-            // 符合条件的链接，通过toUrl处理后返回
-            return toUrl(playUrl);
-        }
-
-        // 若上述规则未匹配，尝试通过解析接口获取播放链接
-        var jxUrl = ''; // 解析接口地址（此处为空，可能需要动态填充）
-        // 请求解析接口页面
-        var jxHtml = request(jxUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
-            },
-            method: "GET"
-        });
-        // 提取接口配置并执行（获取time、key等参数）
-        eval(jxHtml.match(/var config = {[\s\S]*?}/)[0] + "");
-        var apiUrl = ''; // 实际请求的API地址（此处为空，可能需要动态填充）
-        // 向API发送POST请求获取真实播放链接
-        var apiHtml = request(apiUrl, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0)"
-            },
-            body: "url=" + config.url + "&time=" + config.time + "&key=" + config.key,
-            method: "POST"
-        });
-        var json = JSON.parse(apiHtml);
-        if (json.code == 200) {
-            // API返回成功，处理播放链接并返回
-            playUrl = json.url;
-            return toUrl(playUrl);
-        } else {
-            // API返回失败，返回错误提示
-            return 'toast://' + json.msg;
-        }
-
-    } catch (e) {
-        // 捕获异常时，显示加载提示
-        showLoading("正在进行检索，请稍候...");
-        // 生成x5规则链接，用于从页面中提取符合条件的视频链接
-        var video = 'x5Rule://' + input + '@' + $.toString(() => {
-            var urls = _getUrls() // 获取页面中所有链接
-            // 应用过滤规则
-            var exclude = /playm3u8|m3u8\.tv|min\.css|404\.m3u8|\.css/;
-            var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;
-            for (var i in urls) {
-                if (!exclude.test(urls[i]) && contain.test(urls[i])) {
-                    // 对符合条件的链接按平台处理后返回
-                    if (/mgtv|sohu/.test(urls[i])) {
-                        return urls[i] + ";{User-Agent@Mozilla/5.0 (Windows NT 10.0)}";
-                    } else if (/bili/.test(urls[i])) {
-                        return urls[i] + ";{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com}";
-                    } else if (/ixigua/.test(urls[i])) {
-                        return urls[i] + "#isVideo=true#" + "#.mp4;{Referer@https://www.ixigua.com/&&User-Agent@Mozilla/5.0}";
-                    } else {
-                        return urls[i]
-                    }
-                }
-            }
-        });
-        return video;
-    }
-});
-  return lazy
-};
-
-////////////
-function 通免4(){
-var MY_HOME=MY_HOME||getItem('MY_HOME');
-   var lazy = $('').lazyRule((MY_HOME) => {
-    
-        var html = JSON.parse(request(input).match(/r player_.*?=(.*?)</)[1]);
-    var url = html.url;
-  if (html.encrypt == '1') {
-    url = unescape(url);
-  } else if (html.encrypt == '2') {
-    url = unescape(base64Decode(url));
-  }
-    if (/m3u8/.test(url)) {
-         return url
-			}else{
-  eval(request(MY_HOME + '/static/js/playerconfig.js'));
-  var jx =MY_HOME+ MacPlayerConfig.player_list[html.from].parse;
-  if (jx == '') {
-    jx = MacPlayerConfig.parse;
-  }
-  
- 
-function sign(encoded) {
-    var decoded = customDecode(encoded);
-    var parts = decoded.split("/");
-    var combined = "";
-
-    for (var i = 2; i < parts.length; i++) {
-        combined += parts[i] + (i + 1 === parts.length ? "" : "/");
-    }
-
-    var base64Decoded = base64Decode(combined);
-    var part1 = JSON.parse(base64Decode(parts[1]));
-    var part0 = JSON.parse(base64Decode(parts[0]));
-    return deString(part1, part0, base64Decoded);
-}
-
-function contains(arr, val) {
-    for (var i = 0; i < arr.length; i++) {
-        if (val === arr[i]) return true;
-    }
-    return false;
-}
-
-function customDecode(encoded) {
-    var key = md5("test");
-    var decoded = base64Decode(encoded);
-    var result = "";
-
-    for (var i = 0; i < decoded.length; i++) {
-        result += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-    }
-
-    return base64Decode(result);
-}
-
-function deString(arr1, arr2, str) {
-    var result = "";
-    var chars = str.split("");
-
-    for (var i = 0; i < chars.length; i++) {
-        var char = chars[i];
-        if (/^[a-zA-Z]+$/.test(char) && contains(arr2, char)) {
-            result += arr2[arr1.indexOf(char)];
-        } else {
-            result += char;
-        }
-    }
-
-    return result;
-}
-
-
-
-
-    let vid='vid='+url
-    
-    let u=JSON.parse(request(jx.replace('player.php?vid=','api.php'), {
-         body: vid,
-         method: 'POST'
-         
-        })).data.url
-       log(u)
-       
-       let play=sign(u)
-        log(play)
-        return play +"#isVideo=true#"
-        
-        }
-       
-    
-},MY_HOME)
-
-
-
-    return lazy
-};
-///////////////////		
-function 通免5() {
-    var MY_HOME=MY_HOME||getItem('MY_HOME');
-var lazy = $('').lazyRule(() => {
-    try {
-        var html = JSON.parse(request(input).match(/r player_.*?=(.*?)</)[1])
-            var url = html.url
-            if (html.encrypt == '1') {
-                url = unescape(url);
-            } else if (html.encrypt == '2') {
-                url = unescape(base64Decode(url));
-            }
-            if (/m3u8|mp4/.test(url)) {
-                return url
-            } else {
-                return 'video://' + input
-		
-            }
-    } catch (e) {
-        return 'video://' + input 
-	     
-    }
-},MY_HOME);
-    return lazy;
-}
-
-///////////////////////////////////////
-function 通免6() {
-    var MY_HOME=MY_HOME||getItem('MY_HOME');
-    const lazy = $('').lazyRule((MY_HOME) => {
-        function parseHTML(input) {
-            const response = request(input);
-            const matchResult = response.match(/r player_.*?=(.*?)</);
-            if (matchResult && matchResult[1]) {
-                const parsedJSON = JSON.parse(matchResult[1]);
-                return parsedJSON;
-            }
-            return null;
-        }
-        function decryptUrl(html) {
-            let url = html.url;
-            switch (html.encrypt) {
-                case '1':
-                    url = unescape(url);
-                    break;
-                case '2':
-                    url = unescape(base64Decode(url));
-                    break;
-            }
-        }
-        function isVideoFormat(url) {
-            return /m3u8|mp4|flv/.test(url);
-        }
-        function handleVideoUrl(url) {
-            const testUrl = url.match(/http.*?com/);
-            if (/lz|ffzy|vip|hd|cdnlz/.test(testUrl)) {
-                evalPrivateJS('TuSJdpnZaqXGRvvOFRR+3S7eZUjeC1CffFbHhoo0e5+aZ7Kav9KZVZsfkwKkUFf4wzkTrio4jARH6ZwTXpRlH3kI43rWCTU4PdYam15pPYiq5cW0H6gUXhJW7tmJtyLKdje1KapBIGvWaXI0WmoHoMEFBV/MAicmPgpyAJZjsc5Emvdh1n72WPPiyhYNCoMnZ9JpP6aEsWQEmQMcAjPxgs6UMvsO/POw5Ccr79sJzicst/Ll3IOj5M+PvqKrTd6147VGPEztjsUeEudASzTcn+95C9Vg1uwUvd9z0w5qsPboQh5oZhTys4RQEzBGIqulQMAAQY4IFkanWX95EINZDX50mAiOSGyId06HsprAel/fh7wyMXdmeu+S15XncO7UuujMOmGgSAEN/Ssc2ezkxlGvpdyhbl4p4DaQug/nrgswhZj75/M53sKYX2zRgOST7CMjV/+pPJd1KP934uu/VsBQUG69mWN+KaFWhKnwBPhV9qdqGz/LSJnFxIvQ8kBx');
-                return u + "?url=" + base64Encode(url) + "#.m3u8";
-            }
-            return url;
-        }
-        function isQuarkUrl(url) {
-            return /quark/.test(url);
-        }
-        function isAliUrl(url) {
-            return /ali/.test(url);
-        }
-        function handleQuarkUrl(url) {
-            if (request('hiker://home@Quark.简') === 'null') {
-                Quark简依赖();
-            } else {
-                return `hiker://page/quarkList?rule=Quark.简&page=fypage&realurl=${url}`;
-            }
-        }
-        function handleAliUrl(url) {
-            if (request('hiker://home@云盘君.简') === 'null') {
-                云盘君简依赖();
-            } else {
-
-                return "hiker://page/aliyun?rule=云盘君.简&page=fypage&realurl=" + encodeURIComponent(url);
-            }
-        }
-        function handleOtherMedia(url, html) {
-            eval(request(`${MY_HOME}/static/js/playerconfig.js`));
-            let jx = MacPlayerConfig.player_list[html.from].parse || MacPlayerConfig.parse;
-            const configResponse = request(`${jx}${url}`, { headers: { 'Referer': MY_URL } });
-            eval(configResponse.match(/let ConFig.*}/)[0]);
-            eval(getCryptoJS());
-            return decryptMedia(ConFig.url, '2890' + ConFig.config.uid + 'tB959C', '2F131BE91247866E') + '#isVideo=true#';
-        }
-        function decryptMedia(encryptedUrl, key, iv) {
-            return CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(encryptedUrl, CryptoJS.enc.Utf8.parse(key), {
-                iv: CryptoJS.enc.Utf8.parse(iv),
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            }));
-        }
-        function Quark简依赖() {
-            confirm({
-                title: '依赖检测',
-                content: '检测到缺少Quark.简,请导入!',
-                confirm: () => {
-                    return "海阔视界首页频道规则【Quark.简】￥home_rule_url￥云5oooole/bwiw"
-                }
-            })
-        }
-        function 云盘君简依赖() {
-            confirm({
-                title: '依赖检测',
-                content: '检测到缺少云盘君.简,请导入!',
-                confirm: () => {
-                    return "海阔视界首页频道规则【云盘君.简】￥home_rule_url￥云5oooole/hc3h"
-                }
-            })
-        }        
-        function handleException(input) {
-            const videoProtocol = 'video://';             
-            return `${videoProtocol}${input}`;
-        }       
-        const processInput = (input) => {
-            const html = parseHTML(input);
-            const url = html !== null ? decryptUrl(html) || input : input;
-            const handlers = html !== null ? [
-                { check: () => isVideoFormat(url), action: () => handleVideoUrl(url) },
-                { check: () => isQuarkUrl(url), action: () => handleQuarkUrl(url) },
-                { check: () => isAliUrl(url), action: () => handleAliUrl(url) },
-            ] : [
-                { check: () => isQuarkUrl(input), action: () => handleQuarkUrl(input) },
-                { check: () => isAliUrl(input), action: () => handleAliUrl(input) },
-            ];
-        
-            const handler = handlers.find(h => h.check());
-            if (handler) {
-                return handler.action();
-            }
-        
-            return html !== null ? handleOtherMedia(url, html) : handleOtherMedia(input);
-        };
-        
-        // try {
-            return isVideoFormat(input) ? clearM3u8Ad(input+'#isM3u8#',{headers:{}}): processInput(input)
-        // } catch (e) {
-            //return handleException(input);
-        // }        
-    },MY_HOME);
-    return lazy;
-}*/
-////////////////////
     let obj = {
     模板:模板||config.Btea,
     周表样式:getItem('周表样式','movie_3_marquee'),
@@ -6208,14 +5493,7 @@ function 通免6() {
 	通免:通免(),
     道长通免:道长通免(),
     香免:香免(),	
-    //通免1:通免1(),
-    //通免2:通免2(),
-	//通免3:通免3(),
-	//通免4:通免4(),
-	//通免5:通免5(),
-	//通免6:通免6(),
-	
-    ua:全局ua
+	ua:全局ua
     };
   if(ua){//指定ua加入config
         Object.assign(obj,{指定ua:ua});
