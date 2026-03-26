@@ -107,6 +107,9 @@ d.push({
         },nextMode)
     })
 });
+d.push({  
+    col_type: "blank_block"
+});
 d.push({
     title:  '““””<span style="color: #ff7000">例子</span>' ,
     url: $('#noLoading#').lazyRule(()=>{
@@ -148,7 +151,9 @@ d.push({
     desc: "",
     pic_url: ""
 });
-
+d.push({  
+    col_type: "blank_block"
+});
 d.push({
     title:  '““””<span style="color: #ff7000">一二级处理</span>' ,
     url: $('hiker://empty#noHistory##noRecordHistory##noRefresh#').rule(()=>{
@@ -694,7 +699,7 @@ let ui = ()=>{
             // 替换搜索成功标识
             rule.searchFind=osf.replace('$sflag',sflag);
             //替换图标
-            rule.icon='http://1.117.152.239:39000/tupian.php?text='+input;
+            rule.icon='https://api.xinac.net/icon/?url='+getMyVar('url',input);
             //log(rule);
             let path='hiker://files/ruleCache/dr/'+input+'.json';
             writeFile(path,JSON.stringify(rule));
