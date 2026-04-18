@@ -1,5 +1,7 @@
-// 视频源配置 - 内嵌在 HTML 中作为主数据源
-// 如需外部化，可通过 loadSourceConfig() 从 sources.json 加载
+// 视频源配置 - 从 GitHub 加载
+// type: 解析类型 - direct(直接URL), feed(JSON Feed流), json(标准JSON), regex(正则提取), multi(两步请求)
+
+// 视频源列表
 const EMBEDDED_SOURCES = [
     // ---- 模板源（支持分类切换）----
     { name: "抖一抖", url: "https://www.douyidou.com/get/get1.php",
@@ -14,8 +16,9 @@ const EMBEDDED_SOURCES = [
         {label: "萝莉", key: "get15"}, {label: "甜妹", key: "get16"},
         {label: "白丝", key: "get17"}
       ],
-      urlTemplate: "https://www.douyidou.com/get/{cat}.php"
-    },
+      urlTemplate: "https://www.douyidou.com/get/{cat}.php",
+      type: "regex", pattern: 'data-url="(.*?)"' }
+    ,
     // ---- yujn 类型 ----
     { name: "yujn", url: "http://api.yujn.cn/api/zzxjj.php",
       categories: [
@@ -27,24 +30,25 @@ const EMBEDDED_SOURCES = [
         {label: "清纯", key: "qingchun"}, {label: "汉服", key: "hanfu"},
         {label: "萝莉", key: "luoli"}
       ],
-      urlTemplate: "http://api.yujn.cn/api/{cat}.php"
-    },
+      urlTemplate: "http://api.yujn.cn/api/{cat}.php",
+      type: "direct" }
+    ,
     // ---- 直接URL类型 ----
-    { name: "nrzj", url: "https://v.nrzj.vip/video.php?_t=0" },
-    { name: "wudada", url: "http://www.wudada.online/Api/ScSp" },
-    { name: "188sp", url: "https://188sp.711888.xyz/188/video.php?_t=0" },
-    { name: "xjj2", url: "http://xjj2.716888.xyz/fenlei/djxjj/dj1.php?_t=0" },
-    { name: "姐姐", url: "https://jiejie.uk/xjj/get/video.php?_t=0" },
-    { name: "抖抖", url: "http://dou.plus/get/get1.php" },
-    { name: "极致", url: "https://p.txqq.pro/api/girls?limit=1" },
-    { name: "DJ秀", url: "http://djshare.kuaiyuhudong.cn/api/web/share/djvideo.php" },
+    { name: "nrzj", url: "https://v.nrzj.vip/video.php?_t=0", type: "direct" },
+    { name: "wudada", url: "http://www.wudada.online/Api/ScSp", type: "json", jsonPath: "video" },
+    { name: "188sp", url: "https://188sp.711888.xyz/188/video.php?_t=0", type: "direct" },
+    { name: "xjj2", url: "http://xjj2.716888.xyz/fenlei/djxjj/dj1.php?_t=0", type: "direct" },
+    { name: "姐姐", url: "https://jiejie.uk/xjj/get/video.php?_t=0", type: "direct" },
+    { name: "抖抖", url: "http://dou.plus/get/get1.php", type: "regex", pattern: 'src="(.*?)"' },
+    { name: "极致", url: "https://p.txqq.pro/api/girls?limit=1", type: "regex", pattern: '(http.*?\\.mp4)' },
+    { name: "DJ秀", url: "http://djshare.kuaiyuhudong.cn/api/web/share/djvideo.php", type: "kuaiyuhudong" },
     // ---- Feed流类型 ----
-    { name: "美女极致", url: "https://p.txqq.pro/api/girls?limit=20" },
-    { name: "内涵小姐姐", url: "http://v.nrzj.vip/video.php?_t=0" },
-    { name: "抖妹", url: "https://www.doumei.cc/api/v1/recommend" },
-    { name: "xxxtik Feed", url: "https://xxxtik-apix-s2l6l.ondigitalocean.app/post/feed/by-key?cursor=0" },
-    { name: "Feed源", url: "https://www.xxxfollow.com/api/v1/user/public?genders=cf" },
-    { name: "onlytik", url: "https://onlytik.com/api/new-videos" },
+    { name: "美女极致", url: "https://p.txqq.pro/api/girls?limit=20", type: "feed", feedFormat: "txqq" },
+    { name: "内涵小姐姐", url: "http://v.nrzj.vip/video.php?_t=0", type: "direct" },
+    { name: "抖妹", url: "https://www.doumei.cc/api/v1/recommend", type: "feed", feedFormat: "doumei" },
+    { name: "xxxtik Feed", url: "https://xxxtik-apix-s2l6l.ondigitalocean.app/post/feed/by-key?cursor=0", type: "feed", feedFormat: "xxxtik" },
+    { name: "Feed源", url: "https://www.xxxfollow.com/api/v1/user/public?genders=cf", type: "feed", feedFormat: "xxxfollow" },
+    { name: "onlytik", url: "https://onlytik.com/api/new-videos", type: "feed", feedFormat: "onlytik" },
     { name: "ReddClips", url: "https://api.reddclips.com/categories/16/posts?sort=hot&limit=25",
       categories: [
         {label: "Asian", key: "16"}, {label: "Hetero", key: "6"}, {label: "NSFW Transgender", key: "9"},
@@ -57,18 +61,21 @@ const EMBEDDED_SOURCES = [
         {label: "Curvy/Thick", key: "26"}, {label: "Redheads", key: "27"},
         {label: "Oral/Blowjobs", key: "28"}
       ],
-      urlTemplate: "https://api.reddclips.com/categories/{cat}/posts?sort=hot&limit=25"
-    }
+      urlTemplate: "https://api.reddclips.com/categories/{cat}/posts?sort=hot&limit=25",
+      type: "feed", feedFormat: "reddclips" }
 ];
 
+// 视频源分组
 const EMBEDDED_SOURCE_GROUPS = [
     { key: 'all', name: '全部' },
-    { key: 'douyidou', name: '抖一抖', match: url => /douyidou\.com/.test(url) },
-    { key: 'yujn', name: 'Yujn', match: url => /api\.yujn\.cn/.test(url) },
-    { key: 'other', name: '其他', match: url => /wudada|711888|716888|jiejie\.uk|dou\.plus|nrzj\.vip\/video|djshare|txqq\.pro.*limit=1\b|188sp/.test(url) },
-    { key: 'feed', name: 'Feed流', match: url => /xxxfollow|xxxtik|onlytik|reddclips|doumei|txqq\.pro.*limit=20/.test(url) }
+    { key: 'douyidou', name: '抖一抖', match: 'douyidou\\.com' },
+    { key: 'yujn', name: 'Yujn', match: 'api\\.yujn\\.cn' },
+    { key: 'other', name: '其他', match: 'wudada|711888|716888|jiejie\\.uk|dou\\.plus|nrzj\\.vip\\/video|djshare|txqq\\.pro.*limit=1\\b|188sp' },
+    { key: 'feed', name: 'Feed流', match: 'xxxfollow|xxxtik|onlytik|reddclips|doumei|txqq\\.pro.*limit=20' }
 ];
 
+// 默认锁定的源
 const EMBEDDED_LOCKED_SOURCES = ['xxxtik Feed', 'Feed源', 'ReddClips', 'onlytik'];
 
+// 密码哈希
 const EMBEDDED_PASSWORD_HASH = 'c2726b3ef039b484e2aff632797f2995967fa50c10c497b0c8485f7157653207';
