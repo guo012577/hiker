@@ -152,6 +152,12 @@
       "urlTemplate": "https://api.reddclips.com/categories/{cat}/posts?sort=hot&limit=25",
       "type": "feed",
       "feedFormat": "reddclips"
+    },
+    {
+      "name": "Vlog视频",
+      "url": "https://8.136.14.184/api/vlog/list?page=1&limit=12",
+      "type": "feed",
+      "feedFormat": "vlog"
     }
   ],
   "sourceGroups": [
@@ -159,8 +165,6 @@
     { "key": "douyidou", "name": "抖一抖", "match": "douyidou\\.com" },
     { "key": "yujn", "name": "Yujn", "match": "api\\.yujn\\.cn" },
     { "key": "other", "name": "其他", "match": "wudada|711888|716888|jiejie\\.uk|dou\\.plus|nrzj\\.vip\\/video|djshare|txqq\\.pro.*limit=1\\b|188sp" },
-    { "key": "feed", "name": "Feed流", "match": "xxxfollow|xxxtik|onlytik|reddclips|doumei|txqq\\.pro.*limit=20" }
-  ],
-  "defaultLockedSources": ["xxxtik Feed", "Feed源", "ReddClips", "onlytik"],
-  "passwordHash": "c2726b3ef039b484e2aff632797f2995967fa50c10c497b0c8485f7157653207"
+    { "key": "feed", "name": "Feed流", "match": "xxxfollow|xxxtik|onlytik|reddclips|doumei|txqq\\.pro.*limit=20|8\\.136\\.14\\.184" }
+  ]
 }
