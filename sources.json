@@ -24,7 +24,7 @@
         {"label": "白丝", "key": "get17"}
       ],
       "urlTemplate": "https://www.douyidou.com/get/{cat}.php",
-      "type": "direct",
+      "type": "direct"
     },
     {
       "name": "yujn",
@@ -45,6 +45,11 @@
         {"label": "萝莉", "key": "luoli"}
       ],
       "urlTemplate": "http://api.yujn.cn/api/{cat}.php",
+      "type": "direct"
+    },
+    {
+      "name": "抖抖",
+      "url": "http://dou.plus/get/get1.php",
       "type": "direct"
     },
     {
@@ -73,11 +78,7 @@
       "url": "https://jiejie.uk/xjj/get/video.php?_t=0",
       "type": "direct"
     },
-    {
-      "name": "抖抖",
-      "url": "http://dou.plus/get/get1.php",
-      "type": "direct",
-    },
+    
     {
       "name": "DJ秀",
       "url": "http://djshare.kuaiyuhudong.cn/api/web/share/djvideo.php",
