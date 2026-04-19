@@ -24,8 +24,7 @@
         {"label": "白丝", "key": "get17"}
       ],
       "urlTemplate": "https://www.douyidou.com/get/{cat}.php",
-      "type": "regex",
-      "pattern": "data-url=\"(.*?)\""
+      "type": "direct",
     },
     {
       "name": "yujn",
@@ -57,7 +56,7 @@
       "name": "wudada",
       "url": "http://www.wudada.online/Api/ScSp",
       "type": "json",
-      "jsonPath": "video"
+      "jsonPath": "data"
     },
     {
       "name": "188sp",
@@ -77,14 +76,7 @@
     {
       "name": "抖抖",
       "url": "http://dou.plus/get/get1.php",
-      "type": "regex",
-      "pattern": "src=\"(.*?)\""
-    },
-    {
-      "name": "极致",
-      "url": "https://p.txqq.pro/api/girls?limit=1",
-      "type": "regex",
-      "pattern": "(http.*?\\.mp4)"
+      "type": "direct",
     },
     {
       "name": "DJ秀",
