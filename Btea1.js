@@ -1053,7 +1053,7 @@ var 一级 = {
         //var 设置 = settingIcon !== 'off' ? '设置' : '';
         //var 收藏 = settingIcon !== 'off' ? '收藏' : '';
         var SYIcon = $.getImage("http://123.56.105.145/tubiao/more/47.png");
-        var PKIcon = $.getImage("https://gitee.com/bteahk/bteahiker/raw/master/pk.png");
+        var PKIcon = $.getImage("https://raw.githubusercontent.com/guo012577/gitbteahiker-master/refs/heads/main/pk.png");
         var RBIcon = $.getImage("http://123.56.105.145/tubiao/more/74.png");
         var GXIcon = $.getImage("http://123.56.105.145/tubiao/more/157.png");
         var SSIcon = $.getImage("http://123.56.105.145/tubiao/more/168.png");
@@ -1995,7 +1995,7 @@ function menusetting(d) {
     var newVersion = updateLog.newVersion;
     var logs = JSON.stringify(updateLog.newVersionlog).replace(/\{/g, '').replace(/\}/g, '').replace(/\,/g, '<br>').replace(/\"/g, '');
     var newlog = JSON.stringify(updateLog.newVersionlog).split(',')[0].replace(/\{/g, '').replace(/\}/g, '').replace(/\,/g, '<br>').replace(/\"/g, '').replace(/\n/g, "<br>");
-    var BteaIcon = $.getImage('https://gitee.com/bteahk/bteahiker/raw/master/Btea.jpg')
+    var BteaIcon = $.getImage('https://raw.githubusercontent.com/guo012577/gitbteahiker-master/refs/heads/main/Btea.jpg')
         d.push({
             title: "<b>当前模板版本♨️: " + version.ver + "</b>" + "<small><b>\t\t\t\t\t\t\t\t\t\t\t\t\tℹ️   关于</b><small>",
             img: BteaIcon,
@@ -2087,7 +2087,7 @@ function menusetting(d) {
                             let d = [];
                             let formore = "#### 获取帮助失败,请检查网络";
                             try {
-                                formore = fetch('https://gitee.com/bteahk/bteahiker/raw/master/formore.txt');
+                                formore = fetch('https://raw.githubusercontent.com/guo012577/gitbteahiker-master/refs/heads/main/formore.txt');
                             } catch (e) {}
                             d.push({
                                 title: formore,
@@ -2130,11 +2130,9 @@ function menusetting(d) {
     });
     var OnImg = $.getImage("http://123.56.105.145/tubiao/messy/57.svg")
         var OffImg = $.getImage("http://123.56.105.145/tubiao/messy/63.svg")
-
         d.push({
             title: '<span style="color:#5882FA">' + '首页轮播</span>',
             url: $("#noLoading#").lazyRule(() => {
-
                 require(getVar('Bt依赖'));
                 if (getItem("轮播", "on") == "on") {
                     setItem("轮播", "off");
@@ -2233,7 +2231,7 @@ function menusetting(d) {
     let mnIcons4 = getItem('menuIcons4', getItem('gxid') == "on" ? "更新" : "收藏");
     let mnIcons5 = getItem('menuIcons5', "设置");
     var SYIcon = $.getImage("http://123.56.105.145/tubiao/more/47.png");
-    var PKIcon = $.getImage("https://gitee.com/bteahk/bteahiker/raw/master/pk.png");
+    var PKIcon = $.getImage("https://raw.githubusercontent.com/guo012577/gitbteahiker-master/refs/heads/main/pk.png");
     var RBIcon = $.getImage("http://123.56.105.145/tubiao/more/74.png");
     var GXIcon = $.getImage("http://123.56.105.145/tubiao/more/157.png");
     var SSIcon = $.getImage("http://123.56.105.145/tubiao/more/168.png");
@@ -2504,9 +2502,7 @@ function menusetting(d) {
             img: ZbImage,
             //extra: {lineVisible: false},
             url: $(周表样式, 2, '请选择追剧周表样式').select(() => {
-
                 require(getVar('Bt依赖'));
-
                 input = input.replace(/👉/g, '');
                 setItem('周表样式', input);
                 pre.处理();
@@ -2726,7 +2722,6 @@ function menusetting(d) {
         col_type: 'text_icon',
         img: HfImage,
         url: $('恢复所有自定义配置项为默认，是否继续?').confirm(() => {
-
             require(getVar('Bt依赖'));
             clearMyVar('header.url');
             setItem('周表样式', 'movie_3_marquee');
@@ -3461,7 +3456,7 @@ var 二级 = {
         //log(' bImg'+bImg)
         d.push({
             title: title,
-            pic_url: bImg || MY_PARAMS.img || 'https://gitee.com/bteahk/bteahiker/raw/master/Btea.jpg',
+            pic_url: bImg || MY_PARAMS.img || 'https://raw.githubusercontent.com/guo012577/gitbteahiker-master/refs/heads/main/Btea.jpg',
             url: dp ? 'hiker://page/Route?rule=MyFieldᴰⁿ&type=设置#noHistory##noRecordHistory#' : bImg,
             col_type: "movie_1_vertical_pic_blur",
             extra: {
@@ -3835,7 +3830,7 @@ var 二级 = {
         //log(' MY_PARAMS.img'+MY_PARAMS.img)
         d.push({
             title: white(title),
-            pic_url: bImg || MY_PARAMS.img || 'https://gitee.com/bteahk/bteahiker/raw/master/Btea.jpg',
+            pic_url: bImg || MY_PARAMS.img || 'https://raw.githubusercontent.com/guo012577/gitbteahiker-master/refs/heads/main/Btea.jpg',
             url: bImg,
             col_type: "movie_1_vertical_pic_blur",
             extra: {
