@@ -10,7 +10,7 @@
 
   // ---- 源配置 ----
   window.DEFAULT_SOURCES.push({
-    name: "Sky Porn",
+    fromFile: true,    name: "Sky Porn",
     url: "https://sky.porn/api/feed?niche&tag&type=all&sort=trending&limit=12&cursor={cursor}",
     type: "feed", mode: "multi", parser: "skyPorn",
     fetch: {},

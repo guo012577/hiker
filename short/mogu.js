@@ -9,7 +9,7 @@
 
   // ---- 源配置 ----
   window.DEFAULT_SOURCES.push({
-    name: "蘑菇视频",
+    fromFile: true,    name: "蘑菇视频",
     url: "https://8.136.14.184/api/vlog/list?limit=12&page={page}",
     type: "feed", mode: "multi", parser: "vlog",
     fetch: {
