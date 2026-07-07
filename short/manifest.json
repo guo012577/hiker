@@ -5,14 +5,64 @@
       "version": "1.0.0",
       "file": "skyPorn.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/skyPorn.js",
-      "desc": "sky.porn m3u8 源"
+      "desc": "Sky Porn 短剧源（niche×tag×sort 维度）"
     },
     {
       "name": "蘑菇视频",
       "version": "1.0.0",
       "file": "mogu.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/mogu.js",
-      "desc": "蘑菇视频 vlog 源"
+      "desc": "蘑菇视频 vlog 源（随机分页）"
+    },
+    {
+      "name": "屋里社",
+      "version": "1.0.0",
+      "file": "wulishe.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/wulishe.js",
+      "desc": "屋里社短视频源"
+    },
+    {
+      "name": "xxxfollow🪜",
+      "version": "1.0.0",
+      "file": "xxxfollow.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/xxxfollow.js",
+      "desc": "xxxfollow 短剧源（genders×tag 维度，双端点）"
+    },
+    {
+      "name": "91短视频",
+      "version": "1.0.0",
+      "file": "p91.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/p91.js",
+      "desc": "91短视频源"
+    },
+    {
+      "name": "PornTok🪜",
+      "version": "1.0.0",
+      "file": "porntok.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/porntok.js",
+      "desc": "PornTok 短视频源"
+    },
+    {
+      "name": "onlytik🪜",
+      "version": "1.0.0",
+      "file": "onlytik.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/onlytik.js",
+      "desc": "onlytik 短视频源"
+    },
+    {
+      "name": "ReddClips🪜",
+      "version": "1.0.0",
+      "file": "reddclips.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/reddclips.js",
+      "desc": "ReddClips 短视频源"
+    },
+    {
+      "name": "xxxtik",
+      "version": "1.0.0",
+      "file": "xxxtik.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/xxxtik.js",
+      "desc": "xxxtik 短视频源"
     }
   ]
 }
+
