@@ -24,7 +24,17 @@
       ]},
       { label: "标签", param: "tag", path: true, options: [
         { label: "无标签", value: "" },
-        { label: "性感", value: "sexy" }
+        { label: "性感", value: "sexy" },{ label: "内射", value: "creampie" },{ label: "亚洲热血", value: "asianhotties" },
+		{ label: "x小女孩", value: "xsmallgirls" },{ label: "湿猫咪", value: "wetpussy" },{ label: "紧握的嘴唇", value: "lipsthatgrip" },
+		{ label: "OnlyFans", value: "onlyfans" },{ label: "anal", value: "anal" },{ label: "18岁", value: "18yearsold" },
+		{ label: "快速手淫", value: "fastfap" },{ label: "teen18+", value: "teen-18" },{ label: "狂野", value: "gonewild" },
+		{ label: "抖音", value: "tiktok" },{ label: "真实女孩", value: "realgirls" },{ label: "阴部", value: "pussy" },
+		{ label: "精液", value: "cumsluts" },{ label: "手淫", value: "masturbation" },{ label: "色情", value: "porn" },
+		{ label: "大学", value: "collegesluts" },{ label: "女孩们完成任务", value: "girlsfinishingthejob" },{ label: "大胸", value: "bigtits" },
+		{ label: "熟女", value: "milf" },{ label: "小野岛", value: "petitegonewild" },{ label: "女学生", value: "schoolgirl" },
+		{ label: "orgasm", value: "高潮" },{ label: "荡妇", value: "slut" },{ label: "女同", value: "lesbian" },
+		{ label: "onlyfans", value: "onlyfans" },{ label: "贪求的荡妇", value: "needysluts" },{ label: "阴道", value: "pussyplay" },
+		{ label: "可爱色情", value: "adorableporn" },{ label: "口交", value: "blowjob" },{ label: "紧咬的嘴唇", value: "lipsthatgrip" }
       ] }
     ],
     catBase: "",

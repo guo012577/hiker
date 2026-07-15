@@ -14,15 +14,15 @@
     type: "feed", mode: "multi", parser: "reddclips",
     categoryGroups: [
       { label: "分类", param: "cat", flat: true, options: [
-        { label: "Asian", value: "16" }, { label: "Hetero", value: "6" }, { label: "NSFW Transgender", value: "9" },
-        { label: "Hentai & Anime", value: "13" }, { label: "BDSM & Fetish", value: "14" },
-        { label: "Lesbian", value: "15" }, { label: "Latina & Ebony", value: "17" },
-        { label: "MILF & Mature", value: "18" }, { label: "Public & Exhibitionism", value: "19" },
-        { label: "Cosplay & Alt/Goth", value: "20" }, { label: "Anal", value: "21" },
-        { label: "Feet", value: "22" },
-        { label: "Threesome\\Group", value: "23" }, { label: "Amateur\\Homemade", value: "24" },
-        { label: "Petite\\Tiny", value: "25" }, { label: "Curvy\\Thick", value: "26" },
-        { label: "Redheads", value: "27" }, { label: "Oral\\Blowjobs", value: "28" }
+        { label: "🌸亚洲", value: "16" }, { label: "🔞异性恋", value: "6" }, { label: "🏳️‍⚧️跨性别", value: "9" },
+        { label: "🎌色情动漫", value: "13" }, { label: "⛓️BDSM&恋物癖", value: "14" },
+        { label: "👭女同", value: "15" }, { label: "🌶️拉丁裔与黑人", value: "17" },
+        { label: "💋熟女", value: "18" }, { label: "🏖户外", value: "19" },
+        { label: "🖤Cosplay ", value: "20" }, { label: "🍑Anal", value: "21" },
+        { label: "🦶足", value: "22" },
+        { label: "👥三人", value: "23" }, { label: "📱业余&自制", value: "24" },
+        { label: "🎀娇小", value: "25" }, { label: "🍰丰满", value: "26" },
+        { label: "🔥红发", value: "27" }, { label: "👄口交", value: "28" }
       ] }
     ],
     urlTemplate: "https://api.reddclips.com/categories/{cat}/posts?sort=hot&limit=25"

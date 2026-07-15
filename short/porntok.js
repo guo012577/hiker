@@ -14,19 +14,19 @@
     type: "feed", mode: "multi", parser: "porntok",
     categoryGroups: [
       { label: "分类", param: "cat", flat: true, options: [
-        { label: "Petite", value: "petite" }, { label: "Amateur", value: "amateur" },
-        { label: "MILF", value: "milf" }, { label: "Lesbian", value: "lesbian" },
-        { label: "BDSM", value: "bdsm" }, { label: "Big_Tits", value: "big-tits" },
-        { label: "Anal", value: "anal" }, { label: "Teen_18+", value: "teen-18plus" },
-        { label: "Asian", value: "asian" }, { label: "Ebony", value: "ebony" },
-        { label: "Cosplay", value: "cosplay" }, { label: "Hentai_Animated", value: "hentai-animated" },
-        { label: "Cumshots", value: "cumshots" }, { label: "BBW", value: "bbw" },
-        { label: "Gay", value: "gay" }, { label: "Fetish", value: "fetish" },
-        { label: "Redhead", value: "redhead" }, { label: "Public_Outdoor", value: "public-outdoor" },
-        { label: "Couples", value: "couples" }, { label: "Trans", value: "trans" },
-        { label: "Indian", value: "indian" }, { label: "Creators", value: "creators" },
-        { label: "Porn_For_Women", value: "porn-for-women" }, { label: "Ethical_Porn", value: "ethical-porn" },
-        { label: "Latina", value: "latina" }
+        { label: "小个子", value: "petite" }, { label: "业余", value: "amateur" },
+        { label: "熟女", value: "milf" }, { label: "女同", value: "lesbian" },
+        { label: "BDSM", value: "bdsm" }, { label: "大胸", value: "big-tits" },
+        { label: "肛交", value: "anal" }, { label: "青少年", value: "teen-18plus" },
+        { label: "亚洲", value: "asian" }, { label: "黑色", value: "ebony" },
+        { label: "Cosplay", value: "cosplay" }, { label: "涩情动画", value: "hentai-animated" },
+        { label: "高潮", value: "cumshots" }, { label: "丰满", value: "bbw" },
+        { label: "男同", value: "gay" }, { label: "恋物癖", value: "fetish" },
+        { label: "红发", value: "redhead" }, { label: "户外", value: "public-outdoor" },
+        { label: "情侣", value: "couples" }, { label: "变性", value: "trans" },
+        { label: "印度", value: "indian" }, { label: "受欢迎", value: "creators" },
+        { label: "女性涩情", value: "porn-for-women" }, { label: "健康色清", value: "ethical-porn" },
+        { label: "拉丁裔女性", value: "latina" }
       ] }
     ],
     urlTemplate: "https://porntok.io/api/videos?category={cat}"
