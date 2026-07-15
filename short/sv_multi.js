@@ -118,7 +118,7 @@
   function buildCatString(src) {
     if (!src.categoryGroups) return state.categoryKey;
     var isDim = src.categoryGroups.some(function (g) { return g.param && !g.flat; });
-    var base = (src.catBase != null) ? src.catBase : (isDim ? 'type=all' : '');
+    var base = (src.catBase != null) ? src.catBase : (isDim ? 'type=video : '');
     var parts = base ? [base] : [];
     src.categoryGroups.forEach(function (g) {
       var v = state.categoryParams[g.param] || '';
