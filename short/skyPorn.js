@@ -11,15 +11,13 @@
   // ---- 源配置 ----
   window.DEFAULT_SOURCES.push({
     fromFile: true,    name: "Sky Porn",
-    url: "https://sky.porn/api/feed?niche&tag&type=all&sort=trending&limit=12&cursor={cursor}",
+    url: "https://sky.porn/api/feed?niche&tag&type=video&sort=trending&limit=12&cursor={cursor}",
     type: "feed", mode: "multi", parser: "skyPorn",
     fetch: {},
     categoryGroups: [
       { label: "分类", param: "niche", options: [
-        { label: "全部", value: "" }
-      ]},
-      { label: "标签", param: "tag", options: [
-        { label: "全部", value: "" },{label: "🏀弹跳的胸部",value: "bouncing-boobs"},{label: "📖为了剧情而看",value: "watch-it-for-the-plot"},{label: "🧟边缘控制 / Goon", value: "goon"},
+        { label: "全部", value: "" },
+        {label: "🏀弹跳的胸部",value: "bouncing-boobs"},{label: "📖为了剧情而看",value: "watch-it-for-the-plot"},{label: "🧟边缘控制 / Goon", value: "goon"},
 {label: "🤑OnlyFans创作者",value: "onlyfans-creators"},{ label: "🍒只有胸部", value: "just-boobs"},{ label: "😮口交", value: "blowjobs"},{ label: "🍸骚浪熟女", value: "slutty-milfs"},
 { label: "🍷30岁以上熟女", value: "milfs-over-30"},{ label: "🥤精液荡妇", value: "cumslut"},{ label: "💃拉丁女郎", value: "latinas"},{ label: "🎯颜射高潮", value: "money-shots"},
 { label: "🧴颜射", value: "facials"},{ label: "🍉大胸部", value: "big-tits"},{ label: "🧚娇小女孩", value: "petite-chicks"},{ label: "⛓️真实BDSM", value: "real-bdsm"},
@@ -80,6 +78,9 @@
 { label: "👓3D色情", value: "3d-porn"},{ label: "🧚エッチ动漫", value: "ecchi-anime"},{ label: "👾Rule 34", value: "rule-34"},{ label: "🔇忍住呻吟", value: "hold-the-moan"},
 { label: "🦄美丽跨性别鸡巴", value: "beautiful-trans-dick"},{ label: "🕯️肛交射精", value: "cum-from-anal"},{ label: "🏋️‍♀️丰满健身", value: "thick-fit"},
 { label: "💍出轨妻子", value: "cheating-wife"},{ label: "👗变装者", value: "crossdresser"}
+      ]},
+      { label: "标签", param: "tag", options: [
+        { label: "全部", value: "" }
       ]},
       { label: "排序", param: "sort", options: [
         { label: "热门", value: "trending" },
