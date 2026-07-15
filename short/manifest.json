@@ -2,10 +2,10 @@
   "sources": [
     {
       "name": "Sky Porn",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file": "skyPorn.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/skyPorn.js",
-      "desc": "Sky Porn 短剧源（niche×tag×sort 维度）"
+      "desc": "Sky Porn 短视频源"
     },
     {
       "name": "蘑菇视频",
