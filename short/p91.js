@@ -22,7 +22,19 @@
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
       }
-    }
+    },
+    categoryGroups: [
+      { label: "分类", param: "cat", flat: true, options: [
+        { label: "推荐", value: "0" },
+        { label: "高燃混剪", value: "18" },
+        { label: "素人自拍", value: "19" },
+        { label: "原创自拍", value: "14" },
+        { label: "反差系列", value: "17" },
+        { label: "网红达人", value: "16" },
+        { label: "明星大瓜", value: "15" }
+      ] }
+    ],
+    urlTemplate: "https://book.zedcsvynk.com/melonshort/list?page={page}&cate_id={cat}"
   });
 
   // ---- 解析器（91短视频 / p91 格式）----

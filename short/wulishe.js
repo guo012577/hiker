@@ -10,22 +10,21 @@
   // ---- 源配置 ----
   window.DEFAULT_SOURCES.push({
     fromFile: true,    name: "屋里社",
-    url: "https://wulishe.site/wp-json/b2/v1/getTopicList?cat=all-date",
+    url: "https://wulishe.site/wp-json/b2/v1/getTopicList",
     type: "feed", mode: "multi", parser: "wulishe",
     fetch: {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-      body: 'paged={page}&circle_id=3&type={catType}&order_by={catOrderBy}&role=all&file=all&status=&author=0',
+      body: 'paged={page}&circle_id=2&type={catType}&order_by={catOrderBy}&role=all&file=video&status=&author=0',
       pageKey: 'wulishePage',
       randomPage: true,          // 每次请求都随机页码
       maxPage: 903                // 随机范围 1~903
     },
     categoryGroups: [
       { label: "分类", param: "cat", flat: true, options: [
-        { label: "全部·最新", value: "all-date" },
-        { label: "全部·随机", value: "all-random" },
-        { label: "说说·最新", value: "say-date" },
-        { label: "说说·随机", value: "say-random" }
+        { label: "随机推荐", value: "all-random" },
+        { label: "最新话题", value: "all-date" },
+        { label: "最多点赞", value: "all-up" }
       ] }
     ],
     urlTemplate: "https://wulishe.site/wp-json/b2/v1/getTopicList?cat={cat}"

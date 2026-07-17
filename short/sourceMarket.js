@@ -31,8 +31,7 @@
    * ============================================================ */
   var SOURCE_MANIFEST_URL = 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/manifest.json'; // ← 在这里填入你的远程 manifest.json 地址
 
-  // 市场源清单：写到规则【根目录】 market-sources.json（Hiker 对根目录文件 readFile/writeFile 可靠；
-  // 子目录下文件 readFile/fetch 均读不到，故不用 sources/ 子目录承载清单）。
+  // 市场源清单：写到规则【根目录】 market-sources.json
   var MARKET_MANIFEST_FILE = 'market-sources.json';
   function marketManifestPath() { return 'hiker://files/rules/' + getRuleName() + '/' + MARKET_MANIFEST_FILE; }
   var LOCAL_MANIFEST = MARKET_MANIFEST_FILE; // 浏览器预览时 fetch 用的相对根路径
@@ -51,7 +50,6 @@
 
   /* ---------- 获取源密码认证 ---------- */
   var PASSWORD_HASH = 'c2726b3ef039b484e2aff632797f2995967fa50c10c497b0c8485f7157653207';
-  // 纯 JS SHA-256 实现（crypto.subtle 不可用时兜底，例如非安全上下文的 hiker://）
   function sha256JS(s) {
     function r(x, n) { return (x >>> n) | (x << (32 - n)); }
     var K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
@@ -87,8 +85,6 @@
     }
     return H.map(function (x) { return (x >>> 0).toString(16).padStart(8, '0'); }).join('');
   }
-
-  // SHA-256：优先浏览器原生 SubtleCrypto，不可用时回退纯 JS 实现
   async function sha256(message) {
     try {
       if (window.crypto && window.crypto.subtle && typeof window.crypto.subtle.digest === 'function') {
@@ -139,14 +135,18 @@
 
   /* ---------- 重进时从 market-sources.json（规则根目录）注入已下载的市场源 ---------- */
   function loadFolderSources() {
-    // Hiker 对规则【根目录】文件 readFile/writeFile 可靠；清单内联保存每个源的完整 JS 文本，
-    // 重进时直接注入，不依赖 sources/ 子目录文件读取（子目录下文件 readFile/fetch 均读不到）。
+    // 市场源清单（market-sources.json，规则根目录）只记录源元数据（name/version/file/desc），不再内联完整 JS 文本。
+    // 重进时按 file 读取 sources/<file>.js 注入；子目录文件读取不可用时回退到内联 it.js（旧数据兼容）或 localStorage 缓存。
     readManifestData(function (data) {
       var list = (data && data.sources) || [];
       if (!list.length) return;
       list.forEach(function (it) {
-        var js = it && it.js;
-        if (!js) return;
+        if (!it || !it.file) return;
+        var ruleName = getRuleName();
+        var fpath = 'hiker://files/rules/' + ruleName + '/sources/' + String(it.file).replace(/^\/+/, '');
+        var res = readFileSync(fpath);
+        var js = (res && res.text) || (it && it.js) || '';
+        if (!js) return; // 文件与内联均无，则交由 restoreMarketCache（localStorage 缓存）兜底注入
         try {
           var s = document.createElement('script');
           s.textContent = js;
@@ -170,8 +170,8 @@
     if (!data || !Array.isArray(data.sources)) data = { sources: [] };
     var exists = data.sources.some(function (x) { return x.file === fname; });
     if (exists) return;
-    // 内联保存完整 JS 文本：重进时由 loadFolderSources 直接注入，无需 fetch 子目录文件
-    data.sources.push({ name: it.name, version: it.version || '1.0.0', file: fname, desc: it.desc || '', js: jsText || '' });
+    // 仅记录源元数据（不内联 js）：重进时由 loadFolderSources 按 file 读取 sources/<file>.js 注入（子目录读取不可用时回退 localStorage 缓存）
+    data.sources.push({ name: it.name, version: it.version || '1.0.0', file: fname, desc: it.desc || '' });
     hikerWriteFile(manifestPath, JSON.stringify(data, null, 2));
   }
 
@@ -349,12 +349,7 @@
     function emit(via, raw, parsed) {
       var diag = { path: path, via: via, raw: raw, parsed: parsed, label: debugLabel || '' };
       window.__manifestDiag = diag;
-      try {
-        hikerLog('[readManifestData' + (debugLabel ? ' ' + debugLabel : '') + '] path=' + path +
-          ' | via=' + via + ' | raw字长=' + (raw == null ? 'null' : String(raw).length));
-        hikerLog('[readManifestData raw] ' + (raw == null ? 'null' : String(raw).slice(0, 400)));
-        hikerLog('[readManifestData parsed] ' + (parsed ? '条目数=' + (parsed.sources ? parsed.sources.length : '?') : 'null'));
-      } catch (e) {}
+      
       cb(parsed);
     }
     // 主路径：readFileSync 同步读（readFile 优先，可靠）
@@ -456,7 +451,7 @@
         var target = 'hiker://files/rules/' + ruleName + '/sources/' + String(fname).replace(/^\/+/, '');
         var ok = hikerWriteFile(target, text);
         if (ok) {
-          // 清单内联保存完整 JS 文本，重进后由 loadFolderSources 直接注入（不依赖 fetch 子目录文件）
+          // 清单仅记录源元数据（不内联 js）；重进后由 loadFolderSources 按 file 读取 sources/<file>.js 注入
           syncLocalManifest(it, fname, text);
           cacheMarketSource(it, text);  // 冗余兜底：文件读取异常时仍能恢复
           // 动态加载：仅当尚未安装时注入脚本，使当前会话立即生效（不重复注册）

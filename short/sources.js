@@ -1,3 +1,8 @@
+// [调试] 统一调试日志：Hiker 环境走 fy_bridge_app.log（在 Hiker 日志面板可见），浏览器预览回退 console.log
+function hikerLog(msg) {
+  try { if (window.fy_bridge_app && typeof window.fy_bridge_app.log === 'function') { window.fy_bridge_app.log(String(msg)); } } catch (e) {}
+  try { console.log(msg); } catch (e) {}
+}
 
 window.DEFAULT_SOURCES = [
 	// ---- yujn（默认）----
@@ -224,7 +229,7 @@ window.FeedParsers = {
                 var _remaining = Math.max(0, _limit - _used);
                 if (_balance !== undefined) _remaining = _balance;
                 window._tuweiQuota = { used: _used, limit: _limit, remaining: _remaining, balance: _balance };
-                console.log('[TuWei 额度] 已用 ' + _used + '/' + _limit + '，剩余 ' + _remaining + (_balance !== undefined ? ' (余额 ' + _balance + ')' : ''));
+                hikerLog('[TuWei 额度] 已用 ' + _used + '/' + _limit + '，剩余 ' + _remaining + (_balance !== undefined ? ' (余额 ' + _balance + ')' : ''));
             }
         }
         if (!data || data.code !== 200 || !data.data || !data.data.video) {
@@ -244,7 +249,7 @@ window.FeedParsers = {
         if (videoUrl && typeof videoUrl === 'string' && videoUrl.startsWith('/')) {
             videoUrl = 'https://www.tuwei.space' + videoUrl;
         }
-        console.log('[tuwei parser] 视频URL:', videoUrl, '| id:', v.Id || 'unknown');
+        hikerLog('[tuwei parser] 视频URL:', videoUrl, '| id:', v.Id || 'unknown');
         return [{
             url: videoUrl,
             sd_url: '',
@@ -260,7 +265,7 @@ window.FeedParsers = {
 
     /* 小职API 格式（单次返回一个随机视频） */
     xiaoZhi: function(data) {
-        console.log('[xiaoZhi parser] 原始数据:', JSON.stringify(data).substring(0,300));
+        hikerLog('[xiaoZhi parser] 原始数据:', JSON.stringify(data).substring(0,300));
         if (!data || data.code !== 1 || !data.data || !data.data.url) {
             // 兼容: data.cover 或 data.url 在根级
             if (data && data.data && typeof data.data === 'string' && data.data.length > 10) {
@@ -293,10 +298,10 @@ window.FeedParsers = {
     },
     /* 蓝莓API 格式（单次返回一个视频 URL） */
     lanmei: function(data) {
-        console.log('[lanmei parser] 原始数据:', JSON.stringify(data).substring(0,300));
+        hikerLog('[lanmei parser] 原始数据:', JSON.stringify(data).substring(0,300));
         // 频率限制：code 201，优雅处理，不报错误，返回空数组让上层跳过
         if (data && data.code === 201) {
-            console.log('[FeedParsers.lan梅] 频率限制，暂停请求（' + (data.msg || '') + '）');
+            hikerLog('[FeedParsers.lan梅] 频率限制，暂停请求（' + (data.msg || '') + '）');
             return [];
         }
         if (!data || data.code !== 200 || !data.data) {
@@ -354,7 +359,7 @@ window.resolveVideoUrl = async function(videoUrl) {
     if (m) {
         var id = m[1];
         var mp4 = 'https://media.redgifs.com/' + id.charAt(0).toUpperCase() + id.slice(1) + '-silent.mp4';
-        console.log('[resolveVideoUrl] redgifs MP4:', mp4);
+        hikerLog('[resolveVideoUrl] redgifs MP4:', mp4);
         return mp4;
     }
 
@@ -496,7 +501,7 @@ window.fetchWithProxyFallback = async function fetchWithProxyFallback(url, optio
 window.SourceHandlers = {
     // TXT 文件类型
     txt: function(url, done) {
-        console.log('[源处理器] txt 类型:', url);
+        hikerLog('[源处理器] txt 类型:', url);
         var _lists = window.txtSourceVideoLists || {};
 
         if (_lists[url] && _lists[url].length > 0) {
@@ -505,18 +510,18 @@ window.SourceHandlers = {
             var idx = (typeof getNextTxtIndex === 'function') ? getNextTxtIndex(url) : 0;
             if (idx >= list.length) idx = 0;
             var videoUrl = list[idx];
-            console.log('[TXT源] 播放视频', idx + 1, '/', list.length, ':', videoUrl.substring(0, 80));
+            hikerLog('[TXT源] 播放视频', idx + 1, '/', list.length, ':', videoUrl.substring(0, 80));
             window.SourceHandlers._setVideoSrc(videoUrl);
         } else {
             // 首次加载，fetch TXT 文件
-            console.log('[TXT源] 首次加载:', url);
+            hikerLog('[TXT源] 首次加载:', url);
             fetch(url).then(function(r) { return r.text(); })
             .then(function(text) {
                 var lines = text.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l && l.startsWith('http'); });
                 window.txtSourceVideoLists[url] = lines;
                 window.txtSourceCurrentIndex[url] = 1;
                 if (lines.length > 0) {
-                    console.log('[TXT源] 获取到 ' + lines.length + ' 个视频');
+                    hikerLog('[TXT源] 获取到 ' + lines.length + ' 个视频');
                     window.SourceHandlers._setVideoSrc(lines[0]);
                 } else {
                     console.error('[TXT源] 列表为空');
@@ -591,7 +596,7 @@ window.SourceHandlers = {
 
     // 直接 URL 类型（API 返回视频地址，或 301 跳转到视频）
     direct: function(url, done) {
-        console.log('[源处理器] direct 类型:', url);
+        hikerLog('[源处理器] direct 类型:', url);
         if (!url) { console.error('[源处理器] direct: URL 为空'); if (typeof done === 'function') done(); else if (typeof players === 'function') players(); return; }
         var fetchUrl = url.replace('ssss', Math.floor(Math.random() * 678 + 1));
         fetch(fetchUrl, { method: 'GET', redirect: 'follow' })
@@ -615,14 +620,14 @@ window.SourceHandlers = {
 
     // Feed 流类型
     feed: function(url, sourceName) {
-        console.log('[源处理器] feed 类型:', url);
+        hikerLog('[源处理器] feed 类型:', url);
         handleFeedSource(url);
     },
 
     // 抖一抖类型
     // API 返回纯文本 MP4 URL（如 https://tx.cdn.kwai.net/...mp4）
     douyidou: function(url, done) {
-        console.log('[源处理器] douyidou 类型:', url);
+        hikerLog('[源处理器] douyidou 类型:', url);
         fetch(url, { method: 'GET', redirect: 'follow' })
         .then(function(r) {
             if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -653,7 +658,7 @@ window.SourceHandlers = {
                 }
             }
             if (videoUrl && typeof videoUrl === 'string' && videoUrl.startsWith('http')) {
-                console.log('[douyidou] 获取到视频:', videoUrl.substring(0, 80));
+                hikerLog('[douyidou] 获取到视频:', videoUrl.substring(0, 80));
                 window.SourceHandlers._setVideoSrc(videoUrl);
             } else {
                 console.warn('[douyidou] 响应无效:', text.substring(0, 200));
@@ -668,7 +673,7 @@ window.SourceHandlers = {
 
     // yujn 类型（API 直接返回视频流，301 跳转）
     yujn: function(url, done) {
-        console.log('[源处理器] yujn 类型:', url);
+        hikerLog('[源处理器] yujn 类型:', url);
         fetch(url, { method: 'GET', redirect: 'follow' })
         .then(function(r) {
             var finalUrl = r.url;
@@ -712,7 +717,7 @@ window.SourceHandlers = {
 
     // wudada 类型（JSON 响应，data.data 字段是直接视频 URL）
     wudada: function(url, done) {
-        console.log('[源处理器] wudada 类型:', url);
+        hikerLog('[源处理器] wudada 类型:', url);
         $.get(url, function(data) {
             var videoUrl = '';
             if (typeof data === 'object' && data !== null) {
@@ -874,12 +879,12 @@ window.PrefetchStrategies = {
                 // 关键：mode:single 用完缓存立即清空，迫使下次重新请求新视频
                 feedVideoList = [];
                 currentFeedIndex = 0;
-                console.log('[prefetch] mode:single 缓存已用完，下次将重新请求');
+                hikerLog('[prefetch] mode:single 缓存已用完，下次将重新请求');
                 done();
                 return;
             }
             // 缓存用完，提前拉下一个
-            console.log('[prefetch] mode:single 缓存用完，提前拉下一个视频');
+            hikerLog('[prefetch] mode:single 缓存用完，提前拉下一个视频');
             var pUrl = url;
             // 随机选分类（扁平分组）
             if (_curSrc.urlTemplate && _curSrc.categoryGroups && _curSrc.categoryGroups.length) {
@@ -925,7 +930,7 @@ window.PrefetchStrategies = {
                         prefetchedFeedData = vList[0];
                         var pu = vList[0].fhd_url || vList[0].sd_url || vList[0].url;
                         if (pu) loadNextVideoEl(pu, vList[0]);
-                        console.log('[prefetch] mode:single 预拉取成功');
+                        hikerLog('[prefetch] mode:single 预拉取成功');
                     } else {
                         console.warn('[prefetch] mode:single 预拉取返回空列表');
                     }
@@ -941,7 +946,7 @@ window.PrefetchStrategies = {
         // mode:multi：从缓存取下一个（随机模式用 getNextFeedIndex，顺序模式用 currentFeedIndex）
         if (typeof feedVideoList === 'undefined' || feedVideoList.length === 0) {
             // 列表已空，触发重新请求（强制绕过防抖）
-            console.log('[prefetch] mode:multi 列表已空，触发重新请求');
+            hikerLog('[prefetch] mode:multi 列表已空，触发重新请求');
             // 先标记列表已播完，让 players() 能正确检测到
             if (typeof currentFeedIndex !== 'undefined' && feedVideoList && feedVideoList.length > 0) {
                 currentFeedIndex = feedVideoList.length;
@@ -975,7 +980,7 @@ window.PrefetchStrategies = {
                 // 列表已播完：清空预缓存，让 doSwitchToNext() 调用 players() 重新请求
                 prefetchedFeedData = null;
                 prefetchedUrl = '';
-                console.log('[prefetch] mode:multi 顺序模式列表已播完 (' + currentFeedIndex + '/' + feedVideoList.length + ')，清空预缓存，等待重新请求');
+                hikerLog('[prefetch] mode:multi 顺序模式列表已播完 (' + currentFeedIndex + '/' + feedVideoList.length + ')，清空预缓存，等待重新请求');
                 done(); return;
             }
             var _nextIdx = currentFeedIndex; // 预加载下一个要播放的视频

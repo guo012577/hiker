@@ -29,7 +29,7 @@
       finalLen: result.length          // 最终进入运行列表的数量
     };
     try {
-      console.log('[loadSources] defaultLen=' + defaultLen +
+      hikerLog('[loadSources] defaultLen=' + defaultLen +
         ' | overrideActive=' + overrideActive + ' (overrideLen=' + overrideLen + ')' +
         ' | finalLen=' + result.length);
     } catch (e) {}
@@ -75,10 +75,6 @@
   var wrapper = $('.swiper-wrapper');
   var hint = $('.sv-wheel-hint');
   var muteBtn = $('.sv-action--mute');
-  var srcBtn = $('#srcBtn');
-  var srcPanel = $('#srcPanel');
-  var srcList = $('#srcList');
-  var srcPanelClose = $('#srcPanelClose');
   var srcGrid = $('#srcGrid');
 
   function escHtml(s) {
@@ -110,7 +106,10 @@
     }
     return key || '';
   }
-
+  function hikerLog(msg) {
+    try { if (window.fy_bridge_app && typeof window.fy_bridge_app.log === 'function') { window.fy_bridge_app.log(String(msg)); } } catch (e) {}
+    try { console.log(msg); } catch (e) {}
+  }
   // 维度模型：由 categoryGroups + 当前选中值合并出 {cat} 串
   // 维度分组（带 param，如 niche/sort）：基础参数由 src.catBase 决定（Sky Porn 默认 type=all；无则不加）
   // path:true 的分组（如 xxxfollow 的 tag 维度）注入 URL 路径而非 query，不进入此串
@@ -118,7 +117,7 @@
   function buildCatString(src) {
     if (!src.categoryGroups) return state.categoryKey;
     var isDim = src.categoryGroups.some(function (g) { return g.param && !g.flat; });
-    var base = (src.catBase != null) ? src.catBase : (isDim ? 'type=all': '');
+    var base = (src.catBase != null) ? src.catBase : (isDim ? 'type=videos' : '');
     var parts = base ? [base] : [];
     src.categoryGroups.forEach(function (g) {
       var v = state.categoryParams[g.param] || '';
@@ -224,7 +223,7 @@
         mapped._total = cache.items.length;
         return mapped;
       }
-      console.log('[feed] 移除无效视频:', videoUrl.substring(0, 60));
+      hikerLog('[feed] 移除无效视频:', videoUrl.substring(0, 60));
       cache.items.splice(i, 1);
       cache.idx = Math.max(0, cache.idx - 1);
     }
@@ -284,13 +283,16 @@
   async function fetchFeedList(src, cat, tag) {
     var curl;
     if (tag && src.urlTemplate) {
+    hikerLog('tag:' +tag)
       curl = src.urlTemplate.replace(/\{cat\}/g, cat || '').replace(/\{tag\}/g, tag);
     } else {
-      curl = src.url;
+      curl = src.urlTemplate;
       if (cat) curl = curl.replace(/\{cat\}/g, cat);
+      
     }
     var req = window.buildSourceRequest(curl, src, { randomPlay: src.random, cat: cat || '', tag: tag || '' });
     var finalUrl = req.fetchUrl;
+    hikerLog('视频源地址:' +finalUrl );
     var opts = req.fetchOptions || {};
     if (opts.body && typeof opts.body !== 'string') opts.body = JSON.stringify(opts.body);
     var data;
@@ -371,7 +373,7 @@
         mapped._total = cache.items.length;
         return mapped;
       }
-      console.log('[feed] 移除无效视频:', videoUrl.substring(0, 60));
+      hikerLog('[feed] 移除无效视频:', videoUrl.substring(0, 60));
       cache.items.splice(i, 1);
       if (!src.random) cache.idx = Math.max(0, cache.idx - 1);
     }
@@ -427,7 +429,7 @@
       if (await validateVideoUrl(videoUrl)) {
         return { id: uid(), video_url: videoUrl, title: src.name, text: '', user: '', likes: 0, comments: 0, favorites: 0, tags: [], _index: i + 1, _total: c.lines.length };
       }
-      console.log('[txt] 移除无效视频:', videoUrl.substring(0, 60));
+      hikerLog('[txt] 移除无效视频:', videoUrl.substring(0, 60));
       c.lines.splice(i, 1);
       if (!src.random) c.idx = Math.max(0, c.idx - 1);
     }
@@ -449,11 +451,11 @@
     try {
       var r = await fetch(url, { headers: { Range: 'bytes=0-0' }, cache: 'no-cache' });
       var ok = r.status === 206 || r.status === 200 || r.status === 304;
-      if (!ok) console.log('[validate] 失效:', r.status, url.substring(0, 80));
+      if (!ok) hikerLog('[validate] 失效:', r.status, url.substring(0, 80));
       _validatedUrls[url] = ok;
       return ok;
     } catch (e) {
-      console.log('[validate] 请求失败:', url.substring(0, 80));
+      hikerLog('[validate] 请求失败:', url.substring(0, 80));
       _validatedUrls[url] = false;
       return false;
     }
@@ -814,8 +816,6 @@
     updateQuotaDisplay();
   }
 
-  function openSourcePanel() { if (srcPanel) srcPanel.classList.add('open'); }
-  function closeSourcePanel() { if (srcPanel) srcPanel.classList.remove('open'); }
 
   function resetFeed() {
     Object.keys(state.players).forEach(function (id) {
@@ -895,9 +895,10 @@
     if (!slideEl || !videoUrl) return;
     var id = slideEl.dataset.id;
     retryCount[id] = (retryCount[id] || 0) + 1;
-    console.log('[retry] 视频加载失败 (' + retryCount[id] + '/' + MAX_RETRIES + '):', videoUrl);
+    hikerLog('[retry] 视频加载失败 (' + retryCount[id] + '/' + MAX_RETRIES + '):'+videoUrl);
+   
     if (retryCount[id] > MAX_RETRIES) {
-      console.log('[retry] 连续失败 ' + MAX_RETRIES + ' 次，停止重试:', videoUrl);
+      hikerLog('[retry] 连续失败 ' + MAX_RETRIES + ' 次，停止重试:', videoUrl);
       // 标记 URL 失效，避免再次被抓到
       _validatedUrls[videoUrl] = false;
       // 清理旧 video
@@ -1194,9 +1195,9 @@
     var _readVia = '未读取';
 
     // 方案一：readFile（内部优先 fy_bridge_app.readFile，其次 fba.readFile，最后 request 兜底）
-    try { fullText = readFile(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'readFile(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'readFile(返回字符串)'; } } catch (e) { console.log('[exportSources] 方案一抛错', e); }
+    try { fullText = readFile(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'readFile(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'readFile(返回字符串)'; } } catch (e) { hikerLog('[exportSources] 方案一抛错', e); }
     // 方案二：request 读
-    if (!fullText) { try { fullText = requestUrl(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'requestUrl(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'requestUrl(返回字符串)'; } } catch (e) { console.log('[exportSources] 方案二抛错', e); } }
+    if (!fullText) { try { fullText = requestUrl(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'requestUrl(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'requestUrl(返回字符串)'; } } catch (e) { hikerLog('[exportSources] 方案二抛错', e); } }
     // 汇聚诊断到 window.__exportDiag，供「通用」页诊断日志框显示；并用 fy_bridge_app.log 打印（Hiker 可见）
     window.__exportDiag = {
       path: path,
@@ -1554,7 +1555,7 @@
     }
     var shareBtn = $('.btn-share');
     if (wrapper) wrapper.addEventListener('click', function (e) {
-      if (e.target.closest('.sv-action, .sv-card-meta, .sv-card-tag, .sv-fullscreen-btn, .sv-source-btn, .sv-source-panel')) return;
+      if (e.target.closest('.sv-action, .sv-card-meta, .sv-card-tag, .sv-fullscreen-btn')) return;
       var slide = e.target.closest('.sv-slide');
       if (slide) {
         var video = slide.querySelector('video');

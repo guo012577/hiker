@@ -168,13 +168,6 @@
   .sv-cat-tab.is-set{color:#ffb38a}
   .sv-cat-tab.is-active{background:rgba(238,90,36,.2);border-color:#ee5a24;color:#fff}
 
-  /* ===== 多源切换器 ===== */
-  .sv-source-btn{position:fixed;top:14px;right:64px;z-index:30;background:rgba(0,0,0,.5);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:14px;cursor:pointer;backdrop-filter:blur(4px);font-family:inherit}
-  .sv-source-panel{position:fixed;top:0;right:0;bottom:0;width:78%;max-width:340px;background:#15151f;z-index:60;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);overflow-y:auto;box-shadow:-4px 0 20px rgba(0,0,0,.4)}
-  .sv-source-panel.open{transform:translateX(0)}
-  .sv-source-panel-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid rgba(255,255,255,.08);font-size:16px;font-weight:600;position:sticky;top:0;background:#15151f}
-  .sv-source-panel-close{background:none;border:none;color:#aaa;font-size:26px;line-height:1;cursor:pointer}
-  .sv-source-list{padding:8px}
   .sv-src-item{display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:12px;cursor:pointer;font-size:15px;color:#fff;border:1px solid transparent;margin-bottom:4px}
   .sv-src-item.active{background:rgba(238,90,36,.18);border-color:#ee5a24}
   .sv-src-type{font-size:11px;color:#aaa;background:rgba(255,255,255,.08);padding:1px 6px;border-radius:6px}
@@ -268,7 +261,6 @@
                             <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
                         </span>
                         <span class="sv-action-count">连播</span>
-                    </button>
                     </button>
                     <button class="sv-action" id="fitBtn" type="button" aria-label="原始">
                         <span class="sv-action-icon">
