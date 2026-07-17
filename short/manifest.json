@@ -16,28 +16,28 @@
     },
     {
       "name": "屋里社",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file": "wulishe.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/wulishe.js",
       "desc": "屋里社短视频源"
     },
     {
       "name": "xxxfollow🪜",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file": "xxxfollow.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/xxxfollow.js",
       "desc": "xxxfollow 短剧源（genders×tag 维度，双端点）"
     },
     {
       "name": "91短视频",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file": "p91.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/p91.js",
       "desc": "91短视频源"
     },
     {
       "name": "PornTok🪜",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file": "porntok.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/porntok.js",
       "desc": "PornTok 短视频源"
@@ -51,17 +51,24 @@
     },
     {
       "name": "ReddClips🪜",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file": "reddclips.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/reddclips.js",
       "desc": "ReddClips 短视频源"
     },
     {
       "name": "xxxtik",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "file": "xxxtik.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/xxxtik.js",
       "desc": "xxxtik 短视频源"
+    },
+    {
+      "name": "javtrailers",
+      "version": "1.0.0",
+      "file": "javtrailers.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/javtrailers.js",
+      "desc": "javtrailers短视频源"
     }
   ]
 }
