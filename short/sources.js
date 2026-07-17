@@ -96,37 +96,6 @@ window.getReplayGuardHeaders = function getReplayGuardHeaders() {
  * 新增数据格式：只需在此文件加一个解析函数，不需要改 app.js
  * ============================================= */
 window.FeedParsers = {
-    /* JAV Trailers 格式 */
-    javtrailers: function(data) {
-        if (!data.shorts || !Array.isArray(data.shorts)) return [];
-        return data.shorts.filter(function(s) { return s.csuid || s.bid; }).map(function(item) {
-            var bid = item.bid || item.csuid || '';
-            var cdnPath = '';
-            if (typeof bid === 'string') {
-                if (bid.startsWith('http')) {
-                    try { cdnPath = new URL(bid).pathname; } catch(e) { cdnPath = '/' + bid; }
-                } else {
-                    cdnPath = '/' + bid + '/360p/video.m3u8';
-                }
-            }
-            // 走本地 server.js 代理，自动带上 Referer/Origin 绕过 CDN 防盗链
-            var url = cdnPath ? ('http://localhost:8080/jav-video' + cdnPath) : '';
-            return {
-                url: url,
-                sd_url: '',
-                fhd_url: '',
-                user: item.creator ? item.creator.username : '',
-                text: item.videoContentId || '',
-                likes: 0,
-                comments: 0,
-                favorites: 0,
-                tags: item.tags || []
-            };
-        });
-    },
-
-
-
     /* 抖妹 格式（data 数组，content 字段） */
     doumei: function(data) {
         var list = data.data && Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
@@ -1118,21 +1087,3 @@ window.PrefetchStrategies = {
         }).fail(function() { done(); });
     }
 };
-
-/* =============================================
- * HLS 请求头规则（由 hls.js 的 xhrSetup 回调使用）
- * 根据视频片段 URL 特征匹配对应的请求头
- * 新增 CDN 规则只需改此文件，不需要动 app.js
- * ============================================= */
-window.HlsHeaderRules = [
-    {
-        // JAV Trailers CDN
-        match: function(u) { return u.indexOf('vz-c20a9510-a5e.b-cdn.net') > -1 || u.indexOf('javtrailers') > -1; },
-        headers: { 'Referer': 'https://javtrailers.com/', 'Origin': 'https://javtrailers.com' }
-    },
-    {
-        // RedGifs CDN
-        match: function(u) { return /redgifs/.test(u); },
-        headers: { 'Referer': 'https://www.redgifs.com/', 'Origin': 'https://www.redgifs.com' }
-    }
-];

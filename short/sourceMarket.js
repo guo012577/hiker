@@ -13,6 +13,18 @@
 (function () {
   'use strict';
 
+  // 本地文件源（sources/ 下）：由 sourceMarket.js 在解析期同步注入，不在 index_multi.html 硬编码。
+  // 说明：Hiker 环境下 sources/ 子目录的 JS API（readFile/fetch）读取不可靠，但 WebView 同源
+  // <script src="sources/..."> 加载可靠；故用 document.write 在解析期同步加载（等效于 HTML 写死，
+  // 但集中管理、可扩展）。脚本执行后 window.DEFAULT_SOURCES 已含该源，DOMContentLoaded 时 init()
+  // 的 loadFolderSources → SVMarket.syncFromDefaults() 会把它并入运行列表 SOURCES。
+  var LOCAL_SOURCE_FILES = ['javtrailers.js'];
+  try {
+    (LOCAL_SOURCE_FILES || []).forEach(function (f) {
+      document.write('<script src="sources/' + String(f).replace(/^\/+/, '') + '"><\/script>');
+    });
+  } catch (e) {}
+
   /* ============================================================
    * 远程源清单地址：请替换为你自己托管的 manifest.json URL。
    *  - 该地址需允许跨域（CORS），或与部署站点同源。
@@ -509,6 +521,9 @@
   /* ---------- 初始化 ---------- */
   function init() {
     loadFolderSources();       // 重进时从 market-sources.json（根目录）注入已下载的市场源（主路径）
+    // 兜底：确保经 document.write 注入的本地文件源（sources/*.js）也并入运行列表 SOURCES
+    // （market-sources.json 为空时 loadFolderSources 会早退，不会触发 syncFromDefaults）
+    if (window.SVMarket && typeof window.SVMarket.syncFromDefaults === 'function') window.SVMarket.syncFromDefaults();
     restoreMarketCache();      // 冗余兜底：文件读取异常时仍可恢复（不依赖文件加载）
     renderDebugLog();          // 初始化后即把清单 + 内置源诊断渲染到通用页日志框
     var btn = $id('marketBtn');
