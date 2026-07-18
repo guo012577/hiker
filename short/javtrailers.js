@@ -47,7 +47,7 @@
   window.__M3U8_PROXY__ = _proxy;
   // ---- 源配置 ----
   window.DEFAULT_SOURCES.push({
-    fromFile: true, name: "JavTrailers",
+    fromFile: true, name: "javtrailers",
     url: "https://javtrailers.com/api/shorts?page=0&sort=for-you&excludemodels=",
     type: "feed", mode: "multi", parser: "javtrailers",
     categoryGroups: [
