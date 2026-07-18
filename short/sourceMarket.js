@@ -2,7 +2,7 @@
  * 功能：
  *   1) 「获取源」按钮 → 从远程 manifest 加载可用源列表（名称 / 版本 / 下载）。
  *   2) 点击「下载」→ 参考 exportSources：用 hiker 文件 API 把 .js 落地到
- *      hiker://files/rules/<MY_RULE.title>/sources/<file>（海阔视界环境，作为文件归档）。
+ *      hiker://files/data/<MY_RULE.title>/sources/<file>（海阔视界环境，作为文件归档）。
  *      同时把完整 JS 文本内联进规则【根目录】的 market-sources.json 清单
  *      （Hiker 对规则根目录文件 request()/writeFile 可靠；子目录下文件 readFile/fetch 均读不到）。
  *   3) 重进时自动恢复：读取 market-sources.json（根目录，request() 可靠）内联的 JS 文本直接注入，
@@ -18,7 +18,7 @@
   // <script src="sources/..."> 加载可靠；故用 document.write 在解析期同步加载（等效于 HTML 写死，
   // 但集中管理、可扩展）。脚本执行后 window.DEFAULT_SOURCES 已含该源，DOMContentLoaded 时 init()
   // 的 loadFolderSources → SVMarket.syncFromDefaults() 会把它并入运行列表 SOURCES。
-  var LOCAL_SOURCE_FILES = ['javtrailers.js'];
+  var LOCAL_SOURCE_FILES = ['javtrailers.js', 'xfree.js'];
   try {
     (LOCAL_SOURCE_FILES || []).forEach(function (f) {
       document.write('<script src="sources/' + String(f).replace(/^\/+/, '') + '"><\/script>');
@@ -45,7 +45,7 @@
 
   // 市场源清单：写到规则【根目录】 market-sources.json
   var MARKET_MANIFEST_FILE = 'market-sources.json';
-  function marketManifestPath() { return 'hiker://files/rules/' + getRuleName() + '/' + MARKET_MANIFEST_FILE; }
+  function marketManifestPath() { return 'hiker://files/data/' + getRuleName() + '/' + MARKET_MANIFEST_FILE; }
   var LOCAL_MANIFEST = MARKET_MANIFEST_FILE; // 浏览器预览时 fetch 用的相对根路径
 
   function $id(s) { return document.getElementById(s); }
@@ -155,7 +155,7 @@
       list.forEach(function (it) {
         if (!it || !it.file) return;
         var ruleName = getRuleName();
-        var fpath = 'hiker://files/rules/' + ruleName + '/sources/' + String(it.file).replace(/^\/+/, '');
+        var fpath = 'hiker://files/data/' + ruleName + '/sources/' + String(it.file).replace(/^\/+/, '');
         var res = readFileSync(fpath);
         var js = (res && res.text) || (it && it.js) || '';
         if (!js) return; // 文件与内联均无，则交由 restoreMarketCache（localStorage 缓存）兜底注入
@@ -209,9 +209,9 @@
   }
   function showHint(msg) { if (hintEl) hintEl.textContent = msg; }
 
-  // 诊断日志开关状态（localStorage 持久化，默认开启）
+  // 诊断日志开关状态（localStorage 持久化，默认关闭）
   function debugLogEnabled() {
-    try { var v = localStorage.getItem('_SV_DEBUG_LOG_ON_'); return v == null ? true : (v === '1'); } catch (e) { return true; }
+    try { var v = localStorage.getItem('_SV_DEBUG_LOG_ON_'); return v == null ? false : (v === '1'); } catch (e) { return false; }
   }
   // 在「通用」页面的诊断日志框（#debugLog）显示 清单 + 内置源 + 导出源 三类诊断，供人工检查路径与内容是否有误
   function renderDebugLog() {
@@ -264,6 +264,23 @@
     return set2;
   }
 
+  // 远程清单读取：优先 Hiker 原生 request()（专为 http(s) 设计，绕开 WebView fetch 跨域/CORS 限制），
+  // 失败回退标准 fetch（浏览器预览）。返回 Promise<string>。
+  function readRemoteText(url) {
+    return new Promise(function (resolve, reject) {
+      try {
+        if (typeof request === 'function') {
+          var t = request(url);
+          if (t != null && String(t).length) { hikerLog('[manifest] 经 request() 读到 ' + String(t).length + ' 字节'); resolve(String(t)); return; }
+        }
+      } catch (e) { hikerLog('[manifest] request() 失败: ' + (e && e.message)); }
+      fetch(url, { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
   /* ---------- 加载远程清单并渲染列表 ---------- */
   function loadMarketList() {
     if (!listEl) return;
@@ -272,9 +289,10 @@
       return;
     }
     listEl.innerHTML = '<div class="sv-market-loading">加载中…</div>';
-    fetch(SOURCE_MANIFEST_URL, { cache: 'no-cache' })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function (data) {
+    hikerLog('[loadMarketList] 读取远程清单: ' + SOURCE_MANIFEST_URL);
+    readRemoteText(SOURCE_MANIFEST_URL)
+      .then(function (text) {
+        var data; try { data = JSON.parse(text); } catch (e) { throw new Error('清单 JSON 解析失败: ' + (e && e.message)); }
         var arr = (data && data.sources) || [];
         if (!arr.length) { listEl.innerHTML = '<div class="sv-market-err">清单为空。</div>'; return; }
         var installed = installedNames();
@@ -324,7 +342,7 @@
     // 与 exportSources 用同一目录：优先 fba/fy_bridge_app.getVar('小程序名')（已实测该目录名能读到 sources.js）
     try { if (typeof fba !== 'undefined' && fba && typeof fba.getVar === 'function') n = fba.getVar('小程序名') || ''; } catch (e) {}
     try { if (!n && typeof fy_bridge_app !== 'undefined' && fy_bridge_app && typeof fy_bridge_app.getVar === 'function') n = fy_bridge_app.getVar('小程序名') || ''; } catch (e) {}
-    // 回退：网页目录即 hiker://files/rules/<MY_RULE.title>/
+    // 回退：网页目录即 hiker://files/data/<MY_RULE.title>/
     try { if (!n && typeof MY_RULE !== 'undefined' && MY_RULE && MY_RULE.title) n = MY_RULE.title; } catch (e) {}
     if (!n) n = 'short-video-feed';
     return n;
@@ -339,8 +357,7 @@
     if (window.fba && typeof window.fba.deleteFile === 'function') { window.fba.deleteFile(path); return true; }
     return false;
   }
-  // 实测结论（2026-07-07）：本环境 fy_bridge_app.readFile 是【同步】返回字符串（exportSources 用它读到 sources.js，typeof=string，字长 48119）。
-  // 之前误判它返回 Promise 是错误的——那行 JSON.stringify 兜底从未走到。故统一用 readFile 同步读取规则根目录文件。
+  // 实测：本环境 fy_bridge_app.readFile 为【同步】返回字符串，统一用其同步读取规则根目录文件。
   function hikerReadFile(path) {
     try { if (window.fy_bridge_app && typeof window.fy_bridge_app.readFile === 'function') { var r = window.fy_bridge_app.readFile(path); if (r != null) return r; } } catch (e) {}
     try { if (window.fba && typeof window.fba.readFile === 'function') { var r2 = window.fba.readFile(path); if (r2 != null) return r2; } } catch (e) {}
@@ -423,11 +440,15 @@
   }
 
   function fetchText(url) {
+    // 先试 Hiker 原生 request()（专为 http(s)，绕开 WebView fetch 跨域限制）；返回空则回退 fetch
+    if (typeof request === 'function') {
+      try {
+        var t = request(url);
+        if (t != null && String(t).length) { hikerLog('[fetchText] 经 request() 读到 ' + String(t).length + ' 字节'); return Promise.resolve(String(t)); }
+      } catch (e) { hikerLog('[fetchText] request() 失败: ' + (e && e.message)); }
+    }
     if (typeof fetch === 'function') {
       return fetch(url, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); });
-    }
-    if (typeof request === 'function') {
-      return new Promise(function (resolve, reject) { try { resolve(request(url)); } catch (e) { reject(e); } });
     }
     return Promise.reject(new Error('无可用网络 API'));
   }
@@ -460,7 +481,7 @@
         var fname = it.file || (String(it.name || 'source').replace(/\s+/g, '_') + '.js');
         var ruleName = getRuleName();
         // 源 .js 落盘到 sources/ 子目录（Hiker 自动创建），deleteFile 可真实删除
-        var target = 'hiker://files/rules/' + ruleName + '/sources/' + String(fname).replace(/^\/+/, '');
+        var target = 'hiker://files/data/' + ruleName + '/sources/' + String(fname).replace(/^\/+/, '');
         var ok = hikerWriteFile(target, text);
         if (ok) {
           // 清单仅记录源元数据（不内联 js）；重进后由 loadFolderSources 按 file 读取 sources/<file>.js 注入
@@ -504,7 +525,7 @@
     if (ok) {
       // 同时删除本地文件 + 本地 manifest 条目，避免刷新后被 loadFolderSources 重新加载
       var fname = it.file || (String(it.name || 'source').replace(/\s+/g, '_') + '.js');
-      var filePath = 'hiker://files/rules/' + getRuleName() + '/sources/' + String(fname).replace(/^\/+/, '');
+      var filePath = 'hiker://files/data/' + getRuleName() + '/sources/' + String(fname).replace(/^\/+/, '');
       hikerDeleteFile(filePath);
       removeFromLocalManifest(fname);
       uncacheMarketSource(it.name); // 同时清除 localStorage 缓存，退出重进不再恢复

@@ -108,14 +108,14 @@
             .sv-action-avatar-link img{width:40px;height:40px}
             .sv-action-follow{width:18px;height:18px}
             .sv-action-follow svg{width:10px;height:10px}
-            .sv-set-panel{width:92%}
+            .sv-set-panel{width:80%}
             .sv-card-progress{bottom:80px;right:68px}
         }
     
   /* ===== 设置面板 ===== */
   .sv-set-overlay{position:fixed;inset:0;z-index:65;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .3s}
   .sv-set-overlay.is-visible{opacity:1;pointer-events:auto}
-  .sv-set-panel{position:fixed;top:0;right:0;bottom:0;width:84%;max-width:360px;background:rgba(21,21,31,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:70;border-radius:16px 0 0 16px;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 20px rgba(0,0,0,.5)}
+  .sv-set-panel{position:fixed;top:0;right:0;bottom:0;width:72%;max-width:320px;background:rgba(21,21,31,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:70;border-radius:16px 0 0 16px;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 20px rgba(0,0,0,.5)}
   .sv-set-panel.open{transform:translateX(0)}
   .sv-set-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid rgba(255,255,255,.08);font-size:16px;font-weight:600;position:sticky;top:0;background:transparent}
   .sv-set-close{background:none;border:none;color:#aaa;font-size:26px;line-height:1;cursor:pointer}
@@ -175,12 +175,20 @@
   .sv-src-mode{font-size:11px;color:#7fdb8a;background:rgba(127,219,138,.12);padding:1px 6px;border-radius:6px}
 
   /* ===== 设置内换源列表 ===== */
-  .sv-src-grid{padding:4px 0}
-  .sv-src-grid .sv-src-item{padding:12px 14px;margin-bottom:8px;border-radius:12px;cursor:pointer;font-size:15px;color:#fff;border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04)}
+  .sv-src-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px 0;align-content:start}
+  .sv-src-grid .sv-src-item{padding:10px;margin:0;border-radius:10px;cursor:pointer;font-size:14px;color:#fff;border:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:stretch;gap:6px;background:rgba(255,255,255,.04)}
   .sv-src-grid .sv-src-item.active{background:rgba(238,90,36,.15);border-color:rgba(238,90,36,.4)}
-  .sv-src-grid .sv-src-name{flex:1;min-width:0}
+  .sv-src-grid .sv-src-name{flex:1;min-width:0;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sv-src-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .sv-src-meta{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+  .sv-src-market{font-size:11px;color:#ffd54f;background:rgba(255,213,79,.14);padding:1px 6px;border-radius:6px}
   .sv-src-rand{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#aaa;font-size:13px;width:32px;height:32px;border-radius:50%;cursor:pointer;flex-shrink:0;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .sv-src-grid .sv-src-rand{width:26px;height:26px;font-size:12px}
   .sv-src-rand.is-on{background:rgba(238,90,36,.25);border-color:#ee5a24;color:#fff}
+  /* 换源页：内置源 / 市场源 子 tab */
+  .sv-src-subtabs{display:flex;gap:6px;padding:6px 0 10px}
+  .sv-src-subtab{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#ccc;font-size:13px;padding:8px 0;border-radius:9px;cursor:pointer;font-family:inherit;transition:all .2s}
+  .sv-src-subtab.is-active{background:rgba(238,90,36,.18);border-color:#ee5a24;color:#fff}
 
   /* ===== 获取源（源市场） ===== */
   .sv-market-overlay{position:fixed;inset:0;z-index:85;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -311,6 +319,10 @@
             </div>
             <div class="sv-set-body">
                 <div class="sv-set-page" data-page="sources">
+                    <div class="sv-src-subtabs">
+                        <button class="sv-src-subtab is-active" data-srctab="builtin" type="button">内置源</button>
+                        <button class="sv-src-subtab" data-srctab="market" type="button">市场源</button>
+                    </div>
                     <div class="sv-src-grid" id="srcGrid"></div>
                 </div>
                 <div class="sv-set-page" data-page="manage" hidden>
@@ -353,7 +365,7 @@
                     <div class="sv-set-log-title" style="display:flex;align-items:center;justify-content:space-between">
                         <span>诊断日志（清单 / 内置源 / 导出源）</span>
                         <label class="sv-switch" title="显示/隐藏诊断日志">
-                            <input type="checkbox" id="debugLogToggle" checked>
+                            <input type="checkbox" id="debugLogToggle">
                             <span class="sv-switch-slider"></span>
                         </label>
                     </div>
@@ -405,6 +417,7 @@
 
 
 
+<script src="engine.js"></script>
 <script src="sources.js"></script>
 <script src="sv_multi.js"></script>
 <!-- 获取源（源市场）：远程清单 + 真实文件下载 + 动态加载 sources/ 文件夹 -->

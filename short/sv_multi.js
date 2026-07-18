@@ -7,7 +7,6 @@
 (function () {
   'use strict';
 
-  // ============ 源配置（来自 sources.js） ============
   // ============ 源配置（来自 sources.js，可被本地覆盖持久化） ============
   var OVERRIDE_KEY = '_SV_SOURCES_OVERRIDE_';
   function loadSources() {
@@ -76,6 +75,7 @@
   var hint = $('.sv-wheel-hint');
   var muteBtn = $('.sv-action--mute');
   var srcGrid = $('#srcGrid');
+  var srcSubTab = 'builtin'; // 换源页子 tab：'builtin' 内置源 | 'market' 市场源（fromFile）
 
   function escHtml(s) {
     if (!s) return '';
@@ -123,8 +123,8 @@
       var v = state.categoryParams[g.param] || '';
       if (g.flat) { if (v) parts.push(v); return; }
       if (g.path) return;                       // 路径维度不进入 query 串
-      if (g.param === 'tag') parts.push(v ? ('tag=' + v) : 'tag');  // Sky Porn tag 维度：空值保留裸 tag
-      else if (v) parts.push(g.param + '=' + v);
+      if (g.bare) { parts.push(v ? (g.param + '=' + v) : g.param); return; }   // 空值也发裸 param（由源配置声明，如 Sky Porn 的 tag）
+      if (v) parts.push(g.param + '=' + v);
     });
     return parts.join('&');
   }
@@ -281,18 +281,26 @@
   }
 
   async function fetchFeedList(src, cat, tag) {
+    // 记录当前分类，供源解析器/翻页钩子按 (源,分类) 隔离游标键（与 xfree 同风格）
+    window.__feedCat = cat || '';
     var curl;
+    // 先算基准 URL（含 cat/tag 替换，不含游标注入）
     if (tag && src.urlTemplate) {
-    hikerLog('tag:' +tag)
+      hikerLog('tag:' + tag);
       curl = src.urlTemplate.replace(/\{cat\}/g, cat || '').replace(/\{tag\}/g, tag);
     } else {
-      curl = src.urlTemplate;
-      if (cat) curl = curl.replace(/\{cat\}/g, cat);
-      
+      curl = src.urlTemplate || src.url;   // 无 urlTemplate 时回退到 url（蓝莓API等仅配置 url 的 feed 源）
+      if (curl && cat) curl = curl.replace(/\{cat\}/g, cat);
     }
+    // 源自定义翻页钩子：getNextUrl(baseCurl, cat, tag) 注入游标 → 下一页完整 URL
+    //   用于 xfree 换端点、skyPorn/xxxtik 参数游标等响应游标式分页；无游标时返回 baseCurl（首屏）
+    if (typeof src.getNextUrl === 'function') {
+      curl = src.getNextUrl(curl, cat, tag);
+    }
+    hikerLog('[fetchFeedList] src=' + src.name + ' | hasUrl=' + (typeof src.url) + ' | url=' + (src.url || 'UNDEF') + ' | curl=' + (curl || 'UNDEF') + ' | override=' + (localStorage.getItem('_SV_SOURCES_OVERRIDE_') ? 'Y' : 'N'));
     var req = window.buildSourceRequest(curl, src, { randomPlay: src.random, cat: cat || '', tag: tag || '' });
-    var finalUrl = req.fetchUrl;
-    hikerLog('视频源地址:' +finalUrl );
+    var finalUrl = req ? req.fetchUrl : 'NOREQ';
+    hikerLog('视频源地址:' + finalUrl );
     var opts = req.fetchOptions || {};
     if (opts.body && typeof opts.body !== 'string') opts.body = JSON.stringify(opts.body);
     var data;
@@ -309,23 +317,15 @@
         try { data = JSON.parse(t); } catch (e) { data = t; }
       }
     }
+    // 诊断：打印从 API 获取到的原始数据（超长截断，避免刷屏）
+    try {
+      var _rawStr = (typeof data === 'string') ? data : JSON.stringify(data);
+      var _rawLen = _rawStr ? _rawStr.length : 0;
+      if (_rawStr && _rawLen > 1200) _rawStr = _rawStr.slice(0, 1200) + '…[截断 ' + (_rawLen - 1200) + ' 字符]';
+      hikerLog('[fetchFeedList][API数据] src=' + src.name + ' | len=' + _rawLen + ' | data=' + _rawStr);
+    } catch (e) { hikerLog('[fetchFeedList][API数据] 序列化失败: ' + e.message); }
     var fn = src.parser ? window.FeedParsers[src.parser] : window.FeedParsers.generic;
     var list = (typeof fn === 'function') ? fn(data) : window.FeedParsers.generic(data);
-    // 更新游标
-    if (data && data.cursor) {
-      // 响应级别游标（sky.porn 等 API 返回的 cursor 字段）
-      if (!window._srcCursor) window._srcCursor = {};
-      var ck = 'cursor_' + src.name + '_' + (cat || '');
-      window._srcCursor[ck] = data.cursor;
-    } else if (list && list.length) {
-      // 旧方式：取列表最后一个项的 _rawId
-      var last = list[list.length - 1];
-      if (last && last._rawId) {
-        if (!window._srcCursor) window._srcCursor = {};
-        var ck = 'cursor_' + src.name + '_' + (cat || '');
-        window._srcCursor[ck] = String(last._rawId);
-      }
-    }
     return list || [];
   }
 
@@ -747,19 +747,35 @@
   // ============ 源切换器 ============
   function renderSourceList() {
     if (!srcGrid) return;
+    // 同步子 tab 激活态与计数
+    var subBtns = $$('.sv-src-subtab');
+    var nBuiltin = 0, nMarket = 0;
+    SOURCES.forEach(function (s) { if (s.fromFile) nMarket++; else nBuiltin++; });
+    subBtns.forEach(function (b) {
+      var tab = b.dataset.srctab;
+      b.classList.toggle('is-active', tab === srcSubTab);
+      var cnt = (tab === 'market') ? nMarket : nBuiltin;
+      b.textContent = (tab === 'market' ? '市场源' : '内置源') + (cnt ? ' (' + cnt + ')' : '');
+    });
+    var _showMarket = (srcSubTab === 'market');
     srcGrid.innerHTML = '';
     SOURCES.forEach(function (s, i) {
+      if (!!s.fromFile !== _showMarket) return; // 按子 tab 过滤
       var item = document.createElement('div');
       item.className = 'sv-src-item' + (i === state.sourceIndex ? ' active' : '');
       var label = s.name || ('源' + i);
       var modeLabel = s.mode === 'multi' ? '多集' : '单集';
-      var modeBadge = ' <span class="sv-src-mode">' + modeLabel + '</span>';
+      var modeBadge = '<span class="sv-src-mode">' + modeLabel + '</span>';
       var catN = s.categoryGroups
         ? s.categoryGroups.reduce(function (n, g) { return n + (g.options ? g.options.length : 0); }, 0)
         : (s.categories ? s.categories.length : 0);
-      var catBadge = catN ? (' <span class="sv-src-cat">#' + catN + '</span>') : '';
+      var catBadge = catN ? ('<span class="sv-src-cat">#' + catN + '</span>') : '';
+      // 市场源（fromFile：市场下载或 sources/ 文件源）加专属徽标，与内置源区分
+      var marketBadge = s.fromFile ? '<span class="sv-src-market">市场</span>' : '';
       var randBtn = s.mode === 'multi' ? '<button class="sv-src-rand' + (s.random ? ' is-on' : '') + '" data-idx="' + i + '" type="button">' + (s.random ? '✓' : '随') + '</button>' : '';
-      item.innerHTML = '<span class="sv-src-name">' + escHtml(label) + '</span>' + modeBadge + catBadge + randBtn;
+      item.innerHTML =
+        '<div class="sv-src-top"><span class="sv-src-name">' + escHtml(label) + '</span>' + randBtn + '</div>' +
+        '<div class="sv-src-meta">' + modeBadge + marketBadge + catBadge + '</div>';
       item.addEventListener('click', function (e) {
         if (e.target.closest('.sv-src-rand')) return;
         switchSource(i);
@@ -1149,7 +1165,6 @@
   }
 
   function exportSources() {
-    // 海阔视界调试日志：优先 fy_bridge_app.log（在 Hiker 日志面板可见），回退 console.log
     function hikerLog(msg) {
       try { if (window.fy_bridge_app && typeof window.fy_bridge_app.log === 'function') { window.fy_bridge_app.log(String(msg)); } } catch (e) {}
       try { console.log(msg); } catch (e) {}
@@ -1160,7 +1175,7 @@
     try { if (!_ruleName && typeof fy_bridge_app !== 'undefined' && fy_bridge_app && typeof fy_bridge_app.getVar === 'function') _ruleName = fy_bridge_app.getVar('小程序名') || ''; } catch (e) {}
     if (!_ruleName) _ruleName = 'short-video-feed';
 
-    function _exportPath() { return 'hiker://files/rules/' + _ruleName + '/sources.js'; }
+    function _exportPath() { return 'hiker://files/data/' + _ruleName + '/sources.js'; }
 
     // 找出能用的文件 API
     function writeFile(path, content) {
@@ -1273,72 +1288,82 @@
     if (o) o.classList.remove('is-visible');
   }
 
-  /* ---------- TuWei 账号：注册获取 X-Client-Token ---------- */
-  var TUWEI_REGISTER_URL = 'https://www.tuwei.space/api/client/register';
-  var LS_TUWEI_TOKEN = '_SV_TUWEI_TOKEN_';
-  var LS_TUWEI_DEVICE = '_SV_TUWEI_DEVICE_';
-  var LS_TUWEI_USER = '_SV_TUWEI_USER_';
-
-  function applyTuweiToken(token, device) {
-    try {
-      var list = SOURCES || [];
-      for (var i = 0; i < list.length; i++) {
-        if (list[i] && list[i].name === 'TuWei') {
-          if (!list[i].fetch) list[i].fetch = {};
-          if (!list[i].fetch.headers) list[i].fetch.headers = {};
-          list[i].fetch.headers['X-Client-Token'] = token;
-          if (device) list[i].fetch.headers['X-Client-Device'] = device;
-          break;
-        }
-      }
-      var dl = window.DEFAULT_SOURCES || [];
-      for (var j = 0; j < dl.length; j++) {
-        if (dl[j] && dl[j].name === 'TuWei') {
-          if (!dl[j].fetch) dl[j].fetch = {};
-          if (!dl[j].fetch.headers) dl[j].fetch.headers = {};
-          dl[j].fetch.headers['X-Client-Token'] = token;
-          if (device) dl[j].fetch.headers['X-Client-Device'] = device;
-          break;
-        }
-      }
-    } catch (e) { if (window.console) console.warn('[applyTuweiToken] 失败', e); }
+  /* ---------- 通用源认证框架 ----------
+   * 各源在自身配置里声明 auth 描述符（注册地址 / 请求体构造 / token 解析 / 注入的请求头 / UI 选择器），
+   * 此处只提供通用接线与持久化，不含任何单一源专属逻辑。 */
+  function svAuthRead(name) {
+    try { return JSON.parse(localStorage.getItem('SV_AUTH_' + name) || 'null'); } catch (e) { return null; }
   }
-
-  function tuweiHint(msg, isErr) {
-    var el = $('#tuweiHint');
+  function svAuthWrite(name, obj) {
+    try { localStorage.setItem('SV_AUTH_' + name, JSON.stringify(obj)); } catch (e) {}
+  }
+  function svAuthSetHeaders(src, headers) {
+    [SOURCES, window.DEFAULT_SOURCES].forEach(function (list) {
+      (list || []).forEach(function (x) {
+        if (!x || x.name !== src.name) return;
+        if (!x.fetch) x.fetch = {};
+        if (!x.fetch.headers) x.fetch.headers = {};
+        for (var k in headers) { if (headers.hasOwnProperty(k)) x.fetch.headers[k] = headers[k]; }
+      });
+    });
+  }
+  function svAuthHint(src, msg, isErr) {
+    var ui = src.auth && src.auth.ui || {};
+    var el = ui.hint ? document.getElementById(ui.hint) : null;
     if (!el) return;
     el.textContent = msg;
     el.style.color = isErr ? '#ff6b6b' : '#80d8ff';
-    clearTimeout(tuweiHint._t);
-    tuweiHint._t = setTimeout(function () { el.textContent = ''; }, 4000);
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.textContent = ''; }, 4000);
   }
-
-  async function refreshTuweiToken(username, password) {
-    if (!username || !password) { tuweiHint('请输入用户名和密码', true); return; }
-    tuweiHint('正在请求注册接口…');
+  function svAuthApply(src, token, device, user) {
+    var hdrs = (typeof src.auth.headers === 'function') ? src.auth.headers(token, device) : {};
+    svAuthSetHeaders(src, hdrs);
+    svAuthWrite(src.name, { token: token, device: device || '', user: user || '' });
+  }
+  async function svAuthDoRegister(src, user, pass) {
+    var a = src.auth;
+    if (!user || !pass) { svAuthHint(src, '请输入用户名和密码', true); return; }
+    svAuthHint(src, '正在请求注册接口…');
     try {
-      var r = await fetch(TUWEI_REGISTER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, password: password })
+      var reg = a.register || {};
+      var body = (typeof reg.body === 'function') ? reg.body(user, pass) : { username: user, password: pass };
+      var r = await fetch(reg.url, {
+        method: reg.method || 'POST',
+        headers: { 'Content-Type': reg.contentType || 'application/json' },
+        body: JSON.stringify(body)
       });
       var data;
       try { data = await r.json(); } catch (e) { data = null; }
-      try { if (window.fy_bridge_app && window.fy_bridge_app.log) window.fy_bridge_app.log('[TuWei register] 返回: ' + (data ? JSON.stringify(data).slice(0, 400) : '非JSON')); } catch (e) {}
-      if (!data) { tuweiHint('返回数据解析失败', true); return; }
-      var token = data.token || (data.data && (data.data.token || data.data.access_token)) || (data.access_token);
-      var device = data.device || (data.data && data.data.device);
-      if (!token) { tuweiHint('未找到 token（返回: ' + (data.msg || JSON.stringify(data).slice(0,120)) + '）', true); return; }
-      applyTuweiToken(token, device);
-      try {
-        localStorage.setItem(LS_TUWEI_TOKEN, token);
-        if (device) localStorage.setItem(LS_TUWEI_DEVICE, device);
-        localStorage.setItem(LS_TUWEI_USER, username);
-      } catch (e) {}
-      tuweiHint('✅ 已更新 Token' + (device ? '（含 Device）' : ''));
+      if (window.fy_bridge_app && window.fy_bridge_app.log) window.fy_bridge_app.log('[' + src.name + ' register] 返回: ' + (data ? JSON.stringify(data).slice(0, 400) : '非JSON'));
+      if (!data) { svAuthHint(src, '返回数据解析失败', true); return; }
+      var ext = (typeof a.extract === 'function') ? a.extract(data) : { token: data.token, device: data.device };
+      if (!ext || !ext.token) { svAuthHint(src, '未找到 token（返回: ' + (data.msg || JSON.stringify(data).slice(0, 120)) + '）', true); return; }
+      svAuthApply(src, ext.token, ext.device, user);
+      svAuthHint(src, '✅ 已更新 Token' + (ext.device ? '（含 Device）' : ''));
     } catch (e) {
-      tuweiHint('请求失败: ' + (e && e.message || e), true);
+      svAuthHint(src, '请求失败: ' + (e && e.message || e), true);
     }
+  }
+  function setupSourceAuth() {
+    if (!SOURCES) return;
+    SOURCES.forEach(function (s) {
+      if (!s || !s.auth) return;
+      var ui = s.auth.ui || {};
+      var userEl = ui.user ? document.getElementById(ui.user) : null;
+      var pwdEl = ui.pwd ? document.getElementById(ui.pwd) : null;
+      var btnEl = ui.btn ? document.getElementById(ui.btn) : null;
+      try {
+        var saved = svAuthRead(s.name);
+        if (saved && saved.token) svAuthApply(s, saved.token, saved.device, saved.user);
+        if (saved && saved.user && userEl) userEl.value = saved.user;
+      } catch (e) {}
+      if (btnEl) btnEl.addEventListener('click', function () {
+        var u = userEl ? userEl.value.trim() : '';
+        var p = pwdEl ? pwdEl.value : '';
+        svAuthDoRegister(s, u, p);
+      });
+    });
   }
 
   var catViewParent = null;  // 当前弹窗所处的父级分类（null 表示顶层，仅旧 drill 模型用）
@@ -1474,6 +1499,13 @@
         if (name === 'sources') renderSourceList();
       });
     });
+    // 换源页：内置源 / 市场源 子 tab 切换
+    $$('.sv-src-subtab').forEach(function (b) {
+      b.addEventListener('click', function () {
+        srcSubTab = b.dataset.srctab;
+        renderSourceList();
+      });
+    });
   }
 
   function init() {
@@ -1528,21 +1560,8 @@
     });
     if (catPopupClose) catPopupClose.addEventListener('click', closeCatPopup);
     if (catPopup) catPopup.addEventListener('click', function (e) { if (e.target === catPopup) closeCatPopup(); });
-    // TuWei 账号：应用已保存的 token + 绑定获取按钮
-    (function () {
-      try {
-        var savedToken = localStorage.getItem(LS_TUWEI_TOKEN);
-        var savedDevice = localStorage.getItem(LS_TUWEI_DEVICE);
-        if (savedToken) applyTuweiToken(savedToken, savedDevice);
-        var savedUser = localStorage.getItem(LS_TUWEI_USER);
-        var uEl = $('#tuweiUser'); if (uEl && savedUser) uEl.value = savedUser;
-      } catch (e) {}
-      var tBtn = $('#tuweiTokenBtn');
-      if (tBtn) tBtn.addEventListener('click', function () {
-        var u = $('#tuweiUser'); var p = $('#tuweiPwd');
-        refreshTuweiToken(u ? u.value.trim() : '', p ? p.value : '');
-      });
-    })();
+    // 通用源认证：各源在自身配置声明 auth 描述符，此处统一接线（无单一源专属逻辑）
+    setupSourceAuth();
     bindSetTabs();
     var setCurSrc0 = $('#setCurSrc'); if (setCurSrc0) setCurSrc0.textContent = (currentSource() && currentSource().name) || '-';
     renderManageList();
