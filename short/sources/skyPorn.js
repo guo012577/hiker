@@ -8,11 +8,21 @@
   if (!window.DEFAULT_SOURCES) window.DEFAULT_SOURCES = [];
   if (!window.FeedParsers) window.FeedParsers = {};
 
+  // ========== 翻页钩子（供 sv_multi.js fetchFeedList 调用，与 xfree 同风格） ==========
+  // 读取响应游标（data.cursor），注入到基准 URL 的 cursor 参数；无游标则返回基准 URL（首屏）
+  function getNextUrl(baseCurl, cat, tag) {
+    var ck = 'cursor_skyPorn_' + (window.__feedCat || '');
+    var c = (window._srcCursor && window._srcCursor[ck]) || '';
+    if (!c) return baseCurl;
+    return baseCurl + (baseCurl.indexOf('?') > -1 ? '&' : '?') + 'cursor=' + encodeURIComponent(c);
+  }
+
   // ---- 源配置 ----
   window.DEFAULT_SOURCES.push({
     fromFile: true,    name: "Sky Porn",
-    url: "https://sky.porn/api/feed?niche&tag&type=all&sort=trending&limit=12&cursor={cursor}",
+    url: "https://sky.porn/api/feed?niche&tag&type=all&sort=trending&limit=12",
     type: "feed", mode: "multi", parser: "skyPorn",
+    getNextUrl: getNextUrl,
     fetch: {},
     categoryGroups: [
       { label: "分类", param: "niche", options: [
@@ -79,7 +89,7 @@
 { label: "🦄美丽跨性别鸡巴", value: "beautiful-trans-dick"},{ label: "🕯️肛交射精", value: "cum-from-anal"},{ label: "🏋️‍♀️丰满健身", value: "thick-fit"},
 { label: "💍出轨妻子", value: "cheating-wife"},{ label: "👗变装者", value: "crossdresser"}
       ]},
-      { label: "标签", param: "tag", options: [
+      { label: "标签", param: "tag", bare: true, options: [
         { label: "全部", value: "" }
       ]},
       { label: "排序", param: "sort", options: [
@@ -87,7 +97,7 @@
         { label: "近期", value: "recent" }
       ]}
     ],
-    urlTemplate: "https://sky.porn/api/feed?{cat}&limit=12&cursor={cursor}"
+    urlTemplate: "https://sky.porn/api/feed?{cat}&limit=12"
   });
 
   // ---- 解析器（Sky Porn 格式：items 数组，media.url）----
@@ -99,6 +109,11 @@
     if (!items.length) {
       console.warn('[FeedParsers.skyPorn] items 为空');
       return [];
+    }
+    // 翻页游标：响应顶层 data.cursor → 通用游标槽（与 xfree 同风格，按 源+分类 隔离）
+    if (data && data.cursor) {
+      if (!window._srcCursor) window._srcCursor = {};
+      window._srcCursor['cursor_skyPorn_' + (window.__feedCat || '')] = data.cursor;
     }
     return items.map(function (item) {
       if (!item || !item.media) return null;

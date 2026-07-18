@@ -7,11 +7,21 @@
   if (!window.DEFAULT_SOURCES) window.DEFAULT_SOURCES = [];
   if (!window.FeedParsers) window.FeedParsers = {};
 
+  // ========== 翻页钩子（供 sv_multi.js fetchFeedList 调用，与 xfree 同风格） ==========
+  // 读取响应游标（列表最后一项 id → 由解析器写入通用游标槽），注入到基准 URL 的 cursor 参数
+  function getNextUrl(baseCurl, cat, tag) {
+    var ck = 'cursor_xxxtik_' + (window.__feedCat || '');
+    var c = (window._srcCursor && window._srcCursor[ck]) || '';
+    if (!c) return baseCurl;
+    return baseCurl + (baseCurl.indexOf('?') > -1 ? '&' : '?') + 'cursor=' + encodeURIComponent(c);
+  }
+
   // ---- 源配置 ----
   window.DEFAULT_SOURCES.push({
     fromFile: true,    name: "xxxtik",
     url: "https://xxxtik-api-iw98m.ondigitalocean.app/post/new?limit=21&cursor={cursor}",
     type: "feed", mode: "multi", parser: "xxxtik",
+    getNextUrl: getNextUrl,
     fetch: {},
     categoryGroups: [
       { label: "分类", param: "cat", flat: true, options: [
@@ -816,7 +826,7 @@
   }
       ]}
     ],
-    urlTemplate: "https://xxxtik-api-iw98m.ondigitalocean.app/post/{cat}?limit=21&cursor={cursor}"
+    urlTemplate: "https://xxxtik-api-iw98m.ondigitalocean.app/post/{cat}?limit=21"
   });
 
   // ---- 解析器（xxxtik 格式：posts 数组，优先用 uid 构造 p5rn CDN 链接）----
@@ -831,7 +841,7 @@
       console.warn('[FeedParsers.xxxtik] posts 为空');
       return [];
     }
-    return posts.map(function (item) {
+    var list = posts.map(function (item) {
       if (!item) return null;
       // 优先用 uid 构造视频链接
       var vurl = '';
@@ -854,5 +864,11 @@
         _rawId: item.id
       };
     }).filter(Boolean);
+    // 翻页游标：列表最后一项的 id（API 接受 cursor=末条id 返回更旧内容）→ 通用游标槽（与 xfree 同风格）
+    if (list.length) {
+      if (!window._srcCursor) window._srcCursor = {};
+      window._srcCursor['cursor_xxxtik_' + (window.__feedCat || '')] = String(list[list.length - 1]._rawId);
+    }
+    return list;
   };
 })();

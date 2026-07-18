@@ -1,16 +1,9 @@
 // ============================================================
-// 源：JavTrailers（方案 B：公网 m3u8 代理统一播放）
-// 由 index_multi.html 在 sources.js 之后、sv_multi.js 之前引入
-// 解析器输出采用本项目统一的卡片字段：
-//   url / sd_url / fhd_url / user / text / likes / comments / favorites / tags
-//
-// ★ 播放方案（2026-07-18 切换为公网 m3u8 代理）
-// - 数据：GET /api/shorts?page=N&sort=S 需 Authorization(AUTH_TOKEN)，返回 shorts[]，
-//        每项 bid = Bunny Stream videoId(uuid)。
-// - 播放 URL：https://vz-c20a9510-a5e.b-cdn.net/{bid}/playlist.m3u8（标准 HLS 主列表）。
-// - 防盗链：Bunny CDN 校验 Referer/Origin；由公网 m3u8 代理(CF Worker)在 worker 端注入，
-//          海阔 WebView 与桌面端统一通过代理加载，绕开 WebView 禁止头限制与 ;{...} 原生语法。
-// - 链接构造：PROXY + '?url=' + encodeURIComponent(原始 m3u8)，见 buildVideoUrl。
+// 源：JavTrailers
+// 由 sourceMarket.js 经 LOCAL_SOURCE_FILES 在解析期注入（非 index_multi.html 硬编码）。
+// 播放：视频链接统一包公网 m3u8 代理（CF Worker 在 worker 端注入 Referer/Origin 防盗链头），
+//       海阔 WebView 与桌面端经同一代理加载，绕开 WebView 禁止头与 ;{...} 原生语法限制。
+// 解析器输出统一卡片字段：url / sd_url / fhd_url / user / text / likes / comments / favorites / tags
 // ============================================================
 (function () {
   if (!window.DEFAULT_SOURCES) window.DEFAULT_SOURCES = [];
@@ -76,7 +69,7 @@
     }).map(function (it) {
       var author = (it.creator && it.creator.username) || '';
       return {
-        url: buildVideoUrl(it),                          // 主列表（带 ;{...} 头后缀，交 Hiker 原生播放器）
+        url: buildVideoUrl(it),                          // 主列表（包公网 m3u8 代理）
         sd_url: '',
         fhd_url: '',
         user: author,
