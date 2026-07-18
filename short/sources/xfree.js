@@ -1,51 +1,86 @@
-// ============================================================
-// 源：XFree（xfree.com 推荐流，feed + multi）
-// 由 sourceMarket.js 经 LOCAL_SOURCE_FILES 在解析期注入（无需改 HTML）。
-// 解析器输出统一卡片字段：url / sd_url / fhd_url / user / text / likes / comments / favorites / tags
-//
-// ★ 翻页机制（换端点游标）
-// - 首屏接口：GET https://www.xfree.com/api/rs/xbn/ ，query 含 lgbt / tag / country / device / limit。
-// - 下一页接口：GET https://www.xfree.com/api/rs/next/ ，query 含 type=post / recommId / limit。
-//   recommId 取自首屏返回的 body.recommId（游标），存于 window._srcCursor['cursor_xfree_']；
-//   由下方 getNextUrl() 钩子在下一页请求时拼成 next URL（sv_multi.js 的 fetchFeedList 会调用它）。
-// - 与通用 {cursor} 机制不同：XFree 是「换端点」（xbn→next），非同一端点加参数，故用源自定义钩子。
-//
-// ★ 数据说明
-// - 返回结构：{ statusCode, body:{ recommId, banners:[...] } }。
-// - banners 每项即一个视频卡片：
-//     video       : 完整 mp4 直链（cdn77.hqmediago.com，优先用这个）
-//     video_sample: 试看 mp4（video 缺失时回退用）
-//     url         : 外站播放页（网页，非视频，不用于播放）
-//     title       : 标题
-//     user        : { displayName, username }
-//     tags        : [{ tag, id, lang }]
-// - mode:multi：banners 列表里每个视频各成一个滑动项（多视频队列）。
-// ============================================================
+
+//    切勿改成 api.xfree.com —— 该主机即使带 JWT 也返回 302 重定向，会导致源失效。
 (function () {
   if (!window.DEFAULT_SOURCES) window.DEFAULT_SOURCES = [];
   if (!window.FeedParsers) window.FeedParsers = {};
 
+  
   var XFREE_BASE  = 'https://www.xfree.com/api/rs/';
-  var XFREE_FIRST = XFREE_BASE + 'xbn/?lgbt=1&tag=18&country=HK&device=desktop&limit=5';
-  var XFREE_NEXT  = XFREE_BASE + 'next/?type=post&recommId=';
+ 
+  var XFREE_CDN   = 'https://cdn.xfree.com/xfree-prod/';
 
-  // ========== 翻页钩子（供 sv_multi.js fetchFeedList 调用） ==========
-  // 无游标 → 首屏 xbn；有游标 → 下一页 next?recommId=xxx
-  function getNextUrl() {
-    var rid = (window._srcCursor && window._srcCursor['cursor_xfree_']) || '';
-    if (rid) return XFREE_NEXT + encodeURIComponent(rid) + '&limit=5';
-    return XFREE_FIRST;
+  var XFREE_HOME  = XFREE_BASE + 'homepage/?{cat}&tag={tag}&device=desktop&limit=12';
+
+  var XFREE_CUR_TAG = 'lgbt=0|Fucking';   // 当前 (lgbt,tag) 维度组合，用于游标按维度隔离
+
+  // 若日后 JWT 失效，替换下面这一串即可（也可从用户浏览器 xfree.com 的 cookie anonymous=... 重新取）。
+  var XFREE_JWT = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVWlkIjoiMDE5Zjc0YzQtZjdkZS03MjhiLWJhYTAtODRlMWZlNzA1NjA0IiwiaXNzIjoieGZyZWUtc2VydmVyIiwic3ViIjoiYW5vbnltb3VzIn0.WFM9U1mInmeMdvUDP18FVTFjCofQ2qKDoS-w9Qhu6Nr9FCdVb7KKmzcUkbYkAVzGpDebVjO36G4AsT_hDOKT6m0IfTMwdHvVKGtfnWYN8KqidsQui-rUcM4FuJm4toKqUZxDVl9or0jIKdrSgC7Mjp63sBHnpoa7pscTA0_g8cyhYcjbXmS6YkMOc4FJtAOTxUP-mmQEOLOzinN4BZbQ5VaUupyFxjy5D1K-10MbMxH7MbdIxJz86mno3iS2iVdX4OTuLXLr4Wh7mVW0ETY72MznJaiYuwVD_NzDfZl3tyicHktdg7XFFmFZ8nCKSiCGPF2xyVACDBJhd4GabQpVOQ';
+  function getNextUrl(baseCurl, cat, tag) {
+    XFREE_CUR_TAG = (cat ? cat + '|' : '') + (tag || '');
+    var ck = 'cursor_xfree_' + XFREE_CUR_TAG;
+    var rid = (window._srcCursor && window._srcCursor[ck]) || '';
+    // 有游标 → 切到 /api/rs/next/ 接力续页（recommId 为稳定会话游标，沿用首屏的值）
+    if (rid) return XFREE_BASE + 'next/?type=post&recommId=' + encodeURIComponent(rid) + '&limit=12';
+    // 首屏（无游标）→ 返回 homepage（{cat}/{tag} 已由框架替换）
+    return baseCurl;
   }
 
   // ========== 源配置 ==========
   window.DEFAULT_SOURCES.push({
     fromFile: true,
     name: "xfree",
-    url: XFREE_FIRST,
+
+    url: XFREE_BASE + 'homepage/?lgbt=0&tag=Fucking&device=desktop&limit=12',
+    urlTemplate: XFREE_HOME,
     type: "feed",
     mode: "multi",
     parser: "xfree",
     getNextUrl: getNextUrl,
+
+    catBase: '',
+    categoryGroups: [
+      // 取向维度（对应网页 lgbt 选择器，由 lgbt_triggers 确认：0=All 1=Straight 2=Gay 3=Trans 4=Lesbian）
+      { label: "取向", param: "lgbt", options: [
+        { label: "全部", value: "0" },
+        { label: "直", value: "1" },
+        { label: "男同", value: "2" },
+        { label: "跨", value: "3" },
+        { label: "女同", value: "4" }
+      ]},
+      // 分类维度：取自网页 /api/tag/category 真实标签（共 30 个），按 useCount 热度降序，slug 用站点规范 PascalCase
+      { label: "分类", param: "tag", path: true, options: [
+        { label: "Amateurs", value: "Amateurs" },
+        { label: "Teen", value: "Teen" },
+        { label: "Beautiful", value: "Beautiful" },
+        { label: "Blowjob", value: "Blowjob" },
+        { label: "Fucking", value: "Fucking" },
+        { label: "Cumshot", value: "Cumshot" },
+        { label: "Dildo", value: "Dildo" },
+        { label: "MILF", value: "MILF" },
+        { label: "FlashingTits", value: "FlashingTits" },
+        { label: "Anal", value: "Anal" },
+        { label: "BigAss", value: "BigAss" },
+        { label: "Facial", value: "Facial" },
+        { label: "Deepthroat", value: "Deepthroat" },
+        { label: "BBC", value: "BBC" },
+        { label: "Ebony", value: "Ebony" },
+        { label: "Public", value: "Public" },
+        { label: "Photos", value: "Photos" },
+        { label: "Squirt", value: "Squirt" },
+        { label: "Muscular", value: "Muscular" },
+        { label: "Hairy", value: "Hairy" },
+        { label: "Pissing", value: "Pissing" },
+        { label: "Challenge", value: "Challenge" },
+        { label: "Czech", value: "Czech" },
+        { label: "Ahegao", value: "Ahegao" },
+        { label: "PublicFlashing", value: "PublicFlashing" },
+        { label: "Twerking", value: "Twerking" },
+        { label: "HairyCock", value: "HairyCock" },
+        { label: "Funny", value: "Funny" },
+        { label: "FaceMask", value: "FaceMask" },
+        { label: "FestivalSluts", value: "FestivalSluts" }
+      ]}
+    ],
     fetch: {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36',
@@ -61,57 +96,61 @@
         'sec-fetch-dest': 'empty',
         'sec-fetch-mode': 'cors',
         'sec-fetch-site': 'same-origin',
-        'Referer': 'https://www.xfree.com/tag/18',
-        'Priority': 'u=1, i'
+        'Referer': 'https://www.xfree.com/',
+        'Priority': 'u=1, i',
+        'Authorization': 'Bearer ' + XFREE_JWT
       },
-      // 翻页 next 接口需带会话 cookie（原浏览器请求 credentials:include）；
-      // 透传到 fetchOptions，由 buildSourceRequest 转发，WebView 跨域带/存 cookie。
+
       credentials: 'include'
     }
   });
 
   // ========== 解析器 ==========
   window.FeedParsers['xfree'] = function (data) {
-    // 翻页游标：首屏/下一页返回的 body.recommId → 写入通用游标槽（与源 name 对应）
-    if (data && data.body && data.body.recommId) {
-      if (!window._srcCursor) window._srcCursor = {};
-      window._srcCursor['cursor_xfree_'] = data.body.recommId;
+    // 兼容两种形态：{statusCode, body} 或 直出 body
+    var root = (data && data.body) ? data.body : data;
+    if (!root) { console.warn('[FeedParsers.xfree] 无 body'); return []; }
+    var ck = 'cursor_xfree_' + XFREE_CUR_TAG;
+    if (!window._srcCursor) window._srcCursor = {};
+    if (root.eol) {
+      delete window._srcCursor[ck];
+    } else if (root.recommId) {
+      window._srcCursor[ck] = root.recommId;
     }
-    // 防御：兼容多种嵌套结构
-    // xbn 接口返回 body.banners；next 接口返回 body.posts（字段名不同）
-    var banners = [];
-    if (data && data.body && Array.isArray(data.body.banners)) {
-      banners = data.body.banners;
-    } else if (data && data.body && Array.isArray(data.body.posts)) {
-      banners = data.body.posts;
-    } else if (data && Array.isArray(data.banners)) {
-      banners = data.banners;
-    } else if (data && Array.isArray(data.posts)) {
-      banners = data.posts;
-    } else if (Array.isArray(data)) {
-      banners = data;
-    }
-    if (!banners.length) {
-      console.warn('[FeedParsers.xfree] banners 为空');
+
+    var posts = [];
+    if (Array.isArray(root.posts)) posts = root.posts;
+    else if (Array.isArray(root.banners)) posts = root.banners;
+    else if (Array.isArray(root)) posts = root;
+    if (!posts.length) {
+      console.warn('[FeedParsers.xfree] posts 为空');
       return [];
     }
-    return banners.filter(function (b) {
-      return b && (b.video || b.video_sample);   // 过滤无视频项
-    }).map(function (b) {
-      var vurl = b.video || b.video_sample || '';
-      var user = (b.user && (b.user.displayName || b.user.username)) || '';
-      var tags = Array.isArray(b.tags)
-        ? b.tags.map(function (t) { return (t && t.tag) || ''; }).filter(Boolean)
+
+    return posts.filter(function (p) {
+      // 仅保留带可播放视频的卡片（media.name 存在）
+      return p && p.media && p.media.name;
+    }).map(function (p) {
+      var m = p.media, nm = m.name;
+      // 拼装 cdn.xfree.com 直链（公开，无 Referer/签名要求；实测 206）
+      var suffix = m.listingSuffix ? ('?' + m.listingSuffix) : '';
+      var vurl = XFREE_CDN + nm[0] + '/' + nm[1] + '/' + nm[2] + '/' + nm + '/listing7.mp4' + suffix;
+      // 海报缩略图（thumbs.xfree.com，索引 _1 稳定存在，实测 206）
+      var poster = 'https://thumbs.xfree.com/listing/medium/' + nm + '_1.webp';
+      var user = (p.user && (p.user.displayName || p.user.username)) || '';
+      var tags = Array.isArray(p.tags)
+        ? p.tags.map(function (t) { return (t && t.tag) || ''; }).filter(Boolean)
         : [];
       return {
         url: vurl,
         sd_url: '',
         fhd_url: '',
+        poster: poster,
         user: user,
-        text: b.title || b.text || '',
-        likes: b.likes || 0,
-        comments: b.comments || 0,
-        favorites: b.favorites || 0,
+        text: p.title || p.description || '',   // 真实字段为 title（无 text）
+        likes: p.likesCount || 0,
+        comments: p.commentsCount || p.comments || 0,
+        favorites: p.favoritesCount || p.favorites || 0,
         tags: tags
       };
     });
