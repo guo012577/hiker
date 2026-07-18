@@ -4,71 +4,78 @@
       "name": "Sky Porn",
       "version": "1.0.1",
       "file": "skyPorn.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/skyPorn.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/skyPorn.js",
       "desc": "Sky Porn 短视频源"
     },
     {
       "name": "蘑菇视频",
       "version": "1.0.0",
       "file": "mogu.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/mogu.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/mogu.js",
       "desc": "蘑菇视频 vlog 源（随机分页）"
     },
     {
       "name": "屋里社",
       "version": "1.0.1",
       "file": "wulishe.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/wulishe.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/wulishe.js",
       "desc": "屋里社短视频源"
     },
     {
       "name": "xxxfollow🪜",
       "version": "1.0.1",
       "file": "xxxfollow.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/xxxfollow.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/xxxfollow.js",
       "desc": "xxxfollow 短剧源（genders×tag 维度，双端点）"
     },
     {
       "name": "91短视频",
       "version": "1.0.1",
       "file": "p91.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/p91.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/p91.js",
       "desc": "91短视频源"
     },
     {
       "name": "PornTok🪜",
       "version": "1.0.1",
       "file": "porntok.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/porntok.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/porntok.js",
       "desc": "PornTok 短视频源"
     },
     {
       "name": "onlytik🪜",
       "version": "1.0.0",
       "file": "onlytik.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/onlytik.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/onlytik.js",
       "desc": "onlytik 短视频源"
     },
     {
       "name": "ReddClips🪜",
       "version": "1.0.1",
       "file": "reddclips.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/reddclips.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/reddclips.js",
       "desc": "ReddClips 短视频源"
     },
     {
       "name": "xxxtik",
       "version": "1.0.1",
       "file": "xxxtik.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/xxxtik.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/xxxtik.js",
       "desc": "xxxtik 短视频源"
     },
     {
       "name": "javtrailers",
       "version": "1.0.0",
       "file": "javtrailers.js",
-      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/javtrailers.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/javtrailers.js",
       "desc": "javtrailers短视频源"
+    },
+    {
+      "name": "xfree",
+      "version": "1.0.0",
+      "file": "xfree.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/xfree.js",
+      "desc": "xfree短视频源"
     }
   ]
 }
