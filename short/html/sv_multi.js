@@ -298,9 +298,21 @@
       curl = src.getNextUrl(curl, cat, tag);
     }
     hikerLog('[fetchFeedList] src=' + src.name + ' | hasUrl=' + (typeof src.url) + ' | url=' + (src.url || 'UNDEF') + ' | curl=' + (curl || 'UNDEF') + ' | override=' + (localStorage.getItem('_SV_SOURCES_OVERRIDE_') ? 'Y' : 'N'));
-    var req = window.buildSourceRequest(curl, src, { randomPlay: src.random, cat: cat || '', tag: tag || '' });
-    var finalUrl = req ? req.fetchUrl : 'NOREQ';
+    var req = null, finalUrl = 'NOREQ';
+    if (typeof window.buildSourceRequest !== 'function') {
+      hikerLog('[fetchFeedList][ERROR] window.buildSourceRequest 未定义 —— engine.js 未加载（请重新导入规则，确保 index_multi.html 含 <script src="engine.js"> 且在 sv_multi.js 之前）');
+      finalUrl = 'ERR_NO_ENGINE';
+    } else {
+      try {
+        req = window.buildSourceRequest(curl, src, { randomPlay: src.random, cat: cat || '', tag: tag || '' });
+        finalUrl = req ? req.fetchUrl : 'NOREQ';
+      } catch (e) {
+        hikerLog('[fetchFeedList][ERROR] buildSourceRequest 抛异常: ' + (e && e.message) + ' | curl=' + curl);
+        finalUrl = 'ERR_THROW:' + (e && e.message);
+      }
+    }
     hikerLog('视频源地址:' + finalUrl );
+    if (!req) return [];
     var opts = req.fetchOptions || {};
     if (opts.body && typeof opts.body !== 'string') opts.body = JSON.stringify(opts.body);
     var data;
@@ -381,6 +393,7 @@
   }
 
   async function refillList(key, src, cat, tag) {
+    hikerLog('[refillList] 触发翻页 src=' + src.name + ' | cat=' + (cat || '') + ' | tag=' + (tag || ''));
     if (state.listLoading[key]) return state.listLoading[key];
     var p = (async function () {
       try {
@@ -1617,4 +1630,8 @@
   } else {
     init();
   }
+
+  // ===== 解析期版本标记（用于确认 Hiker 实际加载的是否最新文件）=====
+  hikerLog('[sv_multi] BUILD=20260718D 已加载');
+  hikerLog('[diag] engine.js 状态: ' + (typeof window.buildSourceRequest === 'function' ? '已加载 ✅' : '未加载 ❌(buildSourceRequest 不存在)'));
 })();
