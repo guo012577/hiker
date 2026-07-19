@@ -76,6 +76,13 @@
       "file": "xfree.js",
       "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/xfree.js",
       "desc": "xfree短视频源"
+    },
+    {
+      "name": "xiangjiao",
+      "version": "1.0.0",
+      "file": "xiangjiao.js",
+      "url": "https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/xiangjiao.js",
+      "desc": "香蕉短视频"
     }
   ]
 }
