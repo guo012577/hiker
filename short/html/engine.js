@@ -79,6 +79,30 @@ window.resolveVideoUrl = async function(videoUrl) {
         return mp4;
     }
 
+    // sexladyya：列表仅含元数据+缩略图，真实视频地址需二次请求 ?id= 详情（同源，懒解析）
+    var mS = videoUrl.match(/sexladyya\.top\/shortv\/xiangjiaonew\.php\?id=(\d+)/i);
+    if (mS) {
+        try {
+            var dr = await fetch(videoUrl, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'application/json, text/plain, */*',
+                    'Referer': 'http://randomapi06.sexladyya.top/'
+                }
+            });
+            if (dr.ok) {
+                var dj = await dr.json();
+                if (dj && dj.video) {
+                    hikerLog('[resolveVideoUrl] sexladyya 视频直链:', dj.video);
+                    return dj.video;
+                }
+            }
+        } catch (e) {
+            hikerLog('[resolveVideoUrl] sexladyya 二次请求失败:', e && e.message);
+        }
+        return videoUrl; // 失败回退到详情接口本身（会被判无效并跳过该卡片）
+    }
+
     return videoUrl;
 };
 
@@ -423,7 +447,12 @@ window.buildSourceRequest = function(_curl, _curSrc, _feedInfo) {
             if (!window._srcPage) window._srcPage = {};
             var pk = cfg.pageKey || _curSrc.name;
             var lk = '_lu_' + pk;
-            var cp = window._srcPage[pk] || 1;
+            // startPage：源可声明首页页码（默认 1，兼容历史源；javtrailers 等 0 索引 API 设 0）
+            // 读取优先级：源顶层 _curSrc.startPage > fetch.startPage（分页属源级属性，放顶层更直观）
+            var _srcStart = (_curSrc && _curSrc.startPage != null) ? _curSrc.startPage : (cfg.startPage != null ? cfg.startPage : 1);
+            var _startPage = _srcStart;
+            var cp = window._srcPage[pk];
+            if (cp === undefined) cp = _startPage;
 
             if (cfg.randomPage) {
                 // 随机页码：每次都随机
@@ -439,8 +468,8 @@ window.buildSourceRequest = function(_curl, _curSrc, _feedInfo) {
                     _isSeq = !(_feedInfo && _feedInfo.randomPlay);
                 }
                 if (window._srcPage[lk] !== _curl) {
-                    // URL 变了（换了分类），页码重置为 1
-                    cp = 1; window._srcPage[lk] = _curl;
+                    // URL 变了（换了分类），页码重置为 startPage
+                    cp = _startPage; window._srcPage[lk] = _curl;
                 }
                 // 注意：页码递增由调用方（players()）负责，这里只读取不递增
                 window._srcPage[pk] = cp;
