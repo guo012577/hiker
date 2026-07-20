@@ -18,7 +18,7 @@
   // <script src="sources/..."> 加载可靠；故用 document.write 在解析期同步加载（等效于 HTML 写死，
   // 但集中管理、可扩展）。脚本执行后 window.DEFAULT_SOURCES 已含该源，DOMContentLoaded 时 init()
   // 的 loadFolderSources → SVMarket.syncFromDefaults() 会把它并入运行列表 SOURCES。
-  var LOCAL_SOURCE_FILES = ['javtrailers.js', 'xfree.js'];
+  var LOCAL_SOURCE_FILES = ['javtrailers.js', 'xfree.js', 'sexladyya_sources.js'];
   try {
     (LOCAL_SOURCE_FILES || []).forEach(function (f) {
       document.write('<script src="sources/' + String(f).replace(/^\/+/, '') + '"><\/script>');

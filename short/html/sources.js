@@ -193,7 +193,7 @@ window.FeedParsers.tuwei = function(data) {
     if (videoUrl && typeof videoUrl === 'string' && videoUrl.startsWith('/')) {
         videoUrl = 'https://www.tuwei.space' + videoUrl;
     }
-    hikerLog('[tuwei parser] 视频URL:', videoUrl, '| id:', v.Id || 'unknown');
+    hikerLog('[tuwei parser] 视频URL:' + videoUrl + ' | id:' + (v.Id || 'unknown'));
     return [{
         url: videoUrl,
         sd_url: '',
@@ -209,7 +209,7 @@ window.FeedParsers.tuwei = function(data) {
 
 /* 小职API 格式（单次返回一个随机视频） */
 window.FeedParsers.xiaoZhi = function(data) {
-    hikerLog('[xiaoZhi parser] 原始数据:', JSON.stringify(data).substring(0,300));
+    hikerLog('[xiaoZhi parser] 原始数据:' + JSON.stringify(data).substring(0,300));
     if (!data || data.code !== 1 || !data.data || !data.data.url) {
         // 兼容: data.cover 或 data.url 在根级
         if (data && data.data && typeof data.data === 'string' && data.data.length > 10) {
@@ -243,7 +243,7 @@ window.FeedParsers.xiaoZhi = function(data) {
 
 /* 蓝莓API 格式（单次返回一个视频 URL） */
 window.FeedParsers.lanmei = function(data) {
-    hikerLog('[lanmei parser] 原始数据:', JSON.stringify(data).substring(0,300));
+    hikerLog('[lanmei parser] 原始数据:' + JSON.stringify(data).substring(0,300));
     // 频率限制：code 201，优雅处理，不报错误，返回空数组让上层跳过
     if (data && data.code === 201) {
         hikerLog('[FeedParsers.lan梅] 频率限制，暂停请求（' + (data.msg || '') + '）');

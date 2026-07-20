@@ -75,12 +75,12 @@ window.resolveVideoUrl = async function(videoUrl) {
     if (m) {
         var id = m[1];
         var mp4 = 'https://media.redgifs.com/' + id.charAt(0).toUpperCase() + id.slice(1) + '-silent.mp4';
-        hikerLog('[resolveVideoUrl] redgifs MP4:', mp4);
+        hikerLog('[resolveVideoUrl] redgifs MP4:' + mp4);
         return mp4;
     }
 
     // sexladyya：列表仅含元数据+缩略图，真实视频地址需二次请求 ?id= 详情（同源，懒解析）
-    var mS = videoUrl.match(/sexladyya\.top\/shortv\/xiangjiaonew\.php\?id=(\d+)/i);
+    var mS = videoUrl.match(/sexladyya\.top\/shortv\/.+\.php\?id=([^&]+)/i);
     if (mS) {
         try {
             var dr = await fetch(videoUrl, {
@@ -93,12 +93,12 @@ window.resolveVideoUrl = async function(videoUrl) {
             if (dr.ok) {
                 var dj = await dr.json();
                 if (dj && dj.video) {
-                    hikerLog('[resolveVideoUrl] sexladyya 视频直链:', dj.video);
+                    hikerLog('[resolveVideoUrl] sexladyya 视频直链:'+dj.video);
                     return dj.video;
                 }
             }
         } catch (e) {
-            hikerLog('[resolveVideoUrl] sexladyya 二次请求失败:', e && e.message);
+            hikerLog('[resolveVideoUrl] sexladyya 二次请求失败:'+ e && e.message);
         }
         return videoUrl; // 失败回退到详情接口本身（会被判无效并跳过该卡片）
     }
@@ -177,7 +177,7 @@ window.fetchWithProxyFallback = async function fetchWithProxyFallback(url, optio
 window.SourceHandlers = {
     // TXT 文件类型
     txt: function(url, done) {
-        hikerLog('[源处理器] txt 类型:', url);
+        hikerLog('[源处理器] txt 类型:' + url);
         var _lists = window.txtSourceVideoLists || {};
 
         if (_lists[url] && _lists[url].length > 0) {
@@ -186,11 +186,11 @@ window.SourceHandlers = {
             var idx = (typeof getNextTxtIndex === 'function') ? getNextTxtIndex(url) : 0;
             if (idx >= list.length) idx = 0;
             var videoUrl = list[idx];
-            hikerLog('[TXT源] 播放视频', idx + 1, '/', list.length, ':', videoUrl.substring(0, 80));
+            hikerLog('[TXT源] 播放视频 ' + (idx + 1) + '/' + list.length + ':' + videoUrl.substring(0, 80));
             window.SourceHandlers._setVideoSrc(videoUrl);
         } else {
             // 首次加载，fetch TXT 文件
-            hikerLog('[TXT源] 首次加载:', url);
+            hikerLog('[TXT源] 首次加载:' + url);
             fetch(url).then(function(r) { return r.text(); })
             .then(function(text) {
                 var lines = text.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l && l.startsWith('http'); });
@@ -272,7 +272,7 @@ window.SourceHandlers = {
 
     // 直接 URL 类型（API 返回视频地址，或 301 跳转到视频）
     direct: function(url, done) {
-        hikerLog('[源处理器] direct 类型:', url);
+        hikerLog('[源处理器] direct 类型:' + url);
         if (!url) { console.error('[源处理器] direct: URL 为空'); if (typeof done === 'function') done(); else if (typeof players === 'function') players(); return; }
         var fetchUrl = url.replace('ssss', Math.floor(Math.random() * 678 + 1));
         fetch(fetchUrl, { method: 'GET', redirect: 'follow' })
@@ -296,14 +296,14 @@ window.SourceHandlers = {
 
     // Feed 流类型
     feed: function(url, sourceName) {
-        hikerLog('[源处理器] feed 类型:', url);
+        hikerLog('[源处理器] feed 类型:' + url);
         handleFeedSource(url);
     },
 
     // 抖一抖类型
     // API 返回纯文本 MP4 URL（如 https://tx.cdn.kwai.net/...mp4）
     douyidou: function(url, done) {
-        hikerLog('[源处理器] douyidou 类型:', url);
+        hikerLog('[源处理器] douyidou 类型:' + url);
         fetch(url, { method: 'GET', redirect: 'follow' })
         .then(function(r) {
             if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -334,7 +334,7 @@ window.SourceHandlers = {
                 }
             }
             if (videoUrl && typeof videoUrl === 'string' && videoUrl.startsWith('http')) {
-                hikerLog('[douyidou] 获取到视频:', videoUrl.substring(0, 80));
+                hikerLog('[douyidou] 获取到视频:' + videoUrl.substring(0, 80));
                 window.SourceHandlers._setVideoSrc(videoUrl);
             } else {
                 console.warn('[douyidou] 响应无效:', text.substring(0, 200));
@@ -349,7 +349,7 @@ window.SourceHandlers = {
 
     // yujn 类型（API 直接返回视频流，301 跳转）
     yujn: function(url, done) {
-        hikerLog('[源处理器] yujn 类型:', url);
+        hikerLog('[源处理器] yujn 类型:' + url);
         fetch(url, { method: 'GET', redirect: 'follow' })
         .then(function(r) {
             var finalUrl = r.url;
@@ -393,7 +393,7 @@ window.SourceHandlers = {
 
     // wudada 类型（JSON 响应，data.data 字段是直接视频 URL）
     wudada: function(url, done) {
-        hikerLog('[源处理器] wudada 类型:', url);
+        hikerLog('[源处理器] wudada 类型:' + url);
         $.get(url, function(data) {
             var videoUrl = '';
             if (typeof data === 'object' && data !== null) {

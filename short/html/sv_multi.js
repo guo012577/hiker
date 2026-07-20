@@ -219,11 +219,13 @@
       videoUrl = (await window.resolveVideoUrl(videoUrl)) || videoUrl;
       if (await validateVideoUrl(videoUrl)) {
         var mapped = mapFeedItem(it, src);
+        // 使用 resolveVideoUrl 解析后的真实视频 URL（而非 it.url 详情接口标记）
+        mapped.video_url = videoUrl;
         mapped._index = i + 1;
         mapped._total = cache.items.length;
         return mapped;
       }
-      hikerLog('[feed] 移除无效视频:', videoUrl.substring(0, 60));
+      hikerLog('[feed] 移除无效视频:' + videoUrl.substring(0, 60));
       cache.items.splice(i, 1);
       cache.idx = Math.max(0, cache.idx - 1);
     }
@@ -381,11 +383,13 @@
           refillList(key, src, cat, tag);
         }
         var mapped = mapFeedItem(it, src);
+        // 使用 resolveVideoUrl 解析后的真实视频 URL（而非 it.url 详情接口标记）
+        mapped.video_url = videoUrl;
         mapped._index = !src.random ? i + 1 : '?';
         mapped._total = cache.items.length;
         return mapped;
       }
-      hikerLog('[feed] 移除无效视频:', videoUrl.substring(0, 60));
+      hikerLog('[feed] 移除无效视频:' + videoUrl.substring(0, 60));
       cache.items.splice(i, 1);
       if (!src.random) cache.idx = Math.max(0, cache.idx - 1);
     }
@@ -442,7 +446,7 @@
       if (await validateVideoUrl(videoUrl)) {
         return { id: uid(), video_url: videoUrl, title: src.name, text: '', user: '', likes: 0, comments: 0, favorites: 0, tags: [], _index: i + 1, _total: c.lines.length };
       }
-      hikerLog('[txt] 移除无效视频:', videoUrl.substring(0, 60));
+      hikerLog('[txt] 移除无效视频:' + videoUrl.substring(0, 60));
       c.lines.splice(i, 1);
       if (!src.random) c.idx = Math.max(0, c.idx - 1);
     }
@@ -464,11 +468,11 @@
     try {
       var r = await fetch(url, { headers: { Range: 'bytes=0-0' }, cache: 'no-cache' });
       var ok = r.status === 206 || r.status === 200 || r.status === 304;
-      if (!ok) hikerLog('[validate] 失效:', r.status, url.substring(0, 80));
+      if (!ok) hikerLog('[validate] 失效:' + r.status + ' ' + url.substring(0, 80));
       _validatedUrls[url] = ok;
       return ok;
     } catch (e) {
-      hikerLog('[validate] 请求失败:', url.substring(0, 80));
+      hikerLog('[validate] 请求失败:' + url.substring(0, 80));
       _validatedUrls[url] = false;
       return false;
     }
@@ -927,7 +931,7 @@
     hikerLog('[retry] 视频加载失败 (' + retryCount[id] + '/' + MAX_RETRIES + '):'+videoUrl);
    
     if (retryCount[id] > MAX_RETRIES) {
-      hikerLog('[retry] 连续失败 ' + MAX_RETRIES + ' 次，停止重试:', videoUrl);
+      hikerLog('[retry] 连续失败 ' + MAX_RETRIES + ' 次，停止重试:' + videoUrl);
       // 标记 URL 失效，避免再次被抓到
       _validatedUrls[videoUrl] = false;
       // 清理旧 video
@@ -1223,9 +1227,9 @@
     var _readVia = '未读取';
 
     // 方案一：readFile（内部优先 fy_bridge_app.readFile，其次 fba.readFile，最后 request 兜底）
-    try { fullText = readFile(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'readFile(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'readFile(返回字符串)'; } } catch (e) { hikerLog('[exportSources] 方案一抛错', e); }
+    try { fullText = readFile(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'readFile(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'readFile(返回字符串)'; } } catch (e) { hikerLog('[exportSources] 方案一抛错: ' + (e && e.message || e)); }
     // 方案二：request 读
-    if (!fullText) { try { fullText = requestUrl(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'requestUrl(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'requestUrl(返回字符串)'; } } catch (e) { hikerLog('[exportSources] 方案二抛错', e); } }
+    if (!fullText) { try { fullText = requestUrl(path); if (fullText && typeof fullText === 'object') { fullText = JSON.stringify(fullText, null, '\t'); _readVia = 'requestUrl(返回Promise/object→已string化)'; } else if (fullText) { _readVia = 'requestUrl(返回字符串)'; } } catch (e) { hikerLog('[exportSources] 方案二抛错: ' + (e && e.message || e)); } }
     // 汇聚诊断到 window.__exportDiag，供「通用」页诊断日志框显示；并用 fy_bridge_app.log 打印（Hiker 可见）
     window.__exportDiag = {
       path: path,
