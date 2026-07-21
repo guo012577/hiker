@@ -80,7 +80,7 @@
     {
       "name": "sexladyya_sources",
       "version": "1.0.0",
-      "file": "sexladyya_sources",
+      "file": "sexladyya_sources.js",
       "url": "https://gh-proxy.org/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/sexladyya_sources.js",
       "desc": "快猫/海外/sexladyya 短视频，含 3 个子源（xiangjiao、海外[短视频]、快猫[短视频]）"
     }
