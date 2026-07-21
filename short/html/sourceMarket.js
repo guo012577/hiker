@@ -40,7 +40,7 @@
    *      ]
    *    }
    * ============================================================ */
-  var SOURCE_MANIFEST_URL = 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/manifest.json'; // ← 在这里填入你的远程 manifest.json 地址
+  var SOURCE_MANIFEST_URL = 'https://gh-proxy.org/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/manifest.json'; // ← 在这里填入你的远程 manifest.json 地址
 
   // 市场源清单：写到规则【根目录】 market-sources.json
   var MARKET_MANIFEST_FILE = 'market-sources.json';
