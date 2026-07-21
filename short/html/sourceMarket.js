@@ -13,12 +13,11 @@
 (function () {
   'use strict';
 
-  // 本地文件源（sources/ 下）：由 sourceMarket.js 在解析期同步注入，不在 index_multi.html 硬编码。
-  // 说明：Hiker 环境下 sources/ 子目录的 JS API（readFile/fetch）读取不可靠，但 WebView 同源
-  // <script src="sources/..."> 加载可靠；故用 document.write 在解析期同步加载（等效于 HTML 写死，
-  // 但集中管理、可扩展）。脚本执行后 window.DEFAULT_SOURCES 已含该源，DOMContentLoaded 时 init()
-  // 的 loadFolderSources → SVMarket.syncFromDefaults() 会把它并入运行列表 SOURCES。
-  var LOCAL_SOURCE_FILES = ['javtrailers.js', 'xfree.js', 'sexladyya_sources.js'];
+  // 本地文件源注入机制：默认【不再内置任何源】，全部走「获取源」市场分发。
+  //  - 逻辑：规则重导后源列表为空（除非已通过市场下载过，会由 market-sources.json 内联注入）。
+  //  - 如需回归“内置某源”：在下面数组填入 'xxx.js' 文件名即可，解析期 document.write 同步加载，
+  //    脚本执行后 window.DEFAULT_SOURCES 已含该源，init() 的 loadFolderSources → syncFromDefaults() 并入运行列表。
+  var LOCAL_SOURCE_FILES = [];
   try {
     (LOCAL_SOURCE_FILES || []).forEach(function (f) {
       document.write('<script src="sources/' + String(f).replace(/^\/+/, '') + '"><\/script>');
@@ -41,7 +40,7 @@
    *      ]
    *    }
    * ============================================================ */
-  var SOURCE_MANIFEST_URL = 'https://gh-proxy.org/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/manifest.json'; // ← 在这里填入你的远程 manifest.json 地址
+  var SOURCE_MANIFEST_URL = 'https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/manifest.json'; // ← 在这里填入你的远程 manifest.json 地址
 
   // 市场源清单：写到规则【根目录】 market-sources.json
   var MARKET_MANIFEST_FILE = 'market-sources.json';
