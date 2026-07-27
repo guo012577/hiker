@@ -76,6 +76,12 @@
       "file": "xfree.js",
       "url": "https://gh-proxy.org/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/xfree.js",
       "desc": "xfree短视频源"
+    },{
+      "name": "xhs18",
+      "version": "1.0.0",
+      "file": "xhs18.js",
+      "url": "https://gh-proxy.org/https://raw.githubusercontent.com/guo012577/hiker/refs/heads/main/short/sources/xhs18.js",
+      "desc": "xhs18"
     },
     {
       "name": "sexladyya_sources",
